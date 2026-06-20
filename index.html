@@ -2,234 +2,181 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>장례 조의금 및 정산 보고서 목록</title>
-  <meta name="description" content="외할머니 장례식 조의금 정산 및 상주별 수입 보고서 모음 페이지입니다.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Font -->
+  <!-- Font & Styling -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  
   <style>
-    :root {
-      --bg-primary: #f8fafc;
-      --bg-card: #ffffff;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --border-color: #e2e8f0;
-      --accent-color: #b45309; /* Deep Gold */
-      --slate-800: #1e293b;
-      --slate-900: #0f172a;
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: 'Inter', 'Noto Sans KR', sans-serif;
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.6;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #0f172a; /* Slate 900 */
+      color: #f8fafc;
       display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background-color: var(--slate-900);
-      color: #ffffff;
-      padding: 50px 20px;
-      text-align: center;
-      border-bottom: 4px solid var(--accent-color);
-    }
-
-    header h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: -0.05em;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 1.1rem;
-      color: #94a3b8;
-      font-weight: 300;
-    }
-
-    .main-container {
-      flex: 1;
-      max-width: 800px;
-      width: 100%;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 25px;
-      margin-bottom: 40px;
-    }
-
-    .report-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: var(--shadow-md);
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .report-card::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 6px;
-      background-color: var(--slate-800);
-      transition: background-color 0.3s ease;
-    }
-
-    .report-card.integrated::before {
-      background-color: var(--accent-color);
-    }
-
-    .report-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--accent-color);
-    }
-
-    .card-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: var(--slate-900);
-      display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 8px;
-    }
-
-    .card-desc {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-      flex: 1;
-    }
-
-    .card-link {
-      align-self: flex-start;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--accent-color);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: transform 0.2s ease;
-    }
-
-    .report-card:hover .card-link {
-      transform: translateX(4px);
-    }
-
-    .info-alert {
-      background-color: #fffbeb;
-      border: 1px solid #fef3c7;
-      border-radius: 12px;
+      height: 100vh;
+      margin: 0;
       padding: 20px;
-      color: #92400e;
-      font-size: 0.9rem;
-      margin-bottom: 30px;
+      box-sizing: border-box;
+      display: none; /* Hidden until checking cache */
     }
-
-    .info-title {
-      font-weight: 700;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    footer {
+    .login-container {
+      background-color: #1e293b; /* Slate 800 */
+      padding: 40px 30px;
+      border-radius: 16px;
+      border: 1px solid #b45309; /* Deep Gold */
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      max-width: 400px;
+      width: 100%;
       text-align: center;
-      padding: 30px 20px;
-      color: var(--text-secondary);
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      background-color: #0f172a;
+      color: #ffffff;
+      font-size: 1rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    input[type="password"]:focus {
+      border-color: #b45309;
+    }
+    button {
+      background-color: #b45309;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #92400e;
+    }
+    .error-msg {
+      color: #ef4444;
+      margin-top: 12px;
       font-size: 0.85rem;
-      border-top: 1px solid var(--border-color);
-      background-color: #ffffff;
+      min-height: 1.2rem;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>장례 정산 보고서 모음</h1>
-    <p>외할머니 故人 추모 조의금 및 정산 내역 웹 조회 시스템</p>
-  </header>
-
-  <div class="main-container">
-    
-    <div class="info-alert">
-      <div class="info-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-        개인정보 및 보안 주의
-      </div>
-      <div>
-        본 웹페이지는 유족 간의 신속한 장부 공유를 위해 임시로 제공되는 정적 웹 호스팅 페이지입니다. 
-        해당 주소에는 친인척 및 지인분들의 성함과 금액 등 <strong>민감한 개인 금융 정보가 포함</strong>되어 있으므로, <strong>가족 이외의 타인에게 링크를 공유하거나 인터넷상에 공개되지 않도록 각별히 유의</strong>해 주시기 바랍니다.
-      </div>
-    </div>
-
-    <div class="cards-grid">
-      
-      <!-- Card 1: Family Integrated Report -->
-      <a href="조의금_정리_보고서.html" class="report-card integrated">
-        <div class="card-title">
-          가족 통합 정산 보고서
-        </div>
-        <div class="card-desc">
-          수입 장부에서 번호가 누락된 24건을 제외한 공식 일련번호 기준 수입금 총 60,350,000원에 대한 관계자별 통계 및 장례식장, 산소 비용 등 총 25,650,000원의 지출 정산 종합 대시보드입니다.
-        </div>
-        <div class="card-link">
-          보고서 열기 
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </div>
-      </a>
-
-      <!-- Card 2: Kim Sang-gu Guest List -->
-      <a href="조의금_정리_보고서_김상구.html" class="report-card">
-        <div class="card-title">
-          상주 김상구 님 조의금 명부
-        </div>
-        <div class="card-desc">
-          번호 누락자 24명을 포함하여 김상구 님 앞으로 들어온 총 36건(수입 합계 3,520,000원)의 조의금 방명록 단독 조회 화면입니다. 지출 내역 및 정산 잔액 정보가 들어있지 않습니다.
-        </div>
-        <div class="card-link">
-          명부 열기
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </div>
-      </a>
-
-    </div>
-
+  <div class="login-container">
+    <h2>🔒 보안 문서 본인 인증</h2>
+    <p>본 장례 정산 문서는 유족 개인정보 보호를 위해 암호화되어 있습니다. 비밀번호를 입력해주세요.</p>
+    <input type="password" id="password" placeholder="비밀번호 입력..." onkeypress="handleKeyPress(event)" autofocus>
+    <button onclick="submitPassword()">접속하기</button>
+    <div id="error-msg" class="error-msg"></div>
   </div>
 
-  <footer>
-    <p>© 2026 외할머니 장례 가족 공동 정산 시스템.</p>
-  </footer>
+  <script>
+    const encryptedData = "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";
 
+    // Auto-login from sessionStorage if password cached
+    window.addEventListener('DOMContentLoaded', () => {
+      const cached = sessionStorage.getItem('report_password');
+      if (cached) {
+        if (decryptPage(cached)) {
+          return;
+        } else {
+          sessionStorage.removeItem('report_password');
+        }
+      }
+      document.body.style.display = 'flex';
+    });
+
+    function submitPassword() {
+      const pwd = document.getElementById('password').value;
+      const errorMsg = document.getElementById('error-msg');
+      errorMsg.innerText = '';
+      
+      if (!pwd) {
+        errorMsg.innerText = '비밀번호를 입력해주세요.';
+        return;
+      }
+
+      if (decryptPage(pwd)) {
+        // Success
+      } else {
+        errorMsg.innerText = '비밀번호가 올바르지 않습니다.';
+      }
+    }
+
+    function decryptPage(pwd) {
+      try {
+        const decrypted = CryptoJS.AES.decrypt(encryptedData, pwd);
+        const rawText = decrypted.toString(CryptoJS.enc.Utf8);
+        
+        if (!rawText || rawText.length === 0 || (!rawText.startsWith('<!DOCTYPE') && !rawText.startsWith('<html') && !rawText.startsWith('<!doctype'))) {
+          return false;
+        }
+        
+        // Save to sessionStorage for SSO
+        sessionStorage.setItem('report_password', pwd);
+        
+        // Inject decrypted HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(rawText, 'text/html');
+        
+        document.title = doc.title || "장례 정산 보고서";
+        document.documentElement.className = doc.documentElement.className;
+        
+        // Replace head and body content
+        document.head.innerHTML = doc.head.innerHTML;
+        document.body.innerHTML = doc.body.innerHTML;
+        document.body.removeAttribute('style'); // remove display style
+        
+        // Re-execute script tags
+        const scripts = Array.from(document.querySelectorAll('script'));
+        scripts.forEach(oldScript => {
+          if (oldScript.src && oldScript.src.includes('crypto-js')) return; // skip CryptoJS itself
+          const newScript = document.createElement('script');
+          Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+        
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') {
+        submitPassword();
+      }
+    }
+  </script>
 </body>
 </html>
