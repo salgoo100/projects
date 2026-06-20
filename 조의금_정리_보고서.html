@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>장례 조의금 및 지출 정산 보고서</title>
+  <meta name="description" content="외할머니 장례식 조의금 수입 현황 및 지출 내역 정산 보고서입니다.">
+  
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-color: #e2e8f0;
+      --accent-color: #854d0e; /* Elegant gold/bronze */
+      --accent-hover: #a16207;
+      --slate-100: #f1f5f9;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --green-accent: #0f766e;
+      --red-accent: #b91c1c;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 0 0 80px 0;
+    }
+
+    header {
+      background-color: var(--slate-900);
+      color: #ffffff;
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      font-weight: 300;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 40px auto 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Tabs Navigation */
+    .tabs-nav {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 30px;
+      gap: 10px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 12px 24px;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-color);
+      font-weight: 700;
+    }
+
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--accent-color);
+      border-radius: 3px 3px 0 0;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 35px;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .card-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .card-subtext {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .card.balance {
+      border-left: 5px solid var(--accent-color);
+    }
+    .card.income {
+      border-left: 5px solid var(--green-accent);
+    }
+    .card.expense {
+      border-left: 5px solid var(--red-accent);
+    }
+
+    /* Dashboard Charts */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      border-left: 4px solid var(--accent-color);
+      padding-left: 10px;
+    }
+
+    /* Guestbook Controls */
+    .controls-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-color);
+    }
+
+    .filter-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-tag {
+      background-color: var(--slate-100);
+      color: var(--text-secondary);
+      border: 1px solid transparent;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tag:hover {
+      background-color: var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .filter-tag.active {
+      background-color: var(--slate-800);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Table styles */
+    .table-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 25px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: var(--slate-100);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: #fafaf9;
+      color: var(--text-primary);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 4px;
+      background-color: var(--slate-100);
+      color: var(--text-secondary);
+    }
+
+    .badge.ref {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge.warn {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      padding: 0 5px;
+    }
+
+    .page-info {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .page-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .page-btn {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background-color: var(--slate-100);
+    }
+
+    .page-btn:disabled {
+      color: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    /* Action Buttons */
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--slate-800);
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: var(--slate-900);
+    }
+
+    .btn.outline {
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn.outline:hover {
+      background-color: var(--slate-100);
+    }
+
+    /* Print styling */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+      header {
+        background-color: transparent !important;
+        color: #000000 !important;
+        border-bottom: 2px solid #000000 !important;
+        padding: 20px 0 !important;
+      }
+      header p {
+        color: #555555 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .container {
+        max-width: 100% !important;
+        margin: 20px 0 0 0 !important;
+        padding: 0 !important;
+      }
+      .card {
+        box-shadow: none !important;
+        border: 1px solid #000000 !important;
+      }
+      .table-container {
+        box-shadow: none !important;
+        border: 1px solid #000000 !important;
+        border-radius: 0 !important;
+        overflow: visible !important;
+      }
+      table {
+        font-size: 0.85rem !important;
+      }
+      th {
+        background-color: #f0f0f0 !important;
+        border-bottom: 2px solid #000000 !important;
+      }
+      td {
+        border-bottom: 1px solid #cccccc !important;
+      }
+      .tab-content {
+        display: block !important;
+        opacity: 1 !important;
+        transform: none !important;
+        margin-bottom: 40px;
+      }
+      .charts-grid {
+        display: none !important; /* Hide interactive charts when printing */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>장례 정산 보고서</h1>
+    <p>외할머니 故人 추모 조의금 및 장례 비용 정산 내역</p>
+  </header>
+
+  <div class="container">
+    
+    <!-- Action buttons (Print/Export) -->
+    <div class="action-row no-print">
+      <button class="btn outline" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        보고서 인쇄 / PDF 저장
+      </button>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-nav no-print">
+      <button class="tab-btn active" onclick="switchTab('dashboard', this)">정산 대시보드</button>
+      <button class="tab-btn" onclick="switchTab('guestbook', this)">조의금 방명록 전체</button>
+      <button class="tab-btn" onclick="switchTab('expense', this)">장례 지출 상세</button>
+    </div>
+
+    <!-- Tab 1: Dashboard -->
+    <div id="dashboard" class="tab-content active">
+      
+      <!-- Summary Cards -->
+      <div class="summary-grid">
+        <div class="card income">
+          <div class="card-label">총 조의금 수입</div>
+          <div class="card-value" id="val-total-income">0 원</div>
+          <div class="card-subtext" id="val-guest-count">총 0명 접수</div>
+        </div>
+        <div class="card expense">
+          <div class="card-label">총 장례 지출</div>
+          <div class="card-value" id="val-total-expense">0 원</div>
+          <div class="card-subtext" id="val-expense-count">총 4건 지출</div>
+        </div>
+        <div class="card balance">
+          <div class="card-label">정산 최종 잔액</div>
+          <div class="card-value" id="val-balance">0 원</div>
+          <div class="card-subtext">수입 - 지출 잔여 금액</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-grid">
+        <!-- Chart 1 -->
+        <div class="chart-container">
+          <h3 class="chart-title">상주/관계자별 조의금 수입 현황</h3>
+          <canvas id="chartRefPerson" style="max-height: 380px;"></canvas>
+        </div>
+        <!-- Chart 2 -->
+        <div class="chart-container">
+          <h3 class="chart-title">금액대별 조의금 납부 분포</h3>
+          <canvas id="chartAmountBracket" style="max-height: 380px;"></canvas>
+        </div>
+      </div>
+
+      <!-- Quick Summary Tables -->
+      <div class="charts-grid" style="margin-top: 20px;">
+        <div class="chart-container">
+          <h3 class="chart-title">관계자별 요약 집계</h3>
+          <div class="table-responsive">
+            <table id="table-summary-ref">
+              <thead>
+                <tr>
+                  <th>상주 / 관계자</th>
+                  <th>인원 수 (명)</th>
+                  <th>합계 금액 (원)</th>
+                  <th>비율 (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <h3 class="chart-title">특이 사항 내역</h3>
+          <div class="table-responsive">
+            <table id="table-mismatches">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>성함</th>
+                  <th>상주 / 관계자</th>
+                  <th>내용</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tab 2: Guestbook -->
+    <div id="guestbook" class="tab-content">
+      
+      <!-- Controls -->
+      <div class="controls-container no-print">
+        <div class="search-row">
+          <input type="text" id="search-input" class="search-input" placeholder="조문객 성함 또는 상주(관계자) 이름을 입력하세요..." oninput="onSearchChange()">
+        </div>
+        <div>
+          <div class="filter-label">상주(관계자)별 빠른 필터</div>
+          <div class="filter-tags" id="filter-tags-container">
+            <button class="filter-tag active" onclick="setRefFilter('ALL', this)">전체보기</button>
+            <!-- Tags dynamic -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Guest Table -->
+      <div class="table-container">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 80px;">번호</th>
+                <th>조문객 성함</th>
+                <th style="text-align: right;">조의금 금액 (원)</th>
+                <th>상주 (관계자)</th>
+                <th>비고 / 특이사항</th>
+              </tr>
+            </thead>
+            <tbody id="guest-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination no-print">
+        <div class="page-info" id="page-info">Total 0 entries</div>
+        <div class="page-btns">
+          <button class="page-btn" id="btn-prev" onclick="changePage(-1)">이전</button>
+          <button class="page-btn" id="btn-next" onclick="changePage(1)">다음</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tab 3: Expenses -->
+    <div id="expense" class="tab-content">
+      
+      <div class="table-container">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>지출 일시</th>
+                <th>지출 항목 (내용)</th>
+                <th style="text-align: right;">지출 금액 (원)</th>
+                <th>상주 / 담당자</th>
+              </tr>
+            </thead>
+            <tbody id="expense-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+            <tfoot>
+              <tr style="background-color: var(--slate-100); font-weight: 700;">
+                <td colspan="2" style="color: var(--text-primary);">지출 총합계</td>
+                <td style="text-align: right; color: var(--red-accent);" id="td-expense-total">0 원</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Embedded Data
+    const incomesData = [{"num":1,"name":"김현민","amountWon":100000,"refPerson":"김효섭","note":""},{"num":2,"name":"조기호","amountWon":100000,"refPerson":"대치동","note":""},{"num":3,"name":"김향영","amountWon":200000,"refPerson":"김국희","note":""},{"num":4,"name":"조화연","amountWon":200000,"refPerson":"김영찬","note":""},{"num":5,"name":"이광일","amountWon":100000,"refPerson":"김영준","note":""},{"num":6,"name":"권종원","amountWon":100000,"refPerson":"김영길","note":""},{"num":7,"name":"양윤길","amountWon":200000,"refPerson":"김영찬","note":""},{"num":8,"name":"번호없음","amountWon":0,"refPerson":"없음","note":"-"},{"num":9,"name":"박준규","amountWon":100000,"refPerson":"김효섭","note":""},{"num":10,"name":"김장익","amountWon":100000,"refPerson":"친척","note":""},{"num":11,"name":"김준식","amountWon":200000,"refPerson":"김효섭","note":""},{"num":12,"name":"곽규환","amountWon":150000,"refPerson":"김효섭","note":""},{"num":13,"name":"이준희","amountWon":100000,"refPerson":"김희진","note":""},{"num":14,"name":"최은주","amountWon":100000,"refPerson":"김희진","note":""},{"num":15,"name":"박영진","amountWon":100000,"refPerson":"김희진","note":""},{"num":16,"name":"갈재정","amountWon":100000,"refPerson":"김희진","note":""},{"num":17,"name":"김지훈","amountWon":100000,"refPerson":"김희진","note":""},{"num":18,"name":"미사모","amountWon":300000,"refPerson":"김영길","note":""},{"num":19,"name":"유승준","amountWon":200000,"refPerson":"김상구","note":""},{"num":20,"name":"조성권","amountWon":100000,"refPerson":"김재선","note":""},{"num":21,"name":"박태순","amountWon":100000,"refPerson":"김영기","note":""},{"num":22,"name":"김규태","amountWon":100000,"refPerson":"친척","note":""},{"num":23,"name":"이원형","amountWon":100000,"refPerson":"김효섭","note":""},{"num":24,"name":"이승호","amountWon":100000,"refPerson":"김효섭","note":""},{"num":25,"name":"임건주","amountWon":500000,"refPerson":"김영기","note":""},{"num":26,"name":"문서일","amountWon":100000,"refPerson":"김민경","note":""},{"num":27,"name":"송건형","amountWon":200000,"refPerson":"김영길","note":""},{"num":28,"name":"공운택","amountWon":100000,"refPerson":"김영길","note":""},{"num":29,"name":"염교선","amountWon":200000,"refPerson":"친척","note":""},{"num":30,"name":"염미옥","amountWon":100000,"refPerson":"친척","note":""},{"num":31,"name":"염미강","amountWon":200000,"refPerson":"친척","note":""},{"num":32,"name":"염동근","amountWon":200000,"refPerson":"친척","note":""},{"num":33,"name":"박천래","amountWon":50000,"refPerson":"친척","note":""},{"num":34,"name":"김경태","amountWon":100000,"refPerson":"친척","note":""},{"num":35,"name":"원종석","amountWon":100000,"refPerson":"이해진","note":""},{"num":36,"name":"민선홍","amountWon":100000,"refPerson":"이해진","note":""},{"num":37,"name":"이승호","amountWon":1000000,"refPerson":"김유진","note":""},{"num":38,"name":"김도겸","amountWon":100000,"refPerson":"대치동","note":""},{"num":39,"name":"박노신","amountWon":100000,"refPerson":"대치동","note":""},{"num":40,"name":"대치향우회","amountWon":300000,"refPerson":"대치동","note":""},{"num":41,"name":"이성원","amountWon":100000,"refPerson":"대치동","note":""},{"num":42,"name":"김주경","amountWon":100000,"refPerson":"김영찬","note":""},{"num":43,"name":"이인원","amountWon":100000,"refPerson":"대치동","note":""},{"num":44,"name":"이봉율","amountWon":100000,"refPerson":"대치동","note":""},{"num":45,"name":"배상교","amountWon":100000,"refPerson":"김영길","note":""},{"num":46,"name":"염상근","amountWon":100000,"refPerson":"친척","note":""},{"num":47,"name":"김경일","amountWon":100000,"refPerson":"친척","note":""},{"num":48,"name":"문승배","amountWon":100000,"refPerson":"김재선","note":""},{"num":49,"name":"심순기","amountWon":100000,"refPerson":"대치동","note":""},{"num":50,"name":"윤명월","amountWon":200000,"refPerson":"김영찬","note":""},{"num":51,"name":"김종식","amountWon":200000,"refPerson":"김영찬","note":""},{"num":52,"name":"김성식","amountWon":200000,"refPerson":"김영찬","note":""},{"num":53,"name":"김형태","amountWon":100000,"refPerson":"친척","note":""},{"num":54,"name":"김치중","amountWon":100000,"refPerson":"주유소","note":""},{"num":55,"name":"김영주","amountWon":100000,"refPerson":"김영길","note":""},{"num":56,"name":"김보정","amountWon":100000,"refPerson":"김영길","note":""},{"num":57,"name":"김효태","amountWon":100000,"refPerson":"대치동","note":""},{"num":58,"name":"이해창","amountWon":500000,"refPerson":"이해진","note":""},{"num":59,"name":"박옥신","amountWon":300000,"refPerson":"이해진","note":""},{"num":60,"name":"김도연","amountWon":100000,"refPerson":"김유섭","note":""},{"num":61,"name":"최서안","amountWon":300000,"refPerson":"김유섭","note":""},{"num":62,"name":"김기창","amountWon":300000,"refPerson":"김영기","note":""},{"num":63,"name":"김흥수","amountWon":100000,"refPerson":"김영기","note":""},{"num":64,"name":"이종율","amountWon":100000,"refPerson":"대치동","note":""},{"num":65,"name":"권순홍","amountWon":200000,"refPerson":"이해진","note":""},{"num":66,"name":"김연지","amountWon":200000,"refPerson":"김상구","note":""},{"num":67,"name":"고결","amountWon":100000,"refPerson":"김상구","note":""},{"num":68,"name":"유승환","amountWon":200000,"refPerson":"김상구","note":""},{"num":69,"name":"이정빈","amountWon":100000,"refPerson":"김상구","note":""},{"num":70,"name":"박주호","amountWon":200000,"refPerson":"김영길","note":""},{"num":71,"name":"김윤태","amountWon":100000,"refPerson":"친척","note":""},{"num":72,"name":"유지욱","amountWon":100000,"refPerson":"김영길","note":""},{"num":73,"name":"김진선","amountWon":100000,"refPerson":"김영길","note":""},{"num":74,"name":"이영하","amountWon":100000,"refPerson":"김영길","note":""},{"num":75,"name":"김형태","amountWon":100000,"refPerson":"김영길","note":""},{"num":76,"name":"변영태","amountWon":500000,"refPerson":"김효섭","note":""},{"num":77,"name":"염은숙","amountWon":100000,"refPerson":"친척","note":""},{"num":78,"name":"청물","amountWon":300000,"refPerson":"김영찬","note":""},{"num":79,"name":"이승한","amountWon":600000,"refPerson":"친척","note":""},{"num":80,"name":"김준용","amountWon":100000,"refPerson":"김상구","note":""},{"num":81,"name":"김진호","amountWon":200000,"refPerson":"김상구","note":""},{"num":82,"name":"한윤택","amountWon":100000,"refPerson":"김영길","note":""},{"num":83,"name":"이병춘","amountWon":100000,"refPerson":"김상구","note":""},{"num":84,"name":"이기중","amountWon":200000,"refPerson":"김영기","note":""},{"num":85,"name":"방예나","amountWon":100000,"refPerson":"김혜진","note":""},{"num":86,"name":"김동주","amountWon":100000,"refPerson":"김혜진","note":""},{"num":87,"name":"박소연","amountWon":100000,"refPerson":"김혜진","note":""},{"num":88,"name":"남달리","amountWon":100000,"refPerson":"김혜진","note":""},{"num":89,"name":"이보영","amountWon":100000,"refPerson":"김혜진","note":""},{"num":90,"name":"차우진","amountWon":50000,"refPerson":"김혜진","note":""},{"num":91,"name":"박성희","amountWon":300000,"refPerson":"김혜진","note":""},{"num":92,"name":"박지혜","amountWon":100000,"refPerson":"김혜진","note":""},{"num":93,"name":"박예진","amountWon":100000,"refPerson":"김혜진","note":""},{"num":94,"name":"박예은","amountWon":100000,"refPerson":"김혜진","note":""},{"num":95,"name":"조환희","amountWon":100000,"refPerson":"김혜진","note":""},{"num":96,"name":"남수현","amountWon":200000,"refPerson":"김영찬","note":""},{"num":97,"name":"김대석","amountWon":100000,"refPerson":"김영기","note":""},{"num":98,"name":"이희채","amountWon":100000,"refPerson":"김혜진","note":""},{"num":99,"name":"이원준","amountWon":200000,"refPerson":"김영길","note":""},{"num":100,"name":"문병건","amountWon":100000,"refPerson":"김영길","note":""},{"num":101,"name":"위호선","amountWon":200000,"refPerson":"김영길","note":""},{"num":102,"name":"이석진","amountWon":100000,"refPerson":"김효섭","note":""},{"num":103,"name":"양현록","amountWon":100000,"refPerson":"김효섭","note":""},{"num":104,"name":"이선희","amountWon":200000,"refPerson":"친척","note":""},{"num":105,"name":"이금희","amountWon":200000,"refPerson":"친척","note":""},{"num":106,"name":"이승준","amountWon":200000,"refPerson":"김효섭","note":""},{"num":107,"name":"김미옥","amountWon":100000,"refPerson":"김영찬","note":""},{"num":108,"name":"임성순","amountWon":200000,"refPerson":"김영찬","note":""},{"num":109,"name":"남기준","amountWon":100000,"refPerson":"친척","note":""},{"num":110,"name":"남재준","amountWon":100000,"refPerson":"친척","note":""},{"num":111,"name":"정상열","amountWon":200000,"refPerson":"김효섭","note":""},{"num":112,"name":"남규빈","amountWon":50000,"refPerson":"김민주","note":""},{"num":113,"name":"장원호","amountWon":100000,"refPerson":"김영길","note":""},{"num":114,"name":"이미화","amountWon":200000,"refPerson":"친척","note":""},{"num":115,"name":"이종희","amountWon":100000,"refPerson":"친척","note":""},{"num":116,"name":"박노면","amountWon":50000,"refPerson":"친척","note":""},{"num":117,"name":"강보윤","amountWon":50000,"refPerson":"김혜진","note":""},{"num":118,"name":"윤철현","amountWon":200000,"refPerson":"김영길","note":""},{"num":119,"name":"박지은","amountWon":100000,"refPerson":"김민경","note":""},{"num":120,"name":"장혜연","amountWon":200000,"refPerson":"김민경","note":""},{"num":121,"name":"박수연","amountWon":300000,"refPerson":"김민경","note":""},{"num":122,"name":"박진영","amountWon":100000,"refPerson":"김민경","note":""},{"num":123,"name":"임지은","amountWon":100000,"refPerson":"김민경","note":""},{"num":124,"name":"김보양","amountWon":200000,"refPerson":"김영길","note":""},{"num":125,"name":"서보경","amountWon":100000,"refPerson":"이해진","note":""},{"num":126,"name":"박승아","amountWon":200000,"refPerson":"이해진","note":""},{"num":127,"name":"임정수","amountWon":100000,"refPerson":"김혜진","note":""},{"num":128,"name":"윤다원","amountWon":100000,"refPerson":"김혜진","note":""},{"num":129,"name":"김우성","amountWon":50000,"refPerson":"김영기","note":""},{"num":130,"name":"이승용","amountWon":50000,"refPerson":"김영기","note":""},{"num":131,"name":"배정수","amountWon":50000,"refPerson":"김영기","note":""},{"num":132,"name":"임창우","amountWon":100000,"refPerson":"김영기","note":""},{"num":133,"name":"김형철","amountWon":100000,"refPerson":"김상구","note":""},{"num":134,"name":"김상훈","amountWon":100000,"refPerson":"김상구","note":""},{"num":135,"name":"박주형","amountWon":100000,"refPerson":"김상구","note":""},{"num":136,"name":"정우성","amountWon":100000,"refPerson":"김영길","note":""},{"num":137,"name":"이종욱","amountWon":200000,"refPerson":"친척","note":""},{"num":138,"name":"박진협","amountWon":50000,"refPerson":"김민주","note":""},{"num":139,"name":"김문태","amountWon":100000,"refPerson":"친척","note":""},{"num":140,"name":"김영범","amountWon":100000,"refPerson":"친척","note":""},{"num":141,"name":"김영록","amountWon":100000,"refPerson":"친척","note":""},{"num":142,"name":"김영호","amountWon":100000,"refPerson":"친척","note":""},{"num":143,"name":"김진수","amountWon":100000,"refPerson":"김영기","note":""},{"num":144,"name":"한천희","amountWon":100000,"refPerson":"김영찬","note":""},{"num":145,"name":"한정훈","amountWon":100000,"refPerson":"김영찬","note":""},{"num":146,"name":"이추재","amountWon":100000,"refPerson":"김영찬","note":""},{"num":147,"name":"민경욱","amountWon":100000,"refPerson":"김영찬","note":""},{"num":148,"name":"최병길, 서정화","amountWon":100000,"refPerson":"김국희","note":""},{"num":149,"name":"최종원","amountWon":100000,"refPerson":"김영길","note":""},{"num":150,"name":"최만순","amountWon":100000,"refPerson":"김영찬","note":""},{"num":151,"name":"김현숙","amountWon":100000,"refPerson":"김국희","note":""},{"num":152,"name":"임병열","amountWon":100000,"refPerson":"대치동","note":""},{"num":153,"name":"임병관","amountWon":100000,"refPerson":"대치동","note":""},{"num":154,"name":"김종철","amountWon":100000,"refPerson":"대치동","note":""},{"num":155,"name":"장선호, 조안순","amountWon":200000,"refPerson":"김재선","note":""},{"num":156,"name":"이광희","amountWon":100000,"refPerson":"김영기","note":""},{"num":157,"name":"김기회","amountWon":100000,"refPerson":"김국희","note":""},{"num":158,"name":"이정란","amountWon":100000,"refPerson":"김국희","note":""},{"num":159,"name":"윤주영","amountWon":100000,"refPerson":"김국희","note":""},{"num":160,"name":"정윤경","amountWon":100000,"refPerson":"이해진","note":""},{"num":161,"name":"김유미","amountWon":100000,"refPerson":"이해진","note":""},{"num":162,"name":"김소희","amountWon":300000,"refPerson":"김민경","note":""},{"num":163,"name":"임영학","amountWon":100000,"refPerson":"김영찬","note":""},{"num":164,"name":"김정석","amountWon":100000,"refPerson":"김영찬","note":""},{"num":165,"name":"장미혜","amountWon":200000,"refPerson":"김국희","note":""},{"num":166,"name":"고명순","amountWon":100000,"refPerson":"김국희","note":""},{"num":167,"name":"박호균","amountWon":100000,"refPerson":"김국희","note":""},{"num":168,"name":"이종호","amountWon":100000,"refPerson":"김국희","note":""},{"num":169,"name":"심숙자","amountWon":50000,"refPerson":"김국희","note":""},{"num":170,"name":"박수근","amountWon":300000,"refPerson":"김국희","note":""},{"num":171,"name":"김태훈","amountWon":100000,"refPerson":"김국희","note":""},{"num":172,"name":"강만수","amountWon":1000000,"refPerson":"김효섭","note":""},{"num":173,"name":"이미섭","amountWon":300000,"refPerson":"친척","note":""},{"num":174,"name":"이창섭","amountWon":100000,"refPerson":"친척","note":""},{"num":175,"name":"이효섭","amountWon":200000,"refPerson":"친척","note":""},{"num":176,"name":"이종열","amountWon":100000,"refPerson":"친척","note":""},{"num":177,"name":"한온건축","amountWon":500000,"refPerson":"김영기","note":""},{"num":178,"name":"이경민","amountWon":300000,"refPerson":"김효섭","note":""},{"num":179,"name":"안재열","amountWon":300000,"refPerson":"김효섭","note":""},{"num":180,"name":"최진숙","amountWon":100000,"refPerson":"장정혜","note":""},{"num":181,"name":"박수경","amountWon":50000,"refPerson":"김유섭","note":""},{"num":182,"name":"이영만","amountWon":200000,"refPerson":"김희진","note":""},{"num":184,"name":"이요한","amountWon":100000,"refPerson":"김희진","note":""},{"num":183,"name":"이동환","amountWon":50000,"refPerson":"김희진","note":""},{"num":185,"name":"박태영","amountWon":200000,"refPerson":"김영길","note":""},{"num":186,"name":"김연기","amountWon":100000,"refPerson":"김영기","note":""},{"num":187,"name":"권오복","amountWon":100000,"refPerson":"김영기","note":""},{"num":188,"name":"윤영성","amountWon":100000,"refPerson":"김영기","note":""},{"num":189,"name":"손석호","amountWon":100000,"refPerson":"김영길","note":""},{"num":190,"name":"박철규 형제","amountWon":400000,"refPerson":"김재선","note":""},{"num":191,"name":"전찬수","amountWon":100000,"refPerson":"김영길","note":""},{"num":192,"name":"김창수","amountWon":300000,"refPerson":"김재선","note":""},{"num":193,"name":"김철민","amountWon":200000,"refPerson":"김재선","note":""},{"num":194,"name":"김광석","amountWon":100000,"refPerson":"김재선","note":""},{"num":195,"name":"최은정","amountWon":100000,"refPerson":"김재선","note":""},{"num":196,"name":"김주승","amountWon":100000,"refPerson":"김영기","note":""},{"num":197,"name":"정재은","amountWon":100000,"refPerson":"김영길","note":""},{"num":198,"name":"이석주","amountWon":100000,"refPerson":"김영찬","note":""},{"num":199,"name":"김진식","amountWon":500000,"refPerson":"김영찬","note":""},{"num":200,"name":"김영규","amountWon":100000,"refPerson":"친척","note":""},{"num":201,"name":"장준영","amountWon":100000,"refPerson":"김효섭","note":""},{"num":202,"name":"최태형","amountWon":100000,"refPerson":"김영길","note":""},{"num":203,"name":"정홍자","amountWon":100000,"refPerson":"김영찬","note":""},{"num":204,"name":"심충강","amountWon":100000,"refPerson":"김영찬","note":""},{"num":205,"name":"이원하","amountWon":100000,"refPerson":"김영찬","note":""},{"num":206,"name":"김창수","amountWon":500000,"refPerson":"김상구","note":""},{"num":207,"name":"이혜선","amountWon":100000,"refPerson":"김영찬","note":""},{"num":208,"name":"심기현","amountWon":100000,"refPerson":"대치동","note":""},{"num":209,"name":"김시형","amountWon":100000,"refPerson":"친척","note":""},{"num":210,"name":"김한태","amountWon":100000,"refPerson":"종친회","note":""},{"num":211,"name":"정옥란","amountWon":100000,"refPerson":"김영찬","note":""},{"num":212,"name":"심승훈","amountWon":100000,"refPerson":"김영기","note":""},{"num":213,"name":"염계선","amountWon":200000,"refPerson":"친척","note":""},{"num":214,"name":"최영주","amountWon":50000,"refPerson":"종친회","note":""},{"num":215,"name":"김봉태","amountWon":100000,"refPerson":"종친회","note":""},{"num":216,"name":"이종선","amountWon":200000,"refPerson":"대치동","note":""},{"num":217,"name":"이종국","amountWon":100000,"refPerson":"대치동","note":""},{"num":218,"name":"전용균","amountWon":100000,"refPerson":"김영기","note":""},{"num":219,"name":"이상섭","amountWon":100000,"refPerson":"김영기","note":""},{"num":220,"name":"이희자","amountWon":100000,"refPerson":"김국희","note":""},{"num":221,"name":"박희선","amountWon":100000,"refPerson":"김국희","note":""},{"num":222,"name":"배경옥","amountWon":50000,"refPerson":"김국희","note":""},{"num":223,"name":"이정순","amountWon":50000,"refPerson":"김국희","note":""},{"num":224,"name":"허석구","amountWon":100000,"refPerson":"김영기","note":""},{"num":225,"name":"권병철","amountWon":100000,"refPerson":"김재선","note":""},{"num":226,"name":"김치중","amountWon":100000,"refPerson":"김재선","note":""},{"num":227,"name":"이형종","amountWon":100000,"refPerson":"김재선","note":""},{"num":228,"name":"김금자","amountWon":100000,"refPerson":"대치동","note":""},{"num":229,"name":"박광애","amountWon":100000,"refPerson":"대치동","note":""},{"num":230,"name":"이현순","amountWon":100000,"refPerson":"대치동","note":""},{"num":231,"name":"김형순","amountWon":100000,"refPerson":"대치동","note":""},{"num":232,"name":"이금순","amountWon":100000,"refPerson":"대치동","note":""},{"num":233,"name":"이유진","amountWon":100000,"refPerson":"김유섭","note":""},{"num":234,"name":"김유태","amountWon":100000,"refPerson":"김영찬","note":""},{"num":235,"name":"김정태","amountWon":100000,"refPerson":"김영찬","note":""},{"num":236,"name":"최재옥","amountWon":50000,"refPerson":"김영기","note":""},{"num":237,"name":"장정미","amountWon":200000,"refPerson":"장정혜","note":""},{"num":238,"name":"장정임","amountWon":200000,"refPerson":"장정혜","note":""},{"num":239,"name":"장재혁, 이영신","amountWon":200000,"refPerson":"장정혜","note":""},{"num":240,"name":"장경금","amountWon":200000,"refPerson":"장정혜","note":""},{"num":241,"name":"장덕천","amountWon":250000,"refPerson":"장정혜","note":""},{"num":242,"name":"유미영","amountWon":100000,"refPerson":"김영찬","note":""},{"num":243,"name":"서방원","amountWon":100000,"refPerson":"김영찬","note":""},{"num":244,"name":"이운서","amountWon":100000,"refPerson":"김영찬","note":""},{"num":245,"name":"박종근","amountWon":100000,"refPerson":"김영찬","note":""},{"num":246,"name":"박찬규","amountWon":200000,"refPerson":"대치동","note":""},{"num":247,"name":"장영철","amountWon":200000,"refPerson":"김영찬","note":""},{"num":248,"name":"김민태","amountWon":100000,"refPerson":"친척","note":""},{"num":249,"name":"박기홍","amountWon":100000,"refPerson":"김영길","note":""},{"num":250,"name":"임영천","amountWon":100000,"refPerson":"김영길","note":""},{"num":251,"name":"최경철","amountWon":100000,"refPerson":"김영길","note":""},{"num":252,"name":"김영식","amountWon":100000,"refPerson":"친척","note":""},{"num":253,"name":"김영상","amountWon":100000,"refPerson":"친척","note":""},{"num":254,"name":"김동오","amountWon":100000,"refPerson":"미상","note":""},{"num":255,"name":"김정두","amountWon":100000,"refPerson":"미상","note":""},{"num":256,"name":"김대호","amountWon":100000,"refPerson":"김영준","note":""},{"num":257,"name":"김대철","amountWon":100000,"refPerson":"김영준","note":""},{"num":258,"name":"전승준","amountWon":100000,"refPerson":"김영길","note":""},{"num":259,"name":"김재도","amountWon":200000,"refPerson":"김재선","note":""},{"num":260,"name":"김재화","amountWon":200000,"refPerson":"김재선","note":""},{"num":261,"name":"고광표","amountWon":200000,"refPerson":"김영찬","note":""},{"num":262,"name":"신준섭","amountWon":100000,"refPerson":"김영길","note":""},{"num":263,"name":"김병태","amountWon":1000000,"refPerson":"김희진","note":""},{"num":264,"name":"최민숙","amountWon":100000,"refPerson":"대치동","note":""},{"num":265,"name":"박창서","amountWon":300000,"refPerson":"김영길","note":""},{"num":266,"name":"현정엽","amountWon":100000,"refPerson":"김영길","note":""},{"num":267,"name":"신원호","amountWon":100000,"refPerson":"미상","note":""},{"num":268,"name":"김종철","amountWon":100000,"refPerson":"김영길","note":""},{"num":269,"name":"김진성","amountWon":100000,"refPerson":"대치동","note":""},{"num":270,"name":"민선","amountWon":200000,"refPerson":"김미형","note":""},{"num":271,"name":"김현정","amountWon":200000,"refPerson":"김미형","note":""},{"num":272,"name":"이정희","amountWon":200000,"refPerson":"김미형","note":""},{"num":273,"name":"한기주","amountWon":100000,"refPerson":"김영찬","note":""},{"num":274,"name":"한채현, 최승훈","amountWon":100000,"refPerson":"김유섭","note":""},{"num":275,"name":"김원태","amountWon":100000,"refPerson":"친척","note":""},{"num":276,"name":"이정호","amountWon":100000,"refPerson":"김영길","note":""},{"num":277,"name":"한상연","amountWon":100000,"refPerson":"김영찬","note":""},{"num":278,"name":"정유회, 이창동","amountWon":100000,"refPerson":"김영길","note":""},{"num":279,"name":"김형춘,채경옥","amountWon":300000,"refPerson":"김영찬","note":""},{"num":280,"name":"김진섭","amountWon":100000,"refPerson":"김영찬","note":""},{"num":281,"name":"유성오(바오로)","amountWon":100000,"refPerson":"김국희","note":""},{"num":282,"name":"임현정","amountWon":100000,"refPerson":"김국희","note":""},{"num":283,"name":"김보람","amountWon":100000,"refPerson":"김영찬","note":""},{"num":284,"name":"이진원","amountWon":100000,"refPerson":"김영찬","note":""},{"num":285,"name":"김영걸, 이경애","amountWon":200000,"refPerson":"김영찬","note":""},{"num":286,"name":"김경문","amountWon":50000,"refPerson":"김영찬","note":""},{"num":287,"name":"김선경","amountWon":100000,"refPerson":"김영길","note":""},{"num":288,"name":"김형년","amountWon":100000,"refPerson":"김영길","note":""},{"num":289,"name":"신증선, 정유회","amountWon":100000,"refPerson":"김영길","note":""},{"num":290,"name":"박대신","amountWon":100000,"refPerson":"김국희","note":""},{"num":291,"name":"심재문","amountWon":100000,"refPerson":"김국희","note":""},{"num":292,"name":"이대용","amountWon":100000,"refPerson":"김국희","note":""},{"num":293,"name":"설태숙, 이정음","amountWon":100000,"refPerson":"김국희","note":""},{"num":294,"name":"유숙영, 장한식","amountWon":100000,"refPerson":"김국희","note":""},{"num":295,"name":"전병섭","amountWon":300000,"refPerson":"김영찬","note":""},{"num":296,"name":"장유덕","amountWon":100000,"refPerson":"김영찬","note":""},{"num":297,"name":"이종찬","amountWon":200000,"refPerson":"친척","note":""},{"num":298,"name":"안중호","amountWon":100000,"refPerson":"김영찬","note":""},{"num":299,"name":"송영석","amountWon":200000,"refPerson":"김영길","note":""},{"num":300,"name":"김선겸","amountWon":100000,"refPerson":"김영찬","note":""},{"num":301,"name":"김후겸","amountWon":100000,"refPerson":"김영찬","note":""},{"num":302,"name":"계창호","amountWon":200000,"refPerson":"김재선","note":""},{"num":303,"name":"김대성","amountWon":100000,"refPerson":"김국희","note":""},{"num":304,"name":"이욱재","amountWon":50000,"refPerson":"김재선","note":""},{"num":305,"name":"강현봉","amountWon":100000,"refPerson":"김영찬","note":""},{"num":306,"name":"강현옥","amountWon":100000,"refPerson":"김영찬","note":""},{"num":307,"name":"강문경","amountWon":200000,"refPerson":"김영찬","note":""},{"num":308,"name":"강문보","amountWon":200000,"refPerson":"김영찬","note":""},{"num":309,"name":"강현선","amountWon":100000,"refPerson":"김영찬","note":""},{"num":310,"name":"윤상혁","amountWon":50000,"refPerson":"김영길","note":""},{"num":311,"name":"임윤석","amountWon":100000,"refPerson":"김영길","note":""},{"num":312,"name":"정영준","amountWon":100000,"refPerson":"김영길","note":""},{"num":313,"name":"노현우","amountWon":50000,"refPerson":"김영기","note":""},{"num":314,"name":"이정훈","amountWon":50000,"refPerson":"김영기","note":""},{"num":315,"name":"이상석","amountWon":50000,"refPerson":"김영기","note":""},{"num":316,"name":"이태일","amountWon":300000,"refPerson":"김영기","note":""},{"num":317,"name":"이준호","amountWon":100000,"refPerson":"김영기","note":""},{"num":318,"name":"홍성우","amountWon":100000,"refPerson":"김영길","note":""},{"num":319,"name":"김강범","amountWon":100000,"refPerson":"김영찬","note":""},{"num":320,"name":"양승태","amountWon":100000,"refPerson":"김영길","note":""},{"num":321,"name":"송성주","amountWon":150000,"refPerson":"김영찬","note":""},{"num":322,"name":"이종완","amountWon":100000,"refPerson":"김영찬","note":""},{"num":323,"name":"안창식","amountWon":50000,"refPerson":"김영찬","note":""},{"num":324,"name":"김진완","amountWon":100000,"refPerson":"김영찬","note":""},{"num":325,"name":"이기태","amountWon":100000,"refPerson":"김영찬","note":""},{"num":326,"name":"김신형","amountWon":100000,"refPerson":"김영찬","note":""},{"num":327,"name":"이준원","amountWon":50000,"refPerson":"김영찬","note":""},{"num":328,"name":"박수진","amountWon":50000,"refPerson":"김영길","note":""},{"num":329,"name":"크라벨","amountWon":200000,"refPerson":"김영길","note":""},{"num":330,"name":"김수경","amountWon":200000,"refPerson":"김영길","note":""},{"num":331,"name":"최경희","amountWon":100000,"refPerson":"김영길","note":""},{"num":332,"name":"박성수","amountWon":100000,"refPerson":"김영길","note":""},{"num":333,"name":"김만태","amountWon":100000,"refPerson":"친척","note":""},{"num":334,"name":"한권표","amountWon":300000,"refPerson":"김민경","note":""},{"num":335,"name":"신혜경","amountWon":100000,"refPerson":"대치동","note":""},{"num":336,"name":"이충원","amountWon":100000,"refPerson":"대치동","note":""},{"num":337,"name":"장재성","amountWon":200000,"refPerson":"김재선","note":""},{"num":338,"name":"양동병","amountWon":100000,"refPerson":"김영길","note":""},{"num":339,"name":"김형섭","amountWon":100000,"refPerson":"김영길","note":""},{"num":340,"name":"장소민","amountWon":100000,"refPerson":"김유섭","note":""},{"num":341,"name":"이승준","amountWon":100000,"refPerson":"김유섭","note":""},{"num":342,"name":"우혜성","amountWon":50000,"refPerson":"김유섭","note":""},{"num":343,"name":"문흥주","amountWon":200000,"refPerson":"김영찬","note":""},{"num":344,"name":"이정원","amountWon":200000,"refPerson":"김영찬","note":""},{"num":345,"name":"최동구","amountWon":200000,"refPerson":"김영찬","note":""},{"num":346,"name":"김원성","amountWon":200000,"refPerson":"김영찬","note":""},{"num":347,"name":"델코바떼리","amountWon":100000,"refPerson":"김영기","note":""},{"num":348,"name":"이문원","amountWon":100000,"refPerson":"김영기","note":""},{"num":349,"name":"최성보요셉","amountWon":100000,"refPerson":"김재선","note":""},{"num":350,"name":"김창숙 빅토리노","amountWon":100000,"refPerson":"김재선","note":""},{"num":351,"name":"최정심 로즈마리","amountWon":100000,"refPerson":"김재선","note":""},{"num":352,"name":"김원국","amountWon":100000,"refPerson":"김영찬","note":""},{"num":353,"name":"김종순","amountWon":100000,"refPerson":"김재선","note":""},{"num":354,"name":"조일호","amountWon":100000,"refPerson":"김재선","note":""},{"num":355,"name":"변진홍","amountWon":100000,"refPerson":"김영길","note":""},{"num":356,"name":"이길구","amountWon":300000,"refPerson":"김영찬","note":""},{"num":357,"name":"사랑회","amountWon":200000,"refPerson":"김영찬","note":""},{"num":358,"name":"이의윤","amountWon":100000,"refPerson":"김영찬","note":""},{"num":359,"name":"양순념","amountWon":100000,"refPerson":"김영찬","note":""},{"num":360,"name":"정만석","amountWon":100000,"refPerson":"김영찬","note":""},{"num":361,"name":"송명순","amountWon":100000,"refPerson":"김영찬","note":""},{"num":362,"name":"김영석","amountWon":100000,"refPerson":"김영찬","note":""},{"num":363,"name":"이중민","amountWon":200000,"refPerson":"김영찬","note":""},{"num":364,"name":"강해숙","amountWon":100000,"refPerson":"김영찬","note":""},{"num":365,"name":"노종염","amountWon":100000,"refPerson":"김영찬","note":""},{"num":366,"name":"염부길","amountWon":100000,"refPerson":"김영찬","note":""},{"num":367,"name":"유정자","amountWon":100000,"refPerson":"김영찬","note":""},{"num":368,"name":"심정미","amountWon":200000,"refPerson":"김영찬","note":""},{"num":369,"name":"최신","amountWon":200000,"refPerson":"김영찬","note":""},{"num":370,"name":"심춘산","amountWon":50000,"refPerson":"김영찬","note":""},{"num":371,"name":"황성후","amountWon":200000,"refPerson":"김영길","note":""},{"num":372,"name":"김국환","amountWon":200000,"refPerson":"김영찬","note":""},{"num":373,"name":"이봉원","amountWon":50000,"refPerson":"대치동","note":""},{"num":374,"name":"이동원","amountWon":100000,"refPerson":"대치동","note":""},{"num":375,"name":"최세학","amountWon":200000,"refPerson":"김영길","note":""},{"num":376,"name":"심은주","amountWon":300000,"refPerson":"이해진","note":""},{"num":377,"name":"정성윤","amountWon":200000,"refPerson":"김영길","note":""},{"num":378,"name":"이주은","amountWon":200000,"refPerson":"김미형","note":""},{"num":379,"name":"이기원","amountWon":200000,"refPerson":"김영찬","note":""},{"num":380,"name":"이상배","amountWon":200000,"refPerson":"김민경","note":""},{"num":381,"name":"이유득","amountWon":200000,"refPerson":"김영기","note":""},{"num":382,"name":"신효명","amountWon":100000,"refPerson":"장정혜","note":""},{"num":383,"name":"홍숙희","amountWon":100000,"refPerson":"장정혜","note":""},{"num":384,"name":"선귀순","amountWon":100000,"refPerson":"장정혜","note":""},{"num":385,"name":"김운희","amountWon":200000,"refPerson":"장정혜","note":""},{"num":386,"name":"강군호","amountWon":200000,"refPerson":"김영찬","note":""},{"num":387,"name":"이종무","amountWon":100000,"refPerson":"대치동","note":""},{"num":388,"name":"김규태","amountWon":50000,"refPerson":"김영길","note":""},{"num":389,"name":"박선규","amountWon":100000,"refPerson":"김영길","note":""},{"num":390,"name":"송영복","amountWon":100000,"refPerson":"김영찬","note":""},{"num":391,"name":"한일희","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":392,"name":"한준희","amountWon":50000,"refPerson":"김영찬(장호원)","note":""},{"num":393,"name":"민영철 나래1리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":394,"name":"김영수 이장","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":395,"name":"한상화 와현1리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":396,"name":"조효묵 와현1리","amountWon":50000,"refPerson":"김영찬(장호원)","note":""},{"num":397,"name":"송영환 장호원농업협동조합","amountWon":50000,"refPerson":"김영찬(장호원)","note":""},{"num":398,"name":"추연범","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":399,"name":"신기준 와현1리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":400,"name":"한일수 와현1리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":401,"name":"원언연 와현1리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":402,"name":"박재명 와현1리","amountWon":50000,"refPerson":"김영찬(장호원)","note":""},{"num":403,"name":"최동섭 와현1리","amountWon":50000,"refPerson":"김영찬(장호원)","note":""},{"num":404,"name":"한기성, 김상훈?","amountWon":50000,"refPerson":"김영찬(장호원)","note":""},{"num":405,"name":"한병희 와현1리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":406,"name":"한봉희","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":407,"name":"김형식 노화10리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":408,"name":"강성우","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":409,"name":"이상용 대서리","amountWon":100000,"refPerson":"김영찬(장호원)","note":""},{"num":410,"name":"장성호","amountWon":100000,"refPerson":"김영길","note":""},{"num":411,"name":"원경학","amountWon":100000,"refPerson":"김영찬","note":""},{"num":412,"name":"김규범","amountWon":100000,"refPerson":"김영길","note":""},{"num":413,"name":"최성배","amountWon":50000,"refPerson":"김영찬","note":""},{"num":414,"name":"김성태","amountWon":100000,"refPerson":"김영찬","note":""},{"num":415,"name":"이종형","amountWon":50000,"refPerson":"김영찬","note":""},{"num":416,"name":"최광수","amountWon":50000,"refPerson":"김영기","note":""},{"num":417,"name":"김정태","amountWon":50000,"refPerson":"김영기","note":""},{"num":418,"name":"진정화","amountWon":200000,"refPerson":"김국희","note":""},{"num":419,"name":"조연수","amountWon":100000,"refPerson":"김국희","note":""},{"num":420,"name":"이준엽","amountWon":100000,"refPerson":"김영길","note":""},{"num":421,"name":"이진호","amountWon":50000,"refPerson":"김영기","note":""},{"num":422,"name":"한세희","amountWon":100000,"refPerson":"김혜진","note":""},{"num":423,"name":"김성일","amountWon":50000,"refPerson":"김영기","note":""},{"num":424,"name":"김진욱","amountWon":50000,"refPerson":"김영기","note":""},{"num":425,"name":"최경준","amountWon":100000,"refPerson":"김영기","note":""},{"num":426,"name":"허승회","amountWon":200000,"refPerson":"김영찬","note":""},{"num":427,"name":"김영만","amountWon":100000,"refPerson":"대치동","note":""},{"num":428,"name":"이은세, 김옥경 시모","amountWon":300000,"refPerson":"김옥경","note":""},{"num":429,"name":"이병관","amountWon":100000,"refPerson":"김영기","note":""},{"num":430,"name":"전진섭, 방위협의회","amountWon":100000,"refPerson":"김영길","note":""},{"num":431,"name":"이창원","amountWon":50000,"refPerson":"대치동","note":""},{"num":432,"name":"오용석","amountWon":0,"refPerson":"김영기","note":"장부엔 있고, 봉투없음"},{"num":433,"name":"장진혁","amountWon":100000,"refPerson":"장정혜","note":""},{"num":434,"name":"박찬일","amountWon":100000,"refPerson":"친척","note":""},{"num":435,"name":"문진원, 정세아","amountWon":300000,"refPerson":"김규섭","note":""},{"num":436,"name":"김승태","amountWon":100000,"refPerson":"친척","note":""},{"num":437,"name":"김지호","amountWon":50000,"refPerson":"친척","note":""},{"num":438,"name":"박해성","amountWon":100000,"refPerson":"친척","note":""},{"num":439,"name":"김영일","amountWon":100000,"refPerson":"친척","note":""}];
+    const expensesData = [{"date":"2026-06-19","detail":"봉은사 계약금","amountWon":1000000,"ref":"예약자: 김국희"},{"date":"2026-06-19","detail":"중간정산","amountWon":8650000,"ref":"김상구"},{"date":"2026-06-20","detail":"장례식장","amountWon":10000000,"ref":"김영길"},{"date":"2026-06-20","detail":"산소 비용","amountWon":6000000,"ref":"김영길"}];
+
+    // State Variables
+    let currentTab = 'dashboard';
+    let searchQuery = '';
+    let selectedRefFilter = 'ALL';
+    let currentPage = 1;
+    const itemsPerPage = 25;
+    let filteredIncomes = [...incomesData];
+
+    // Compute initial stats
+    const totalIncome = incomesData.reduce((sum, item) => sum + item.amountWon, 0);
+    const totalExpense = expensesData.reduce((sum, item) => sum + item.amountWon, 0);
+    const balance = totalIncome - totalExpense;
+
+    // Initialize Page
+    document.addEventListener("DOMContentLoaded", () => {
+      // Set summary text
+      document.getElementById('val-total-income').innerText = totalIncome.toLocaleString() + ' 원';
+      document.getElementById('val-guest-count').innerText = '총 ' + incomesData.length.toLocaleString() + '명 접수';
+      document.getElementById('val-total-expense').innerText = totalExpense.toLocaleString() + ' 원';
+      document.getElementById('val-balance').innerText = balance.toLocaleString() + ' 원';
+      document.getElementById('td-expense-total').innerText = totalExpense.toLocaleString() + ' 원';
+
+      // Populate Expense Table
+      populateExpenses();
+
+      // Get list of ref persons for filters
+      generateFilters();
+
+      // Populate Mismatches table (e.g. note exists or amount is 0)
+      populateMismatches();
+
+      // Build tables & charts
+      updateGuestTable();
+      populateSummaryRefTable();
+      buildCharts();
+    });
+
+    // Switch Tabs
+    function switchTab(tabId, btnElement) {
+      currentTab = tabId;
+      
+      // Toggle buttons class
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      // Toggle tab content
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Populate Expenses
+    function populateExpenses() {
+      const tbody = document.getElementById('expense-table-body');
+      tbody.innerHTML = '';
+      
+      expensesData.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.date}</td>
+          <td style="font-weight: 500; color: var(--text-primary);">${item.detail}</td>
+          <td style="text-align: right; font-weight: 600; color: var(--red-accent);">${item.amountWon.toLocaleString()} 원</td>
+          <td><span class="badge ref">${item.ref || '미정'}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Generate Filter Tags
+    function generateFilters() {
+      const refsMap = {};
+      incomesData.forEach(item => {
+        refsMap[item.refPerson] = (refsMap[item.refPerson] || 0) + 1;
+      });
+
+      // Sort ref persons by count descending
+      const sortedRefs = Object.keys(refsMap).sort((a, b) => refsMap[b] - refsMap[a]);
+      
+      const container = document.getElementById('filter-tags-container');
+      
+      sortedRefs.forEach(ref => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-tag';
+        btn.innerText = `${ref} (${refsMap[ref]})`;
+        btn.onclick = () => setRefFilter(ref, btn);
+        container.appendChild(btn);
+      });
+    }
+
+    // Filter Trigger
+    function setRefFilter(ref, btnElement) {
+      selectedRefFilter = ref;
+      
+      // Update active class on filter tags
+      document.querySelectorAll('.filter-tag').forEach(tag => tag.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      currentPage = 1;
+      applyFilters();
+    }
+
+    // Search Trigger
+    function onSearchChange() {
+      searchQuery = document.getElementById('search-input').value.trim().toLowerCase();
+      currentPage = 1;
+      applyFilters();
+    }
+
+    // Apply Filter Logic
+    function applyFilters() {
+      filteredIncomes = incomesData.filter(item => {
+        // Text Search Match
+        const matchesSearch = searchQuery === '' || 
+          item.name.toLowerCase().includes(searchQuery) ||
+          item.refPerson.toLowerCase().includes(searchQuery) ||
+          String(item.num).includes(searchQuery);
+
+        // Category Filter Match
+        const matchesRef = selectedRefFilter === 'ALL' || item.refPerson === selectedRefFilter;
+
+        return matchesSearch && matchesRef;
+      });
+
+      updateGuestTable();
+    }
+
+    // Populate guestbook table with pagination
+    function updateGuestTable() {
+      const tbody = document.getElementById('guest-table-body');
+      tbody.innerHTML = '';
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, filteredIncomes.length);
+      const pageData = filteredIncomes.slice(startIndex, endIndex);
+
+      if (pageData.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="5" style="text-align: center; padding: 30px; color: var(--text-secondary);">검색 결과가 없습니다.</td>`;
+        tbody.appendChild(tr);
+      } else {
+        pageData.forEach(item => {
+          const tr = document.createElement('tr');
+          
+          let amountDisplay = item.amountWon.toLocaleString() + ' 원';
+          let noteDisplay = item.note || '';
+          let badgeClass = '';
+          
+          if (item.amountWon === 0 && item.note) {
+            amountDisplay = '-';
+            badgeClass = 'badge warn';
+            noteDisplay = `<span class="${badgeClass}">${item.note}</span>`;
+          }
+          
+          tr.innerHTML = `
+            <td>${item.num}</td>
+            <td style="font-weight: 500; color: var(--text-primary);">${item.name}</td>
+            <td style="text-align: right; font-weight: 600; color: var(--text-primary);">${amountDisplay}</td>
+            <td><span class="badge ref">${item.refPerson}</span></td>
+            <td>${noteDisplay}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Update Pagination UI
+      document.getElementById('page-info').innerText = `총 ${filteredIncomes.length.toLocaleString()}명 중 ${startIndex + 1}-${endIndex} 표시`;
+      document.getElementById('btn-prev').disabled = currentPage === 1;
+      document.getElementById('btn-next').disabled = endIndex >= filteredIncomes.length;
+    }
+
+    function changePage(direction) {
+      currentPage += direction;
+      updateGuestTable();
+    }
+
+    // Populate Mismatches (Notes or 0 value)
+    function populateMismatches() {
+      const tbody = document.getElementById('table-mismatches');
+      tbody.innerHTML = '';
+
+      const noteItems = incomesData.filter(item => item.note || item.amountWon === 0);
+      
+      if (noteItems.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">특이 사항이 없습니다.</td></tr>';
+        return;
+      }
+
+      noteItems.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.num}</td>
+          <td style="font-weight: 500; color: var(--text-primary);">${item.name}</td>
+          <td><span class="badge ref">${item.refPerson}</span></td>
+          <td><span class="badge warn">${item.note || '금액 누락'}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Populate Reference Person Summary Table
+    function populateSummaryRefTable() {
+      const tbody = document.getElementById('table-summary-ref');
+      tbody.innerHTML = '';
+
+      // Compute stats
+      const statsMap = {};
+      incomesData.forEach(item => {
+        if (!statsMap[item.refPerson]) {
+          statsMap[item.refPerson] = { count: 0, total: 0 };
+        }
+        statsMap[item.refPerson].count++;
+        statsMap[item.refPerson].total += item.amountWon;
+      });
+
+      // Sort by total amount descending
+      const sortedKeys = Object.keys(statsMap).sort((a, b) => statsMap[b].total - statsMap[a].total);
+
+      sortedKeys.forEach(ref => {
+        const total = statsMap[ref].total;
+        const count = statsMap[ref].count;
+        const percentage = totalIncome > 0 ? ((total / totalIncome) * 100).toFixed(1) : '0';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 500; color: var(--text-primary);">${ref}</td>
+          <td>${count} 명</td>
+          <td style="font-weight: 600; text-align: right; color: var(--text-primary);">${total.toLocaleString()} 원</td>
+          <td style="text-align: right; color: var(--text-secondary);">${percentage} %</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Build Chart.js Charts
+    let chartRefInstance = null;
+    let chartAmountInstance = null;
+
+    function buildCharts() {
+      // 1. Prepare Ref Person Data
+      const refStats = {};
+      incomesData.forEach(item => {
+        if (!refStats[item.refPerson]) {
+          refStats[item.refPerson] = 0;
+        }
+        refStats[item.refPerson] += item.amountWon;
+      });
+
+      // Sort Ref Person by total descending
+      const sortedRefKeys = Object.keys(refStats).sort((a, b) => refStats[b] - refStats[a]).slice(0, 10); // Top 10
+      const refValues = sortedRefKeys.map(k => refStats[k]);
+
+      // 2. Prepare Amount Bracket Data
+      const bracketStats = {};
+      incomesData.forEach(item => {
+        if (item.amountWon === 0) return; // skip notes/0
+        const bracketStr = (item.amountWon / 10000) + '만원';
+        bracketStats[bracketStr] = (bracketStats[bracketStr] || 0) + 1;
+      });
+
+      // Sort brackets by key amount (numeric conversion)
+      const sortedBrackets = Object.keys(bracketStats).sort((a, b) => {
+        const valA = parseInt(a.replace('만원', ''), 10);
+        const valB = parseInt(b.replace('만원', ''), 10);
+        return valA - valB;
+      });
+      const bracketValues = sortedBrackets.map(b => bracketStats[b]);
+
+      // Render Chart 1: Horizontal Bar for Ref Person
+      const ctxRef = document.getElementById('chartRefPerson').getContext('2d');
+      chartRefInstance = new Chart(ctxRef, {
+        type: 'bar',
+        data: {
+          labels: sortedRefKeys,
+          datasets: [{
+            label: '조의금 총액 (원)',
+            data: refValues,
+            backgroundColor: 'rgba(133, 77, 14, 0.75)', // Muted gold
+            borderColor: 'rgba(133, 77, 14, 1)',
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          indexAxis: 'y', // horizontal bar
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return ' ' + context.raw.toLocaleString() + ' 원';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                callback: function(value) {
+                  return (value / 10000).toLocaleString() + ' 만';
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Render Chart 2: Pie/Doughnut for Bracket
+      const ctxAmount = document.getElementById('chartAmountBracket').getContext('2d');
+      
+      // Color palette for brackets (varying opacity of gold/slate)
+      const colors = [
+        'rgba(148, 163, 184, 0.6)', // 5만원
+        'rgba(133, 77, 14, 0.7)',   // 10만원
+        'rgba(30, 41, 59, 0.7)',    // 20만원
+        'rgba(15, 118, 110, 0.7)',  // 30만원
+        'rgba(185, 28, 28, 0.6)',   // 50만원
+        'rgba(161, 98, 7, 0.7)',    // 100만원
+        'rgba(71, 85, 105, 0.7)',
+        'rgba(51, 65, 85, 0.7)'
+      ];
+
+      chartAmountInstance = new Chart(ctxAmount, {
+        type: 'doughnut',
+        data: {
+          labels: sortedBrackets,
+          datasets: [{
+            data: bracketValues,
+            backgroundColor: colors.slice(0, sortedBrackets.length),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                boxWidth: 15,
+                font: { size: 12 }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const val = context.raw;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const pct = ((val / total) * 100).toFixed(1);
+                  return ' ' + val + ' 명 (' + pct + '%)';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

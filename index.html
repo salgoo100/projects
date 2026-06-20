@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>장례 조의금 및 정산 보고서 목록</title>
+  <meta name="description" content="외할머니 장례식 조의금 정산 및 상주별 수입 보고서 모음 페이지입니다.">
+  
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-color: #e2e8f0;
+      --accent-color: #b45309; /* Deep Gold */
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--slate-900);
+      color: #ffffff;
+      padding: 50px 20px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent-color);
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      font-weight: 300;
+    }
+
+    .main-container {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .report-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 6px;
+      background-color: var(--slate-800);
+      transition: background-color 0.3s ease;
+    }
+
+    .report-card.integrated::before {
+      background-color: var(--accent-color);
+    }
+
+    .report-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-color);
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--slate-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .card-link {
+      align-self: flex-start;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s ease;
+    }
+
+    .report-card:hover .card-link {
+      transform: translateX(4px);
+    }
+
+    .info-alert {
+      background-color: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 12px;
+      padding: 20px;
+      color: #92400e;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
+    .info-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      background-color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>장례 정산 보고서 모음</h1>
+    <p>외할머니 故人 추모 조의금 및 정산 내역 웹 조회 시스템</p>
+  </header>
+
+  <div class="main-container">
+    
+    <div class="info-alert">
+      <div class="info-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        개인정보 및 보안 주의
+      </div>
+      <div>
+        본 웹페이지는 유족 간의 신속한 장부 공유를 위해 임시로 제공되는 정적 웹 호스팅 페이지입니다. 
+        해당 주소에는 친인척 및 지인분들의 성함과 금액 등 <strong>민감한 개인 금융 정보가 포함</strong>되어 있으므로, <strong>가족 이외의 타인에게 링크를 공유하거나 인터넷상에 공개되지 않도록 각별히 유의</strong>해 주시기 바랍니다.
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      
+      <!-- Card 1: Family Integrated Report -->
+      <a href="조의금_정리_보고서.html" class="report-card integrated">
+        <div class="card-title">
+          가족 통합 정산 보고서
+        </div>
+        <div class="card-desc">
+          수입 장부에서 번호가 누락된 24건을 제외한 공식 일련번호 기준 수입금 총 60,350,000원에 대한 관계자별 통계 및 장례식장, 산소 비용 등 총 25,650,000원의 지출 정산 종합 대시보드입니다.
+        </div>
+        <div class="card-link">
+          보고서 열기 
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </a>
+
+      <!-- Card 2: Kim Sang-gu Guest List -->
+      <a href="조의금_정리_보고서_김상구.html" class="report-card">
+        <div class="card-title">
+          상주 김상구 님 조의금 명부
+        </div>
+        <div class="card-desc">
+          번호 누락자 24명을 포함하여 김상구 님 앞으로 들어온 총 36건(수입 합계 3,520,000원)의 조의금 방명록 단독 조회 화면입니다. 지출 내역 및 정산 잔액 정보가 들어있지 않습니다.
+        </div>
+        <div class="card-link">
+          명부 열기
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2026 외할머니 장례 가족 공동 정산 시스템.</p>
+  </footer>
+
+</body>
+</html>
