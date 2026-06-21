@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호칭이? | 서비스 통합 테스트 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0b0a14;
+            --panel-bg: rgba(22, 20, 38, 0.75);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --primary: #8b5cf6;
+            --secondary: #ec4899;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --green: #10b981;
+            --red: #ef4444;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Noto Sans KR', 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #d8b4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .stat-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+        }
+        .stat-val {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .result-bar {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .result-bar.success {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--green);
+        }
+        .result-bar.fail {
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--red);
+        }
+        .suite-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .suite-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+            margin-bottom: 5px;
+        }
+        .test-case {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 12px 18px;
+        }
+        .test-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .test-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .test-details {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .test-status {
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .test-status.pass {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green);
+        }
+        .test-status.fail {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fa-solid fa-square-check" style="color:var(--primary);"></i> 서비스 통합 품질 검증 리포트</h1>
+            <p>한국 가족 호칭 사전 '호칭이?' 웹 애플리케이션의 핵심 비즈니스 시나리오 테스트 결과</p>
+        </div>
+
+        <div class="result-bar success">
+            <i class="fa-solid fa-circle-check"></i> 모든 시나리오 검증 완료 (통과)
+        </div>
+
+        <div class="dashboard">
+            <div class="stat-card">
+                <div class="stat-val" style="color: #fff;">22</div>
+                <div class="stat-label">총 테스트 케이스</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" style="color: var(--green);">22</div>
+                <div class="stat-label">통과됨</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" style="color: var(--red);">0</div>
+                <div class="stat-label">실패함</div>
+            </div>
+        </div>
+
+        <!-- Render test suites grouped -->
+        
+            <div class="suite-panel">
+                <div class="suite-title">기본 데이터베이스 무결성 검증</div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">데이터베이스가 성공적으로 로드되었습니다.</span>
+                            <span class="test-details">총 58개의 호칭 노드가 로드됨.</span>
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">직계인 아버지 노드가 존재합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">5촌 당숙(아저씨) 노드가 존재합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">6촌 재종형제 노드가 존재합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">7촌 재당숙 노드가 존재합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">8촌 삼종형제 노드가 존재합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+            </div>
+        
+            <div class="suite-panel">
+                <div class="suite-title">사용자 성별/기혼/미혼 토글에 따른 호칭 변환 테스트</div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">남성 기준 손위 형제 호칭은 '형 / 형님'이어야 합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">남성 기혼 기준 아내의 남동생 호칭은 '처남'이어야 합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">여성 기준 손위 형제 호칭은 '오빠'로 변경됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">여성 미혼 기준 남편의 남동생 호칭은 '도련님'이어야 합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">여성 기혼 기준 남편의 남동생 호칭은 '서방님'으로 변경됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+            </div>
+        
+            <div class="suite-panel">
+                <div class="suite-title">호칭 계산기(촌수 연산) 검증</div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">아버지의 형제자매의 자녀는 'cousin_father(사촌 형제)'로 해결됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">할아버지의 형제의 자녀는 'dang_suk(5촌 당숙)'으로 해결됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">증조할아버지 형제의 증손자는 'samjong_brother(8촌 삼종형제)'로 해결됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+            </div>
+        
+            <div class="suite-panel">
+                <div class="suite-title">가족 구성원 추가/수정/삭제(CRUD) 시나리오</div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">가족 추가 폼이 상세 패널에 잘 렌더링되었습니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">새 가족 구성원이 로컬 저장소(localStorage)에 성공적으로 영구 저장되었습니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">가족 구성원 호칭 수정 시 로컬 저장소에 반영됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">가족 구성원 삭제 시 로컬 저장소에서 완벽히 제거됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+            </div>
+        
+            <div class="suite-panel">
+                <div class="suite-title">호칭 퀴즈 채점 로직 및 상태 제어 검증</div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">퀴즈 세션이 정상적으로 초기화되었습니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">최초 점수는 0점으로 세팅됩니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">퀴즈 문항들이 로드되었습니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+                    <div class="test-case">
+                        <div class="test-info">
+                            <span class="test-name">정답 처리 시 점수와 인덱스가 정상 증가합니다.</span>
+                            
+                        </div>
+                        <span class="test-status pass">PASS</span>
+                    </div>
+                
+            </div>
+        
+    </div>
+</body>
+</html>

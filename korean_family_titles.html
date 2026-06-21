@@ -1,0 +1,3663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호칭이? | 가장 쉽고 세련된 한국 가족 호칭 사전</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* DARK THEME (Default) */
+            --bg-color: #0b0a14;
+            --panel-bg: rgba(22, 20, 38, 0.7);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.3);
+            --secondary: #ec4899;
+            --secondary-glow: rgba(236, 72, 153, 0.3);
+            --teal: #06b6d4;
+            --teal-glow: rgba(6, 182, 212, 0.3);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --card-hover: rgba(255, 255, 255, 0.04);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --bubble-bg: rgba(0, 0, 0, 0.2);
+            --input-bg: rgba(0, 0, 0, 0.25);
+            
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --card-radius: 20px;
+            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --config-active-bg: #fff;
+            --config-active-color: #0b0a14;
+            --btn-solid-bg: #fff;
+            --btn-solid-color: #0b0a14;
+        }
+
+        body.light-theme {
+            /* LIGHT THEME */
+            --bg-color: #f4f6f9;
+            --panel-bg: rgba(255, 255, 255, 0.8);
+            --panel-border: rgba(0, 0, 0, 0.08);
+            --primary: #7c3aed;
+            --primary-glow: rgba(124, 58, 237, 0.15);
+            --secondary: #db2777;
+            --secondary-glow: rgba(219, 39, 119, 0.15);
+            --teal: #0891b2;
+            --teal-glow: rgba(8, 145, 178, 0.15);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-hover: rgba(124, 58, 237, 0.05);
+            --card-bg: rgba(0, 0, 0, 0.02);
+            --bubble-bg: rgba(0, 0, 0, 0.04);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            
+            --config-active-bg: #1e293b;
+            --config-active-color: #fff;
+            --btn-solid-bg: #1e293b;
+            --btn-solid-color: #fff;
+        }
+
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        body.light-theme {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(219, 39, 119, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(8, 145, 178, 0.04) 0%, transparent 50%);
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        body.light-theme ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.6);
+        }
+
+        /* Header UI */
+        header {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #fff;
+            box-shadow: 0 8px 20px var(--primary-glow);
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(30deg);
+            animation: shine 4s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-30%, -30%) rotate(30deg); }
+            100% { transform: translate(30%, 30%) rotate(30deg); }
+        }
+
+        .logo-text h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #d8b4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        body.light-theme .logo-text h1 {
+            background: linear-gradient(to right, #1e293b, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* Controls Area */
+        .controls-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 1024px) {
+            .controls-container {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 15px;
+            }
+        }
+
+        /* User settings controls */
+        .speaker-config {
+            display: flex;
+            gap: 15px;
+            background: var(--panel-bg);
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid var(--panel-border);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        body.light-theme .speaker-config {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .config-group {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 2px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        body.light-theme .config-group {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.01);
+        }
+
+        .config-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .config-btn.active {
+            background: var(--config-active-bg);
+            color: var(--config-active-color);
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        body.light-theme .config-btn.active {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .config-btn:not(.active):hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        body.light-theme .config-btn:not(.active):hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        /* Main Container */
+        main {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Tabs navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 24px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            border-radius: 14px 14px 0 0;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255,255,255,0.02);
+        }
+        body.light-theme .tab-btn:hover {
+            background: rgba(0,0,0,0.02);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 -2px 10px var(--primary-glow);
+        }
+
+        /* Tab Content Panel */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .tab-content.active {
+            display: grid;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Split layout */
+        .split-layout {
+            grid-template-columns: 2.2fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 1024px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+            header {
+                flex-direction: column;
+                gap: 5px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Panel Common */
+        .panel {
+            background: var(--panel-bg);
+            border-radius: var(--card-radius);
+            border: 1px solid var(--panel-border);
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        body.light-theme .panel {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .panel-header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .panel-title i {
+            color: var(--primary);
+        }
+
+        /* Tree Sub Navigation */
+        .tree-nav {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 12px;
+        }
+        body.light-theme .tree-nav {
+            border-bottom-color: rgba(0,0,0,0.05);
+        }
+
+        .tree-nav-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 6px 14px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        body.light-theme .tree-nav-btn {
+            background: rgba(0,0,0,0.02);
+        }
+
+        .tree-nav-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        body.light-theme .tree-nav-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .tree-nav-btn.active {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        body.light-theme .tree-nav-btn.active {
+            background: var(--primary-glow);
+            color: var(--primary);
+        }
+
+        /* Toolbar Actions */
+        .panel-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-icon-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition-smooth);
+        }
+        body.light-theme .action-icon-btn {
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .action-icon-btn:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+        body.light-theme .action-icon-btn:hover {
+            background: var(--primary-glow);
+            color: var(--primary);
+        }
+
+        .action-icon-btn.accent-red:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        /* Family Tree Diagram Styling */
+        .tree-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            min-height: 520px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Responsive tree elements */
+        .tree-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            flex-wrap: wrap;
+        }
+
+        .level-label {
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            color: rgba(255,255,255,0.1);
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        body.light-theme .level-label {
+            color: rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .level-label {
+                display: none;
+            }
+        }
+
+        .tree-card {
+            background: var(--card-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 12px 18px;
+            min-width: 135px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        body.light-theme .tree-card {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            background: #fff;
+        }
+
+        .tree-card:hover {
+            transform: translateY(-5px);
+            background: rgba(139, 92, 246, 0.08);
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+        body.light-theme .tree-card:hover {
+            background: var(--primary-glow);
+        }
+
+        .tree-card.active-node {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+
+        .tree-card.active-node .tree-relation {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tree-card.active-node .tree-title {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .tree-card.speaker-node {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            border-color: transparent;
+            box-shadow: 0 8px 25px var(--teal-glow);
+        }
+
+        .tree-card.speaker-node .tree-title {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .tree-relation {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tree-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .tree-chonsu {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--panel-border);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            backdrop-filter: blur(5px);
+        }
+        body.light-theme .tree-chonsu {
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .tree-card.active-node .tree-chonsu {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .custom-badge {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-gold);
+            color: #fff;
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(245,158,11,0.4);
+            white-space: nowrap;
+        }
+        body.light-theme .custom-badge {
+            color: #451a03;
+        }
+
+        /* Detailed Card Panel */
+        .detail-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .detail-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            border-radius: 18px;
+            border: 1px solid var(--panel-border);
+            padding: 22px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: var(--transition-smooth);
+        }
+        body.light-theme .detail-card {
+            background: #fff;
+        }
+
+        .relation-badge {
+            align-self: flex-start;
+            padding: 4px 10px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #c084fc;
+            font-weight: 600;
+        }
+        body.light-theme .relation-badge {
+            background: var(--primary-glow);
+            color: var(--primary);
+            border-color: transparent;
+        }
+
+        .relation-badge.custom {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #fbd38d;
+        }
+        body.light-theme .relation-badge.custom {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-gold);
+            border-color: transparent;
+        }
+
+        .detail-title-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .detail-title-group h3 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .detail-chonsu {
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .detail-info-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 12px;
+        }
+        body.light-theme .detail-info-row {
+            border-top-color: rgba(0,0,0,0.05);
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .info-value.highlight {
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .detail-example-box {
+            background: var(--bubble-bg);
+            border-radius: 12px;
+            padding: 12px 15px;
+            border-left: 3px solid var(--primary);
+            margin-top: 5px;
+        }
+
+        .example-bubble {
+            font-style: italic;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .detail-tip-box {
+            background: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+            border-radius: 12px;
+            padding: 12px 15px;
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: #f59e0b;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        body.light-theme .detail-tip-box {
+            background: rgba(245, 158, 11, 0.05);
+            color: #b45309;
+        }
+
+        .detail-tip-box i {
+            margin-top: 2px;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 15px;
+        }
+        body.light-theme .detail-actions {
+            border-top-color: rgba(0,0,0,0.05);
+        }
+
+        .detail-btn {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .detail-btn.edit {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+        }
+        body.light-theme .detail-btn.edit {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .detail-btn.edit:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        body.light-theme .detail-btn.edit:hover {
+            background: var(--primary-glow);
+        }
+
+        .detail-btn.delete {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+        }
+        body.light-theme .detail-btn.delete {
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--accent-red);
+        }
+
+        .detail-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--accent-red);
+        }
+
+        .empty-detail {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-muted);
+            gap: 15px;
+            padding: 40px 20px;
+        }
+
+        .empty-detail i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.7;
+        }
+
+        /* Form Styling for adding / editing */
+        .form-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-title i {
+            color: var(--primary);
+        }
+
+        .edit-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+
+        .edit-form-group label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .edit-input, .edit-select, .edit-textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            outline: none;
+            transition: var(--transition-smooth);
+            font-family: inherit;
+        }
+
+        .edit-input:focus, .edit-select:focus, .edit-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .edit-textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .form-btn {
+            flex-grow: 1;
+            padding: 11px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-smooth);
+            text-align: center;
+        }
+
+        .form-btn.submit {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .form-btn.submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px var(--primary-glow);
+        }
+
+        .form-btn.cancel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+        }
+        body.light-theme .form-btn.cancel {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .form-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        body.light-theme .form-btn.cancel:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* Dictionary Styling */
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 16px 20px 16px 50px;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            outline: none;
+        }
+        body.light-theme .search-input {
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        body.light-theme .search-input:focus {
+            background: #fff;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .search-input:focus + i {
+            color: var(--primary);
+        }
+
+        /* Tags filters */
+        .filter-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        body.light-theme .tag {
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .tag:hover {
+            color: var(--text-main);
+            background: rgba(255,255,255,0.06);
+        }
+        body.light-theme .tag:hover {
+            background: rgba(0,0,0,0.03);
+        }
+
+        .tag.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        /* Dictionary grid */
+        .dict-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+            max-height: 580px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .dict-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 18px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+        }
+        body.light-theme .dict-card {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .dict-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-3px);
+        }
+        body.light-theme .dict-card:hover {
+            background: rgba(0,0,0,0.01);
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        .dict-card.selected {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.05);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+        }
+        body.light-theme .dict-card.selected {
+            background: var(--primary-glow);
+        }
+
+        .dict-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dict-relation-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            padding-right: 20px;
+        }
+
+        .dict-relation-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .dict-category-badge {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+        }
+
+        .dict-category-badge.father-side { background: rgba(139, 92, 246, 0.15); color: #c084fc; }
+        .dict-category-badge.mother-side { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+        .dict-category-badge.spouse-side { background: rgba(236, 72, 153, 0.15); color: #f472b6; }
+        .dict-category-badge.sibling-side { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        
+        body.light-theme .dict-category-badge.father-side { background: var(--primary-glow); color: var(--primary); }
+        body.light-theme .dict-category-badge.mother-side { background: var(--teal-glow); color: var(--teal); }
+        body.light-theme .dict-category-badge.spouse-side { background: var(--secondary-glow); color: var(--secondary); }
+        body.light-theme .dict-category-badge.sibling-side { background: rgba(16, 185, 129, 0.1); color: #059669; }
+
+        /* Calculator Styling */
+        .calc-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .calc-flow {
+            background: rgba(0,0,0,0.15);
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 120px;
+            border: 1px dashed var(--panel-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        body.light-theme .calc-flow {
+            background: rgba(0,0,0,0.02);
+        }
+
+        .calc-node {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #d8b4fe;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: popIn 0.3s ease forwards;
+        }
+        body.light-theme .calc-node {
+            background: var(--primary-glow);
+            border-color: transparent;
+            color: var(--primary);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .calc-node-me {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+        body.light-theme .calc-node-me {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border-color: transparent;
+        }
+
+        .calc-arrow {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .calc-buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .calc-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .calc-btn-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .calc-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 8px;
+        }
+
+        .calc-action-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: center;
+        }
+        body.light-theme .calc-action-btn {
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .calc-action-btn:hover:not(:disabled) {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        body.light-theme .calc-action-btn:hover:not(:disabled) {
+            background: var(--primary-glow);
+        }
+
+        .calc-action-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .calc-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .calc-reset-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+        body.light-theme .calc-reset-btn {
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--accent-red);
+            border-color: transparent;
+        }
+
+        .calc-reset-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Quiz Section Styling */
+        .quiz-wrapper {
+            max-width: 750px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .quiz-intro {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 30px;
+        }
+
+        .quiz-intro i {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .quiz-intro h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .quiz-intro p {
+            color: var(--text-muted);
+            max-width: 450px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .quiz-start-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .quiz-start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 15px;
+        }
+
+        .quiz-progress-bar {
+            flex-grow: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+            margin: 0 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        body.light-theme .quiz-progress-bar {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .quiz-progress-inner {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .quiz-question-box {
+            padding: 10px 0;
+        }
+
+        .quiz-question-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .quiz-question {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.5;
+            color: var(--text-main);
+            margin-bottom: 25px;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .quiz-option-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        body.light-theme .quiz-option-btn {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .quiz-option-btn:hover:not(.disabled) {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        body.light-theme .quiz-option-btn:hover:not(.disabled) {
+            background: rgba(0,0,0,0.01);
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        .quiz-option-btn.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-green);
+            color: #a7f3d0;
+            font-weight: 700;
+        }
+        body.light-theme .quiz-option-btn.correct {
+            background: rgba(16, 185, 129, 0.08);
+            color: #047857;
+        }
+
+        .quiz-option-btn.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--accent-red);
+            color: #fca5a5;
+        }
+        body.light-theme .quiz-option-btn.incorrect {
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--accent-red);
+        }
+
+        .quiz-feedback {
+            margin-top: 25px;
+            border-radius: 16px;
+            padding: 20px;
+            display: none;
+            animation: slideUp 0.3s ease forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback-correct {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+        }
+        body.light-theme .feedback-correct {
+            color: #047857;
+            background: rgba(16, 185, 129, 0.04);
+            border-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .feedback-incorrect {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+        body.light-theme .feedback-incorrect {
+            color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.03);
+            border-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .feedback-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .feedback-explanation {
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .quiz-next-btn {
+            background: var(--btn-solid-bg);
+            color: var(--btn-solid-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin-top: 15px;
+            float: right;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .quiz-next-btn:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Quiz Result Panel */
+        .quiz-result-card {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+            border: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 10px 30px var(--primary-glow);
+        }
+
+        .score-num {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .score-total {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .result-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .result-desc {
+            color: var(--text-muted);
+            max-width: 400px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">호</div>
+            <div class="logo-text">
+                <h1>호칭이?</h1>
+                <p>가장 쉽고 직관적인 한국 가족 호칭 사전</p>
+            </div>
+        </div>
+        
+        <div class="controls-container">
+            <div class="speaker-config">
+                <div class="config-group" id="genderGroup">
+                    <button class="config-btn active" data-gender="M">
+                        <i class="fa-solid fa-mars"></i> 남성 기준
+                    </button>
+                    <button class="config-btn" data-gender="F">
+                        <i class="fa-solid fa-venus"></i> 여성 기준
+                    </button>
+                </div>
+                
+                <div class="config-group" id="marriageGroup">
+                    <button class="config-btn active" data-marriage="married">
+                        <i class="fa-solid fa-ring"></i> 기혼
+                    </button>
+                    <button class="config-btn" data-marriage="single">
+                        <i class="fa-solid fa-user"></i> 미혼
+                    </button>
+                </div>
+            </div>
+
+            <!-- Light/Dark Mode Switch -->
+            <button class="action-icon-btn" id="themeToggleBtn" style="border-radius: 30px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px; height: 42px;">
+                <i class="fa-solid fa-moon"></i> 다크 모드
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Tab Menu -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tree">
+                <i class="fa-solid fa-network-wired"></i> 시각적 가계도
+            </button>
+            <button class="tab-btn" data-tab="calculator">
+                <i class="fa-solid fa-calculator"></i> 호칭 계산기
+            </button>
+            <button class="tab-btn" data-tab="dictionary">
+                <i class="fa-solid fa-book-open"></i> 호칭 백과사전
+            </button>
+            <button class="tab-btn" data-tab="quiz">
+                <i class="fa-solid fa-gamepad"></i> 호칭 퀴즈
+            </button>
+        </div>
+
+        <!-- TAB 1: 가계도 (Visual Tree) -->
+        <div id="tab-tree" class="tab-content active split-layout">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i class="fa-solid fa-sitemap"></i>
+                        <span>우리 가족 관계도</span>
+                    </div>
+                    
+                    <div class="panel-actions">
+                        <button class="action-icon-btn" id="addFamilyBtn">
+                            <i class="fa-solid fa-user-plus"></i> 가족 추가
+                        </button>
+                        <button class="action-icon-btn accent-red" id="resetDbBtn">
+                            <i class="fa-solid fa-rotate-left"></i> 가계도 복원
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tree Sub-Tabs for category filtering -->
+                <div class="tree-nav" id="treeSubNav">
+                    <button class="tree-nav-btn active" data-subtab="direct">직계 & 자녀</button>
+                    <button class="tree-nav-btn" data-subtab="father-side">친가 가계도</button>
+                    <button class="tree-nav-btn" data-subtab="mother-side">외가 가계도</button>
+                    <button class="tree-nav-btn" data-subtab="spouse-side" id="spouseSideTabBtn">처가 가계도</button>
+                </div>
+                
+                <div class="tree-container">
+                    <div class="tree-grid" id="treeGrid">
+                        <!-- Rendered dynamically by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail / Edit Sidebar -->
+            <div class="detail-panel">
+                <div class="panel" style="height: 100%; min-height: 450px;" id="sidebarPanel">
+                    <div class="panel-title" style="margin-bottom: 20px;">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span id="sidebarPanelTitle">상세 정보</span>
+                    </div>
+                    <div id="detailContainer" class="empty-detail">
+                        <i class="fa-solid fa-people-group"></i>
+                        <p>가계도나 백과사전의 인물을 선택하시면 해당 인물에 대한 정확한 호칭 및 예시 대화가 이곳에 표시됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: 호칭 계산기 (Calculator) -->
+        <div id="tab-calculator" class="tab-content split-layout">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i class="fa-solid fa-route"></i>
+                        <span>단계별 호칭 계산기</span>
+                    </div>
+                </div>
+                
+                <div class="calc-wrapper">
+                    <div class="calc-flow" id="calcFlow">
+                        <!-- Renders the relation path e.g. 나 -> 아버지 -> 동생 -> 아내 -->
+                    </div>
+
+                    <div class="calc-buttons-container">
+                        <div class="calc-btn-group">
+                            <span class="calc-btn-label">기본 관계 추가</span>
+                            <div class="calc-btn-grid" id="calcButtons">
+                                <!-- Generated Dynamically based on current state -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calc-controls">
+                        <button class="calc-reset-btn" id="calcReset">
+                            <i class="fa-solid fa-rotate-left"></i> 초기화
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-panel">
+                <div class="panel" style="height: 100%; min-height: 400px;">
+                    <div class="panel-title" style="margin-bottom: 20px;">
+                        <i class="fa-solid fa-square-poll-horizontal"></i>
+                        <span>계산 결과</span>
+                    </div>
+                    <div id="calcDetailContainer" class="empty-detail">
+                        <i class="fa-solid fa-calculator"></i>
+                        <p>관계를 하나씩 추가해보세요.<br>최종 관계에 도달하면 올바른 호칭을 계산하여 드립니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: 호칭 백과사전 (Dictionary) -->
+        <div id="tab-dictionary" class="tab-content split-layout">
+            <div class="panel">
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="dictSearchInput" placeholder="관계명(예: 아내의 언니) 또는 호칭(예: 처제)을 검색해보세요...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="filter-tags" id="dictFilters">
+                    <div class="tag active" data-filter="all">전체</div>
+                    <div class="tag" data-filter="direct">직계 및 형제자매</div>
+                    <div class="tag" data-filter="father-side">친가 (아버지 편)</div>
+                    <div class="tag" data-filter="mother-side">외가 (어머니 편)</div>
+                    <div class="tag" data-filter="spouse-side">처가 / 시댁</div>
+                </div>
+
+                <div class="dict-grid" id="dictGrid">
+                    <!-- Cards populated by JS -->
+                </div>
+            </div>
+
+            <div class="detail-panel">
+                <div class="panel" style="height: 100%; min-height: 400px;">
+                    <div class="panel-title" style="margin-bottom: 20px;">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>상세 사전 정보</span>
+                    </div>
+                    <div id="dictDetailContainer" class="empty-detail">
+                        <i class="fa-solid fa-book"></i>
+                        <p>백과사전의 항목을 클릭하시면 촌수, 상대방이 나를 부르는 말, 팁 등이 이곳에 상세히 설명됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: 호칭 퀴즈 (Quiz) -->
+        <div id="tab-quiz" class="tab-content">
+            <div class="panel">
+                <div id="quizContainer">
+                    <!-- Injected by quiz JS -->
+                    <div class="quiz-intro">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h3>도전! 가족 호칭 마스터 퀴즈</h3>
+                        <p>우리가 자주 헷갈리는 명절 호칭, 결혼 후 새롭게 맺어지는 처가/시댁 호칭 퀴즈에 도전해 보세요! (총 5문제)</p>
+                        <button class="quiz-start-btn" id="startQuizBtn">퀴즈 시작하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 1. DEFAULT RELATION DATABASE ---
+        const defaultRelationDatabase = [
+            // DIRECT & SIBLINGS (1-3 Chons)
+            {
+                id: "father",
+                generation: 1,
+                category: "direct",
+                label: "아버지",
+                desc: "나를 낳아주신 남성 부모",
+                chonsu: 1,
+                titles: { M: { default: "아버지 / 아빠" }, F: { default: "아버지 / 아빠" } },
+                calledMe: { M: "아들", F: "딸" },
+                example: "아버지, 이번 주말에 약속 있으세요?",
+                tip: "공식적인 상황이나 격식 있는 자리에서는 '아버지'가 올바른 표준 형태입니다."
+            },
+            {
+                id: "mother",
+                generation: 1,
+                category: "direct",
+                label: "어머니",
+                desc: "나를 낳아주신 여성 부모",
+                chonsu: 1,
+                titles: { M: { default: "어머니 / 엄마" }, F: { default: "어머니 / 엄마" } },
+                calledMe: { M: "아들", F: "딸" },
+                example: "어머니, 날씨가 많이 쌀쌀해졌어요.",
+                tip: "성인이 되어서도 사적인 대화에서는 '엄마'라고 친밀하게 부르는 것이 널리 허용됩니다."
+            },
+            {
+                id: "spouse",
+                generation: 2,
+                category: "direct",
+                label: "배우자",
+                desc: "나의 법적 남편 또는 아내",
+                chonsu: 0,
+                titles: {
+                    M: { default: "아내 / 부인 / 여보" },
+                    F: { default: "남편 / 신랑 / 여보" }
+                },
+                calledMe: { M: "남편", F: "아내" },
+                example: "여보, 오늘 저녁 뭐 먹을까?",
+                tip: "배우자와는 무촌(0촌) 관계로, 평생의 동반자입니다."
+            },
+            {
+                id: "son",
+                generation: 3,
+                category: "direct",
+                label: "아들",
+                desc: "나의 남자 자녀",
+                chonsu: 1,
+                titles: { M: { default: "아들" }, F: { default: "아들" } },
+                calledMe: { M: "아버지 / 아빠", F: "어머니 / 엄마" },
+                example: "민우야, 숙제 다 했니?",
+                tip: "직접 호칭할 때는 이름을 부르며, 제삼자에게 지칭 시에는 '아들'이라 합니다."
+            },
+            {
+                id: "daughter",
+                generation: 3,
+                category: "direct",
+                label: "딸",
+                desc: "나의 여자 자녀",
+                chonsu: 1,
+                titles: { M: { default: "딸" }, F: { default: "딸" } },
+                calledMe: { M: "아버지 / 아빠", F: "어머니 / 엄마" },
+                example: "수현아, 맛있는 거 먹으러 가자.",
+                tip: "직접 부를 때는 주로 이름을 호칭합니다."
+            },
+            {
+                id: "brother_older",
+                generation: 2,
+                category: "direct",
+                label: "형 / 오빠",
+                desc: "나보다 나이가 많은 남자 형제",
+                chonsu: 2,
+                titles: {
+                    M: { default: "형 / 형님" },
+                    F: { default: "오빠" }
+                },
+                calledMe: { M: "아우 / 동생", F: "동생" },
+                example: "형, 언제 주말에 밥 먹어. / 오빠, 이 책 빌려 가도 돼?",
+                tip: "남성은 '형', 여성은 '오빠'라고 부릅니다."
+            },
+            {
+                id: "brother_older_wife",
+                generation: 2,
+                category: "direct",
+                label: "형수 / 올케(새언니)",
+                desc: "나보다 나이가 많은 남자 형제의 아내",
+                chonsu: 2,
+                titles: {
+                    M: { default: "형수님 / 형수" },
+                    F: { default: "새언니 / 올케" }
+                },
+                calledMe: { M: "도련님 / 아우", F: "아가씨 / 올케" },
+                example: "형수님, 주말에 시간 괜찮으세요? / 새언니, 커피 한잔해요.",
+                tip: "여성의 경우 손위 오빠의 아내를 '새언니'라고 다정하게 부르는 경우가 많습니다."
+            },
+            {
+                id: "sister_older",
+                generation: 2,
+                category: "direct",
+                label: "누나 / 언니",
+                desc: "나보다 나이가 많은 여자 형제",
+                chonsu: 2,
+                titles: {
+                    M: { default: "누나" },
+                    F: { default: "언니" }
+                },
+                calledMe: { M: "동생", F: "동생" },
+                example: "누나, 물 한잔 줘. / 언니, 이 옷 입고 나간다?",
+                tip: "남성은 '누나', 여성은 '언니'라고 부릅니다."
+            },
+            {
+                id: "sister_older_husband",
+                generation: 2,
+                category: "direct",
+                label: "매형 / 형부",
+                desc: "나보다 나이가 많은 여자 형제의 남편",
+                chonsu: 2,
+                titles: {
+                    M: { default: "매형 / 자형" },
+                    F: { default: "형부" }
+                },
+                calledMe: { M: "처남", F: "처제" },
+                example: "매형, 늘 보살펴 주셔서 고맙습니다. / 형부, 언니 괴롭히지 마세요!",
+                tip: "남성에게는 매형 또는 자형, 여성에게는 형부가 맞는 표현입니다."
+            },
+            {
+                id: "brother_younger",
+                generation: 2,
+                category: "direct",
+                label: "남동생",
+                desc: "나보다 나이가 적은 남자 형제",
+                chonsu: 2,
+                titles: { M: { default: "남동생 (이름)" }, F: { default: "남동생 (이름)" } },
+                calledMe: { M: "형", F: "오빠" },
+                example: "철수야, 방 정리해라.",
+                tip: "동생은 통상 이름을 부릅니다."
+            },
+            {
+                id: "brother_younger_wife",
+                generation: 2,
+                category: "direct",
+                label: "제수 / 올케",
+                desc: "나보다 나이가 적은 남자 형제의 아내",
+                chonsu: 2,
+                titles: {
+                    M: { default: "제수씨" },
+                    F: { default: "올케 / 동생댁" }
+                },
+                calledMe: { M: "아주버님", F: "형님" },
+                example: "제수씨, 아이들 데리고 밥 먹으러 와요. / 올케, 애기는 잘 자요?",
+                tip: "남성에겐 제수씨, 여성에겐 올케가 적합한 명칭입니다."
+            },
+            {
+                id: "sister_younger",
+                generation: 2,
+                category: "direct",
+                label: "여동생",
+                desc: "나보다 나이가 적은 여자 형제",
+                chonsu: 2,
+                titles: { M: { default: "여동생 (이름)" }, F: { default: "여동생 (이름)" } },
+                calledMe: { M: "누나", F: "언니" },
+                example: "지영아, 오늘 약속 있어?",
+                tip: "여동생을 부를 때는 주로 이름을 호칭합니다."
+            },
+            {
+                id: "sister_younger_husband",
+                generation: 2,
+                category: "direct",
+                label: "매제 / 제부",
+                desc: "나보다 나이가 적은 여자 형제의 남편",
+                chonsu: 2,
+                titles: {
+                    M: { default: "매제 / O서방" },
+                    F: { default: "제부" }
+                },
+                calledMe: { M: "처형 / 처남", F: "처제" },
+                example: "김 서방, 주말 등산 가세. / 제부, 일은 잘 되나요?",
+                tip: "남성은 매제 혹은 성을 따 O서방이라 부르며, 여성은 제부라 호칭합니다."
+            },
+            {
+                id: "nephew_son",
+                generation: 3,
+                category: "direct",
+                label: "조카 (3촌)",
+                desc: "형제자매의 자녀",
+                chonsu: 3,
+                titles: { M: { default: "조카 / (이름)" }, F: { default: "조카 / (이름)" } },
+                calledMe: { M: "큰아버지/작은아버지/고모", F: "이모/외삼촌" },
+                example: "민식아, 요즘 공부하느라 수고가 많다.",
+                tip: "형제자매의 자녀를 칭하며, 보통 친근하게 이름을 부릅니다."
+            },
+            {
+                id: "grand_nephew",
+                generation: 3,
+                category: "direct",
+                label: "종손 (4촌 조카의 자녀)",
+                desc: "형제자매의 손주 (조카의 아들/딸)",
+                chonsu: 4,
+                titles: { M: { default: "종손 / (이름)" }, F: { default: "종손 / (이름)" } },
+                calledMe: { M: "종조부 (종조모)", F: "이모할머니/외할아버지" },
+                example: "민지야, 많이 컸구나! 이리 와서 맛있는 거 먹으렴.",
+                tip: "조카의 자녀를 칭하는 정식 호칭은 '종손' 또는 '종손녀'입니다."
+            },
+
+            // FATHER'S SIDE (친가 2-8 Chons)
+            {
+                id: "gfather",
+                generation: 1,
+                category: "father-side",
+                label: "할아버지",
+                desc: "아버지의 아버지",
+                chonsu: 2,
+                titles: { M: { default: "할아버지" }, F: { default: "할아버지" } },
+                calledMe: { M: "손자", F: "손녀" },
+                example: "할아버지, 오래오래 건강하세요.",
+                tip: "호칭은 '할아버지', 다른 사람에게 가리킬 때는 '친할아버지'라고 명확히 지칭할 수 있습니다."
+            },
+            {
+                id: "gmother",
+                generation: 1,
+                category: "father-side",
+                label: "할머니",
+                desc: "아버지의 어머니",
+                chonsu: 2,
+                titles: { M: { default: "할머니" }, F: { default: "할머니" } },
+                calledMe: { M: "손자", F: "손녀" },
+                example: "할머니, 밥 먹으러 갈까요?",
+                tip: "친가 할머니를 칭하는 부드럽고 표준적인 호칭은 '할머니'입니다."
+            },
+            {
+                id: "jeung_jobu",
+                generation: 1,
+                category: "father-side",
+                label: "증조할아버지",
+                desc: "할아버지의 아버지",
+                chonsu: 3,
+                titles: { M: { default: "증조할아버지" }, F: { default: "증조할아버지" } },
+                calledMe: { M: "증손자", F: "증손녀" },
+                example: "증조할아버지, 저희 왔습니다. 인사 받으십시오.",
+                tip: "할아버지의 아버지를 칭하는 표준 호칭입니다."
+            },
+            {
+                id: "f_brother_older",
+                generation: 1,
+                category: "father-side",
+                label: "큰아버지",
+                desc: "아버지의 형 (손위 형제)",
+                chonsu: 3,
+                titles: { M: { default: "큰아버지" }, F: { default: "큰아버지" } },
+                calledMe: { M: "조카", F: "조카" },
+                example: "큰아버지, 올해 농사는 어떠셨어요?",
+                tip: "한자어로는 백부(伯부)라고도 칭합니다."
+            },
+            {
+                id: "f_brother_older_wife",
+                generation: 1,
+                category: "father-side",
+                label: "큰어머니",
+                desc: "아버지의 형의 아내",
+                chonsu: 3,
+                titles: { M: { default: "큰어머니" }, F: { default: "큰어머니" } },
+                calledMe: { M: "조카", F: "조카" },
+                example: "큰어머니, 음식 하느라 애쓰셨어요.",
+                tip: "한자어로는 백모(伯母)라고 칭합니다."
+            },
+            {
+                id: "f_brother_younger",
+                generation: 1,
+                category: "father-side",
+                label: "작은아버지 / 삼촌",
+                desc: "아버지의 남동생",
+                chonsu: 3,
+                titles: {
+                    M: { married: "작은아버지", single: "삼촌" },
+                    F: { married: "작은아버지", single: "삼촌" }
+                },
+                calledMe: { M: "조카", F: "조카" },
+                example: "작은아버지, 안녕하세요. / 삼촌, 과자 사줘요.",
+                tip: "결혼 전에는 '삼촌', 결혼한 후에는 '작은아버지(숙부)'라고 부르는 것이 정석입니다."
+            },
+            {
+                id: "f_brother_younger_wife",
+                generation: 1,
+                category: "father-side",
+                label: "작은어머니 / 숙모",
+                desc: "아버지의 남동생의 아내",
+                chonsu: 3,
+                titles: { M: { default: "작은어머니 / 숙모" }, F: { default: "작은어머니 / 숙모" } },
+                calledMe: { M: "조카", F: "조카" },
+                example: "숙모님, 주방 일 제가 도울게요.",
+                tip: "보통 '숙모님' 또는 '작은어머니' 모두 널리 쓰이는 표준어입니다."
+            },
+            {
+                id: "f_sister",
+                generation: 1,
+                category: "father-side",
+                label: "고모",
+                desc: "아버지의 자매",
+                chonsu: 3,
+                titles: { M: { default: "고모" }, F: { default: "고모" } },
+                calledMe: { M: "조카", F: "조카" },
+                example: "고모, 명절에 내려오시나요?",
+                tip: "아버지의 자매는 연령에 상관없이 '고모'라 칭합니다."
+            },
+            {
+                id: "f_sister_husband",
+                generation: 1,
+                category: "father-side",
+                label: "고모부",
+                desc: "아버지의 자매의 남편",
+                chonsu: 3,
+                titles: { M: { default: "고모부" }, F: { default: "고모부" } },
+                calledMe: { M: "조카", F: "조카" },
+                example: "고모부, 오랜만에 뵙겠습니다.",
+                tip: "고모의 남편을 칭하는 정식 호칭입니다."
+            },
+            {
+                id: "jong_jobu",
+                generation: 1,
+                category: "father-side",
+                label: "종조부 (할아버지의 형제 / 4촌)",
+                desc: "할아버지의 남자 형제",
+                chonsu: 4,
+                titles: { M: { default: "종조부님 / 할아버지" }, F: { default: "종조부님 / 할아버지" } },
+                calledMe: { M: "종손자", F: "종손녀" },
+                example: "종조부님, 오래오래 건강하게 사셔요.",
+                tip: "할아버지의 남자 형제는 나와 4촌 조부 관계이며, 호칭 시에는 주로 '종조부님' 또는 '할아버지'라고 부릅니다."
+            },
+            {
+                id: "cousin_father",
+                generation: 2,
+                category: "father-side",
+                label: "사촌 형제 (친사촌 / 고종사촌)",
+                desc: "아버지 형제자매의 자녀",
+                chonsu: 4,
+                titles: {
+                    M: { default: "형님 / 사촌 동생 / 사촌 누나" },
+                    F: { default: "오빠 / 사촌 동생" }
+                },
+                calledMe: { M: "사촌 형제", F: "사촌 형제" },
+                example: "형, 이번에 취업했다면서요? / 지민아, 축하해.",
+                tip: "나이가 많은 사촌은 그냥 형, 누나, 오빠, 언니로 부르고, 나이가 어리면 이름을 부릅니다."
+            },
+            {
+                id: "dang_suk",
+                generation: 1,
+                category: "father-side",
+                label: "당숙 (5촌 아저씨)",
+                desc: "아버지의 사촌 형제",
+                chonsu: 5,
+                titles: { M: { default: "당숙님 / 아재 / 아저씨" }, F: { default: "당숙님 / 아재" } },
+                calledMe: { M: "당질", F: "당질녀" },
+                example: "당숙님, 올해 농사일은 어떠셨는지요?",
+                tip: "아버지의 사촌 형제를 부르는 말로, 흔히 '아재' 또는 '아저씨'라고도 부릅니다."
+            },
+            {
+                id: "dang_gomo",
+                generation: 1,
+                category: "father-side",
+                label: "당고모 (5촌 고모)",
+                desc: "아버지의 사촌 자매",
+                chonsu: 5,
+                titles: { M: { default: "당고모님 / 고모" }, F: { default: "당고모님 / 고모" } },
+                calledMe: { M: "당질", F: "당질녀" },
+                example: "당고모님, 이번 추석에 뵈어서 너무 반가웠습니다.",
+                tip: "아버지의 사촌 자매로, 호칭 시에는 주로 친근하게 '고모' 또는 '당고모님'이라 부릅니다."
+            },
+            {
+                id: "jong_jil",
+                generation: 3,
+                category: "father-side",
+                label: "종질 (5촌 조카)",
+                desc: "내 사촌 형제자매의 자녀",
+                chonsu: 5,
+                titles: { M: { default: "종질 / 조카 / (이름)" }, F: { default: "종질 / 조카 / (이름)" } },
+                calledMe: { M: "당숙 / 당고모", F: "외당숙 / 이모" },
+                example: "민우야, 대학교 공부는 잘 되가니?",
+                tip: "사촌의 자녀를 당질(堂姪) 또는 종질(從姪)이라 부르며, 조카 혹은 이름을 부르는 것이 흔합니다."
+            },
+            {
+                id: "jong_jeung_jobu",
+                generation: 1,
+                category: "father-side",
+                label: "종증조부 (5촌 조상)",
+                desc: "증조할아버지의 남자 형제",
+                chonsu: 5,
+                titles: { M: { default: "종증조부님 / 할아버지" }, F: { default: "종증조부님 / 할아버지" } },
+                calledMe: { M: "재종손자", F: "재종손녀" },
+                example: "종증조부님, 오랜만에 세배 올립니다.",
+                tip: "증조할아버지의 남자 형제는 5촌 조상에 해당합니다."
+            },
+            {
+                id: "dang_suk_father",
+                generation: 1,
+                category: "father-side",
+                label: "종조숙부 (6촌 아저씨)",
+                desc: "할아버지의 사촌 형제 (아버지의 당숙)",
+                chonsu: 6,
+                titles: { M: { default: "진외당숙님 / 아저씨" }, F: { default: "진외당숙님 / 아저씨" } },
+                calledMe: { M: "재종질", F: "재종질녀" },
+                example: "종조숙부님, 요즘 바둑은 자주 두시는지요?",
+                tip: "할아버지의 사촌 형제로, 아버지에겐 당숙이며 나에게는 6촌 아저씨벌입니다."
+            },
+            {
+                id: "jaejong_brother",
+                generation: 2,
+                category: "father-side",
+                label: "재종형제 (6촌 형제)",
+                desc: "할아버지의 형제의 손자 (아버지 사촌의 자녀)",
+                chonsu: 6,
+                titles: {
+                    M: { default: "재종형 / 재종제 / 형 / 동생" },
+                    F: { default: "재종오빠 / 재종제 / 오빠 / 동생" }
+                },
+                calledMe: { M: "재종형제", F: "재종남매" },
+                example: "재종형, 이번 집안 모임에 오실 수 있나요?",
+                tip: "나와 6촌 관계인 친가 형제자매를 일컬으며, 일상에선 '형', '오빠', '동생'으로 칭합니다."
+            },
+            {
+                id: "jaejong_son",
+                generation: 3,
+                category: "father-side",
+                label: "재종손 (6촌 손주)",
+                desc: "내 사촌의 자녀의 자녀 (조카의 자녀)",
+                chonsu: 6,
+                titles: { M: { default: "재종손 / (이름)" }, F: { default: "재종손 / (이름)" } },
+                calledMe: { M: "재종조부", F: "재종조모" },
+                example: "승우야, 아이스크림 사줄 테니 이리 와봐라.",
+                tip: "사촌의 손주를 칭하며, 아주 어린 세대이므로 편하게 이름을 부릅니다."
+            },
+            {
+                id: "jaedang_suk",
+                generation: 1,
+                category: "father-side",
+                label: "재당숙 (7촌 아저씨)",
+                desc: "아버지의 6촌 형제 (재종형제)",
+                chonsu: 7,
+                titles: { M: { default: "재당숙님 / 아재 / 아저씨" }, F: { default: "재당숙님 / 아재" } },
+                calledMe: { M: "재종질", F: "재종질녀" },
+                example: "재당숙님, 오랜만에 문안인사 드립니다.",
+                tip: "아버지의 6촌 형제를 칭하며, 촌수가 멀어 주로 '아저씨'나 '아재'라고 호칭합니다."
+            },
+            {
+                id: "jaejong_jil",
+                generation: 3,
+                category: "father-side",
+                label: "재종질 (7촌 조카)",
+                desc: "내 6촌 형제(재종형제)의 자녀",
+                chonsu: 7,
+                titles: { M: { default: "재종질 / 조카 / (이름)" }, F: { default: "재종질 / 조카 / (이름)" } },
+                calledMe: { M: "재당숙 / 재당고모", F: "재외당숙 / 이모" },
+                example: "민우야, 다음 주 주말에 벌초할 때 시간 되니?",
+                tip: "6촌의 자녀를 칭하며, 7촌 조카벌이 됩니다."
+            },
+            {
+                id: "samjong_brother",
+                generation: 2,
+                category: "father-side",
+                label: "삼종형제 (8촌 형제)",
+                desc: "증조할아버지 형제의 증손자 (아버지 6촌의 자녀)",
+                chonsu: 8,
+                titles: {
+                    M: { default: "삼종형 / 삼종제 / 형 / 동생" },
+                    F: { default: "삼종오빠 / 삼종제 / 오빠 / 동생" }
+                },
+                calledMe: { M: "삼종형제", F: "삼종남매" },
+                example: "삼종형, 오랜만에 뵙습니다.",
+                tip: "8촌 관계인 친가 형제자매를 삼종(三從)형제라고 부르며, 호칭은 통상 '형', '오빠', '동생'을 씁니다."
+            },
+            {
+                id: "jaejong_son_2",
+                generation: 3,
+                category: "father-side",
+                label: "재종손 (8촌 손주)",
+                desc: "내 6촌 형제의 자녀의 자녀 (7촌 조카의 자녀)",
+                chonsu: 8,
+                titles: { M: { default: "재종손 / (이름)" }, F: { default: "재종손 / (이름)" } },
+                calledMe: { M: "삼종조부", F: "삼종조모" },
+                example: "윤아야, 공부 열심히 하렴.",
+                tip: "6촌 형제의 손주벌에 해당하는 8촌 친척입니다."
+            },
+
+            // MOTHER'S SIDE (외가 2-6 Chons)
+            {
+                id: "m_gfather",
+                generation: 1,
+                category: "mother-side",
+                label: "외할아버지",
+                desc: "어머니의 아버지",
+                chonsu: 2,
+                titles: { M: { default: "외할아버지" }, F: { default: "외할아버지" } },
+                calledMe: { M: "외손자", F: "외손녀" },
+                example: "외할아버지, 오래오래 건강하세요.",
+                tip: "부르는 호칭은 흔히 '할아버지'로 충분하지만 지칭 시에는 '외할아버지'라 구분합니다."
+            },
+            {
+                id: "m_gmother",
+                generation: 1,
+                category: "mother-side",
+                label: "외할머니",
+                desc: "어머니의 어머니",
+                chonsu: 2,
+                titles: { M: { default: "외할머니" }, F: { default: "외할머니" } },
+                calledMe: { M: "외손자", F: "외손녀" },
+                example: "외할머니, 만두 너무 맛있어요.",
+                tip: "어머니의 어머니를 따뜻하게 이르는 말입니다."
+            },
+            {
+                id: "m_brother",
+                generation: 1,
+                category: "mother-side",
+                label: "외삼촌",
+                desc: "어머니의 남자 형제",
+                chonsu: 3,
+                titles: { M: { default: "외삼촌 / 외숙" }, F: { default: "외삼촌 / 외숙" } },
+                calledMe: { M: "외조카", F: "외조카" },
+                example: "외삼촌, 휴가 잘 다녀오셨어요?",
+                tip: "어머니의 형제는 결혼 여부에 상관없이 보통 '외삼촌'이라고 친근히 부릅니다."
+            },
+            {
+                id: "m_brother_wife",
+                generation: 1,
+                category: "mother-side",
+                label: "외숙모",
+                desc: "어머니의 남자 형제의 아내",
+                chonsu: 3,
+                titles: { M: { default: "외숙모" }, F: { default: "외숙모" } },
+                calledMe: { M: "외조카", F: "외조카" },
+                example: "외숙모, 명절 떡국 너무 잘 먹었습니다.",
+                tip: "외삼촌의 아내를 정식으로 이르는 말입니다."
+            },
+            {
+                id: "m_sister",
+                generation: 1,
+                category: "mother-side",
+                label: "이모",
+                desc: "어머니의 여자 형제",
+                chonsu: 3,
+                titles: { M: { default: "이모" }, F: { default: "이모" } },
+                calledMe: { M: "조카", F: "조카" },
+                example: "이모, 오늘 날씨가 맑네요.",
+                tip: "어머니의 자매들을 일컫는 친밀한 호칭입니다."
+            },
+            {
+                id: "m_sister_husband",
+                generation: 1,
+                category: "mother-side",
+                label: "이모부",
+                desc: "어머니의 여자 형제의 남편",
+                chonsu: 3,
+                titles: { M: { default: "이모부" }, F: { default: "이모부" } },
+                calledMe: { M: "조카", F: "조카" },
+                example: "이모부, 장기 한 판 두실까요?",
+                tip: "이모의 남편을 가리키고 부르는 올바른 호칭입니다."
+            },
+            {
+                id: "cousin_mother",
+                generation: 2,
+                category: "mother-side",
+                label: "이종/외사촌 형제",
+                desc: "어머니 형제자매의 자녀",
+                chonsu: 4,
+                titles: {
+                    M: { default: "형 / 누나 / 외사촌 동생" },
+                    F: { default: "오빠 / 언니 / 외사촌 동생" }
+                },
+                calledMe: { M: "사촌", F: "사촌" },
+                example: "형, 언제 한번 밥 사줘요. / 지우야, 대학교 생활 재밌어?",
+                tip: "외삼촌 자녀는 외사촌, 이모 자녀는 이종사촌이라 부릅니다."
+            },
+            {
+                id: "oe_dang_suk",
+                generation: 1,
+                category: "mother-side",
+                label: "외당숙 (5촌 외아저씨)",
+                desc: "어머니의 사촌 형제",
+                chonsu: 5,
+                titles: { M: { default: "외당숙님 / 외아재 / 아저씨" }, F: { default: "외당숙님 / 외아재" } },
+                calledMe: { M: "외당질", F: "외당질녀" },
+                example: "외당숙님, 이번 주말에 약속 있으신가요?",
+                tip: "어머니의 사촌 형제로, '외숙' 또는 '외당숙'이라고 부릅니다."
+            },
+            {
+                id: "oe_jong_jil",
+                generation: 3,
+                category: "mother-side",
+                label: "외종질 (5촌 외조카)",
+                desc: "내 외사촌 형제자매의 자녀",
+                chonsu: 5,
+                titles: { M: { default: "외종질 / 조카 / (이름)" }, F: { default: "외종질 / 조카 / (이름)" } },
+                calledMe: { M: "외당숙 / 외당고모", F: "이모 / 외숙" },
+                example: "수지야, 입학 축하한다.",
+                tip: "외사촌의 자녀를 칭하며, 평소에는 주로 이름이나 조카라고 부릅니다."
+            },
+            {
+                id: "oe_jaejong_brother",
+                generation: 2,
+                category: "mother-side",
+                label: "외재종형제 (6촌 외형제)",
+                desc: "외할아버지의 형제의 손자 (어머니 사촌의 자녀)",
+                chonsu: 6,
+                titles: {
+                    M: { default: "외재종형 / 외재종제 / 형 / 동생" },
+                    F: { default: "외재종오빠 / 외재종제 / 오빠 / 동생" }
+                },
+                calledMe: { M: "외재종형제", F: "외재종남매" },
+                example: "형, 대학 졸업 축하해요.",
+                tip: "어머니 측 6촌 형제이며, 친가와 비슷하게 일상에서는 편하게 부릅니다."
+            },
+
+            // SPOUSE'S SIDE (아내 편 - 처가 / 남편 편 - 시댁 1-3 Chons)
+            {
+                id: "sp_father",
+                generation: 1,
+                category: "spouse-side",
+                label: "장인 / 시아버지",
+                desc: "배우자의 아버지",
+                chonsu: 1,
+                titles: {
+                    M: { default: "장인어른" },
+                    F: { default: "아버님" }
+                },
+                calledMe: { M: "사위", F: "며느리" },
+                example: "장인어른, 오랜만에 뵙습니다. / 아버님, 아침 진지 잡수셨어요?",
+                tip: "남성은 '장인어른', 여성은 '아버님'이라고 칭합니다."
+            },
+            {
+                id: "sp_mother",
+                generation: 1,
+                category: "spouse-side",
+                label: "장모 / 시어머니",
+                desc: "배우자의 어머니",
+                chonsu: 1,
+                titles: {
+                    M: { default: "장모님" },
+                    F: { default: "어머님" }
+                },
+                calledMe: { M: "사위", F: "며느리" },
+                example: "장모님, 음식 맛이 일품입니다. / 어머님, 보일러 켜드릴까요?",
+                tip: "남성은 '장모님', 여성은 '어머님'이라고 칭합니다."
+            },
+            {
+                id: "sp_brother_older",
+                generation: 2,
+                category: "spouse-side",
+                label: "처남 / 아주버님",
+                desc: "배우자의 형(남자 형제 중 나이가 많은 사람)",
+                chonsu: 2,
+                titles: {
+                    M: { default: "형님 / 처남" },
+                    F: { default: "아주버님" }
+                },
+                calledMe: { M: "매제 / 동서", F: "올케 / 동서" },
+                example: "형님, 내일 벌초하러 가시죠. / 아주버님, 식사 주문하겠습니다.",
+                tip: "남성 기준 아내의 오빠가 나보다 나이가 많으면 '형님'이라 부르고, 나이가 어리다면 '처남'이라 부릅니다."
+            },
+            {
+                id: "sp_brother_older_wife",
+                generation: 2,
+                category: "spouse-side",
+                label: "아주머니 / 시형수",
+                desc: "배우자의 형의 아내",
+                chonsu: 2,
+                titles: {
+                    M: { default: "아주머니 / 처남댁" },
+                    F: { default: "형님" }
+                },
+                calledMe: { M: "서방님", F: "동서" },
+                example: "아주머니, 애기 유모차 잘 받았습니다. / 형님, 이것 좀 옮겨드릴까요?",
+                tip: "여성의 경우 남편의 형의 아내는 서열상 '형님'이 됩니다."
+            },
+            {
+                id: "sp_brother_younger",
+                generation: 2,
+                category: "spouse-side",
+                label: "처남 / 도련님 / 서방님",
+                desc: "배우자의 남동생",
+                chonsu: 2,
+                titles: {
+                    M: { default: "처남" },
+                    F: { married: "서방님", single: "도련님" }
+                },
+                calledMe: { M: "매형 / 자형", F: "형님" },
+                example: "처남, 주말에 한잔해요. / 도련님, 물 드세요. / 서방님, 잘 다녀오셨어요?",
+                tip: "남편 남동생이 미혼이면 도련님, 결혼하면 서방님으로 구분하여 부릅니다."
+            },
+            {
+                id: "sp_brother_younger_wife",
+                generation: 2,
+                category: "spouse-side",
+                label: "처남댁 / 시동서",
+                desc: "배우자의 남동생의 아내",
+                chonsu: 2,
+                titles: {
+                    M: { default: "처남댁" },
+                    F: { default: "동서" }
+                },
+                calledMe: { M: "아주버님", F: "형님" },
+                example: "처남댁, 떡 드세요. / 동서, 이번 제사는 언제야?",
+                tip: "여성의 경우 남편의 남동생의 아내를 '동서'라 칭합니다."
+            },
+            {
+                id: "sp_sister_older",
+                generation: 2,
+                category: "spouse-side",
+                label: "처형 / 시누이(형님)",
+                desc: "배우자의 언니/누나",
+                chonsu: 2,
+                titles: {
+                    M: { default: "처형" },
+                    F: { default: "형님" }
+                },
+                calledMe: { M: "제부 / 동서", F: "올케" },
+                example: "처형, 처제는 잘 있나요? / 형님, 요리 솜씨가 대단하세요.",
+                tip: "여성의 경우 남편의 누나는 '형님'이라 부릅니다."
+            },
+            {
+                id: "sp_sister_older_husband",
+                generation: 2,
+                category: "spouse-side",
+                label: "형님(동서) / 시매부(서방님)",
+                desc: "배우자의 언니/누나의 남편",
+                chonsu: 2,
+                titles: {
+                    M: { default: "형님 / 동서" },
+                    F: { default: "서방님 / 시매부" }
+                },
+                calledMe: { M: "동서 / 제부", F: "처남댁" },
+                example: "형님, 내일 낚시 같이 가요. / 서방님, 고모는 같이 안 왔어요?",
+                tip: "처형의 남편이 나보다 나이가 많으면 '형님', 어리면 '동서'라 칭합니다."
+            },
+            {
+                id: "sp_sister_younger",
+                generation: 2,
+                category: "spouse-side",
+                label: "처제 / 아가씨",
+                desc: "배우자의 여동생",
+                chonsu: 2,
+                titles: {
+                    M: { default: "처제" },
+                    F: { default: "아가씨" }
+                },
+                calledMe: { M: "형부", F: "올케" },
+                example: "처제, 대학 졸업 축하해요! / 아가씨, 다음 주에 쇼핑 가요.",
+                tip: "남성 기준 아내의 여동생은 '처제', 여성 기준 남편의 여동생은 '아가씨'라고 칭합니다."
+            },
+            {
+                id: "sp_sister_younger_husband",
+                generation: 2,
+                category: "spouse-side",
+                label: "동서 / 서방님",
+                desc: "배우자의 여동생의 남편",
+                chonsu: 2,
+                titles: {
+                    M: { default: "동서 / 서방" },
+                    F: { default: "서방님" }
+                },
+                calledMe: { M: "처형의 남편 / 형님", F: "올케" },
+                example: "동서, 이번 추석 때 고생 많았네. / 서방님, 잘 들어가세요.",
+                tip: "아내 여동생의 남편은 나보다 나이가 많아도 '동서'라 칭하며, 남편 여동생의 남편은 '서방님'이라 칭합니다."
+            },
+            {
+                id: "sp_nephew",
+                generation: 3,
+                category: "spouse-side",
+                label: "처조카 / 시조카 (3촌)",
+                desc: "배우자의 형제자매의 자녀",
+                chonsu: 3,
+                titles: { M: { default: "처조카 / (이름)" }, F: { default: "시조카 / (이름)" } },
+                calledMe: { M: "이모부 / 고모부", F: "외숙모 / 이모" },
+                example: "민수야, 학교에서 재미있게 놀았니?",
+                tip: "배우자의 조카를 부르는 호칭입니다."
+            }
+        ];
+
+        // --- 2. CONFIGURATION & STATE ---
+        var relationDatabase = [];
+        var currentGender = "M"; // "M" or "F"
+        var currentMarriage = "married"; // "married" or "single"
+        var activeTab = "tree"; // "tree", "calculator", "dictionary", "quiz"
+        var currentTreeSubTab = "direct"; // "direct", "father-side", "mother-side", "spouse-side"
+        var selectedNodeId = null; // Currently clicked relative
+
+        // Load database from localStorage (Using v3 key)
+        function loadDatabase() {
+            const stored = localStorage.getItem('korean_family_db_v3');
+            if (stored) {
+                try {
+                    relationDatabase = JSON.parse(stored);
+                } catch (e) {
+                    console.error("Failed to parse database, resetting to defaults", e);
+                    relationDatabase = JSON.parse(JSON.stringify(defaultRelationDatabase));
+                }
+            } else {
+                relationDatabase = JSON.parse(JSON.stringify(defaultRelationDatabase));
+            }
+        }
+
+        // Save database to localStorage
+        function saveDatabase() {
+            localStorage.setItem('korean_family_db_v3', JSON.stringify(relationDatabase));
+        }
+
+        // Get title for a specific relative given the state
+        function getTitle(relationObj, gender = currentGender, marriage = currentMarriage) {
+            const path = relationObj.titles[gender];
+            if (!path) return "정보 없음";
+            
+            if (path[marriage]) {
+                return path[marriage];
+            }
+            return path.default || "정보 없음";
+        }
+
+        // Initialize state on DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDatabase();
+            initTheme();
+            updateSpouseSubTabLabel();
+            renderFamilyTree();
+            updateDetailPanel("father");
+            renderDictionary();
+
+            // Set up theme toggle
+            document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
+
+            // Set up reset database button
+            document.getElementById('resetDbBtn').addEventListener('click', () => {
+                if (confirm("가계도 데이터를 원래 기본 설정으로 초기화하시겠습니까? (추가/수정한 모든 내용이 사라집니다)")) {
+                    localStorage.removeItem('korean_family_db_v3');
+                    loadDatabase();
+                    selectedNodeId = "father";
+                    onStateChange();
+                }
+            });
+
+            // Set up add family button
+            document.getElementById('addFamilyBtn').addEventListener('click', () => {
+                renderAddFamilyForm();
+            });
+        });
+
+        // Theme management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            } else {
+                document.body.classList.remove('light-theme');
+            }
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeIcon();
+            onStateChange(); // refresh cards to apply variable shadows
+        }
+
+        function updateThemeIcon() {
+            const isLight = document.body.classList.contains('light-theme');
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            if (themeToggleBtn) {
+                themeToggleBtn.innerHTML = isLight 
+                    ? '<i class="fa-solid fa-sun" style="color: var(--primary);"></i> 라이트 모드' 
+                    : '<i class="fa-solid fa-moon"></i> 다크 모드';
+            }
+        }
+
+        // Update the spouse tab label (처가 vs 시댁)
+        function updateSpouseSubTabLabel() {
+            const spouseTabBtn = document.getElementById("spouseSideTabBtn");
+            if (spouseTabBtn) {
+                spouseTabBtn.innerText = currentGender === "M" ? "처가 가계도" : "시댁 가계도";
+            }
+        }
+
+        // --- 3. TABS CONTROLLER ---
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active');
+                activeTab = btn.dataset.tab;
+                
+                const activePanel = document.getElementById(`tab-${activeTab}`);
+                activePanel.classList.add('active');
+                if (activeTab === 'tree' || activeTab === 'split-layout') {
+                    activePanel.style.display = 'grid';
+                }
+
+                // Custom Tab Init
+                if (activeTab === 'tree') {
+                    renderFamilyTree();
+                } else if (activeTab === 'dictionary') {
+                    renderDictionary();
+                } else if (activeTab === 'calculator') {
+                    resetCalculator();
+                } else if (activeTab === 'quiz') {
+                    initQuiz();
+                }
+            });
+        });
+
+        // Family Tree Sub-Tab Click Listeners
+        document.querySelectorAll('.tree-nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tree-nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTreeSubTab = btn.dataset.subtab;
+                renderFamilyTree();
+            });
+        });
+
+        // Config Controls (Gender / Marriage)
+        document.querySelectorAll('#genderGroup .config-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#genderGroup .config-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentGender = btn.dataset.gender;
+                updateSpouseSubTabLabel();
+                onStateChange();
+            });
+        });
+
+        document.querySelectorAll('#marriageGroup .config-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#marriageGroup .config-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMarriage = btn.dataset.marriage;
+                onStateChange();
+            });
+        });
+
+        function onStateChange() {
+            if (activeTab === 'tree') {
+                renderFamilyTree();
+                updateDetailPanel(selectedNodeId);
+            } else if (activeTab === 'dictionary') {
+                renderDictionary();
+                updateDetailPanel(selectedNodeId, "dictDetailContainer");
+            } else if (activeTab === 'calculator') {
+                resetCalculator();
+            }
+        }
+
+        // --- 4. RENDER DETAIL PANEL & FORMS ---
+        function updateDetailPanel(nodeId, containerId = "detailContainer") {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (containerId === "detailContainer") {
+                document.getElementById("sidebarPanelTitle").innerText = "상세 정보";
+            }
+
+            const relation = relationDatabase.find(r => r.id === nodeId);
+            if (!relation) {
+                container.innerHTML = `
+                    <div class="empty-detail">
+                        <i class="fa-solid fa-people-group"></i>
+                        <p>인물을 선택하시면 정확한 호칭 및 예시 대화가 이곳에 표시됩니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const activeTitle = getTitle(relation);
+            const categoryText = {
+                "direct": "직계가족 & 형제자매",
+                "father-side": "친가 (아버지 편)",
+                "mother-side": "외가 (어머니 편)",
+                "spouse-side": currentGender === "M" ? "처가 (아내 편)" : "시댁 (남편 편)"
+            }[relation.category];
+
+            container.innerHTML = `
+                <div class="detail-card">
+                    <span class="relation-badge ${relation.isCustom ? 'custom' : ''}">
+                        ${categoryText} ${relation.isCustom ? '(추가됨)' : ''}
+                    </span>
+                    
+                    <div class="detail-title-group">
+                        <h3>${relation.label}</h3>
+                        <span class="detail-chonsu">${relation.chonsu}촌 관계</span>
+                    </div>
+                    
+                    <div class="detail-info-row">
+                        <span class="info-label">부르는 호칭 (호칭)</span>
+                        <span class="info-value highlight">${activeTitle}</span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="info-label">대상을 지칭할 때 (지칭어)</span>
+                        <span class="info-value">${relation.label} (${relation.desc})</span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="info-label">나를 부르는 말</span>
+                        <span class="info-value">${relation.calledMe[currentGender] || relation.calledMe.default || "지정되지 않음"}</span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="info-label">이렇게 대화해 보세요 (예시)</span>
+                        <div class="detail-example-box">
+                            <span class="example-bubble">" ${relation.example} "</span>
+                        </div>
+                    </div>
+
+                    ${relation.tip ? `
+                        <div class="detail-tip-box">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <div><strong>호칭 팁:</strong> ${relation.tip}</div>
+                        </div>
+                    ` : ''}
+
+                    <div class="detail-actions">
+                        <button class="detail-btn edit" onclick="renderEditFamilyForm('${relation.id}')">
+                            <i class="fa-solid fa-pen-to-square"></i> 정보 수정
+                        </button>
+                        ${relation.isCustom ? `
+                            <button class="detail-btn delete" onclick="deleteFamilyMember('${relation.id}')">
+                                <i class="fa-solid fa-trash"></i> 삭제
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 5. EDIT & ADD FORM RENDERING ---
+        function renderEditFamilyForm(nodeId) {
+            const container = document.getElementById("detailContainer");
+            const relation = relationDatabase.find(r => r.id === nodeId);
+            if (!relation) return;
+
+            document.getElementById("sidebarPanelTitle").innerText = "가족 정보 수정";
+            const activeTitle = getTitle(relation);
+
+            container.innerHTML = `
+                <div class="detail-card" style="animation: popIn 0.3s ease;">
+                    <div class="edit-form-group">
+                        <label>관계칭 (예: 셋째 삼촌, 둘째 고모)</label>
+                        <input type="text" id="editLabel" class="edit-input" value="${relation.label}">
+                    </div>
+                    
+                    <div class="edit-form-group">
+                        <label>부르는 호칭 (예: 삼촌, 고모님)</label>
+                        <input type="text" id="editTitle" class="edit-input" value="${activeTitle}">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>관계에 대한 설명</label>
+                        <input type="text" id="editDesc" class="edit-input" value="${relation.desc}">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>촌수</label>
+                        <select id="editChonsu" class="edit-select">
+                            ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(c => `
+                                <option value="${c}" ${relation.chonsu === c ? 'selected' : ''}>${c}촌</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>상대방이 나를 부르는 호칭</label>
+                        <input type="text" id="editCalledMe" class="edit-input" value="${relation.calledMe[currentGender] || relation.calledMe.default || ''}">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>대화 예시 문장</label>
+                        <input type="text" id="editExample" class="edit-input" value="${relation.example}">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>호칭 관련 꿀팁 (선택)</label>
+                        <textarea id="editTip" class="edit-textarea">${relation.tip || ''}</textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="form-btn submit" onclick="saveEditFamilyMember('${relation.id}')">수정 완료</button>
+                        <button class="form-btn cancel" onclick="updateDetailPanel('${relation.id}')">취소</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveEditFamilyMember(nodeId) {
+            const relation = relationDatabase.find(r => r.id === nodeId);
+            if (!relation) return;
+
+            const labelVal = document.getElementById("editLabel").value.trim();
+            const titleVal = document.getElementById("editTitle").value.trim();
+            const descVal = document.getElementById("editDesc").value.trim();
+            const chonsuVal = parseInt(document.getElementById("editChonsu").value);
+            const calledMeVal = document.getElementById("editCalledMe").value.trim();
+            const exampleVal = document.getElementById("editExample").value.trim();
+            const tipVal = document.getElementById("editTip").value.trim();
+
+            if (!labelVal || !titleVal) {
+                alert("관계칭과 호칭은 필수 입력값입니다.");
+                return;
+            }
+
+            relation.label = labelVal;
+            
+            if (relation.titles[currentGender]) {
+                if (relation.titles[currentGender][currentMarriage]) {
+                    relation.titles[currentGender][currentMarriage] = titleVal;
+                } else {
+                    relation.titles[currentGender].default = titleVal;
+                }
+            } else {
+                relation.titles[currentGender] = { default: titleVal };
+            }
+
+            relation.desc = descVal;
+            relation.chonsu = chonsuVal;
+            
+            relation.calledMe[currentGender] = calledMeVal;
+            relation.calledMe.default = calledMeVal;
+
+            relation.example = exampleVal;
+            relation.tip = tipVal;
+
+            saveDatabase();
+            onStateChange();
+            updateDetailPanel(nodeId);
+        }
+
+        function renderAddFamilyForm() {
+            document.getElementById("sidebarPanelTitle").innerText = "새 가족 구성원 추가";
+            const container = document.getElementById("detailContainer");
+
+            container.innerHTML = `
+                <div class="detail-card" style="animation: popIn 0.3s ease;">
+                    <div class="edit-form-group">
+                        <label>관계 구분</label>
+                        <select id="addCategory" class="edit-select">
+                            <option value="direct">직계 및 형제자매</option>
+                            <option value="father-side">친가 (아버지 편)</option>
+                            <option value="mother-side">외가 (어머니 편)</option>
+                            <option value="spouse-side">처가 / 시댁</option>
+                        </select>
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>세대</label>
+                        <select id="addGeneration" class="edit-select">
+                            <option value="1">1세대 (조부모, 부모, 이모, 삼촌, 당숙 등)</option>
+                            <option value="2" selected>2세대 (본인, 형제, 배우자, 사촌, 6촌/8촌 형제 등)</option>
+                            <option value="3">3세대 (자녀, 조카, 종질, 재종질 등)</option>
+                        </select>
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>관계칭 (예: 셋째 당숙, 6촌 형 등)</label>
+                        <input type="text" id="addLabel" class="edit-input" placeholder="관계를 구분할 명칭을 적어주세요.">
+                    </div>
+                    
+                    <div class="edit-form-group">
+                        <label>부르는 호칭 (예: 당숙님, 형, 동생)</label>
+                        <input type="text" id="addTitle" class="edit-input" placeholder="대면해서 직접 부를 호칭입니다.">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>관계 설명</label>
+                        <input type="text" id="addDesc" class="edit-input" placeholder="어떤 관계인지 간단히 기록해주세요.">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>촌수</label>
+                        <select id="addChonsu" class="edit-select">
+                            ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(c => `
+                                <option value="${c}" ${c === 2 ? 'selected' : ''}>${c}촌</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>상대방이 나를 부르는 호칭</label>
+                        <input type="text" id="addCalledMe" class="edit-input" placeholder="상대방이 부르는 호칭">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>대화 예시 문장</label>
+                        <input type="text" id="addExample" class="edit-input" placeholder="호칭이 들어간 인사말/대화 예시">
+                    </div>
+
+                    <div class="edit-form-group">
+                        <label>호칭 관련 꿀팁 (선택)</label>
+                        <textarea id="addTip" class="edit-textarea" placeholder="추가 설명이나 주의점을 입력하세요."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="form-btn submit" onclick="saveNewFamilyMember()">저장하기</button>
+                        <button class="form-btn cancel" onclick="updateDetailPanel(selectedNodeId)">취소</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveNewFamilyMember() {
+            const cat = document.getElementById("addCategory").value;
+            const gen = parseInt(document.getElementById("addGeneration").value);
+            const label = document.getElementById("addLabel").value.trim();
+            const title = document.getElementById("addTitle").value.trim();
+            const desc = document.getElementById("addDesc").value.trim();
+            const chonsu = parseInt(document.getElementById("addChonsu").value);
+            const calledMe = document.getElementById("addCalledMe").value.trim();
+            const example = document.getElementById("addExample").value.trim();
+            const tip = document.getElementById("addTip").value.trim();
+
+            if (!label || !title) {
+                alert("관계칭과 호칭은 필수 입력값입니다.");
+                return;
+            }
+
+            const uniqueId = "custom_" + Date.now();
+
+            const newNode = {
+                id: uniqueId,
+                generation: gen,
+                category: cat,
+                label: label,
+                desc: desc || `${label} 관계`,
+                chonsu: chonsu,
+                titles: {
+                    M: { default: title },
+                    F: { default: title }
+                },
+                calledMe: {
+                    M: calledMe || "조카/동생",
+                    F: calledMe || "조카/동생",
+                    default: calledMe
+                },
+                example: example || `${title}, 식사하셨습니까?`,
+                tip: tip || "",
+                isCustom: true
+            };
+
+            relationDatabase.push(newNode);
+            saveDatabase();
+            
+            selectedNodeId = uniqueId;
+            onStateChange();
+            updateDetailPanel(uniqueId);
+        }
+
+        function deleteFamilyMember(nodeId) {
+            if (confirm("정말로 이 가족 구성원을 삭제하시겠습니까?")) {
+                relationDatabase = relationDatabase.filter(r => r.id !== nodeId);
+                saveDatabase();
+                selectedNodeId = "father";
+                onStateChange();
+            }
+        }
+
+        // --- 6. TAB 1: VISUAL FAMILY TREE ---
+        function renderFamilyTree() {
+            const grid = document.getElementById("treeGrid");
+            grid.innerHTML = "";
+
+            const level1 = document.createElement("div");
+            level1.className = "tree-level";
+            level1.innerHTML = `<span class="level-label">조부모/부모/5-7촌 어른</span>`;
+
+            const level2 = document.createElement("div");
+            level2.className = "tree-level";
+            level2.innerHTML = `<span class="level-label">본인/형제/4-8촌 형제</span>`;
+
+            const level3 = document.createElement("div");
+            level3.className = "tree-level";
+            level3.innerHTML = `<span class="level-label">자녀/조카/5-8촌 자녀</span>`;
+
+            let nodesToShow = [];
+
+            if (currentTreeSubTab === "direct") {
+                nodesToShow = relationDatabase.filter(node => 
+                    node.category === "direct" || 
+                    node.id === "father" || 
+                    node.id === "mother"
+                );
+            } else if (currentTreeSubTab === "father-side") {
+                nodesToShow = relationDatabase.filter(node => 
+                    node.category === "father-side" || 
+                    node.id === "father" || 
+                    node.id === "mother"
+                );
+            } else if (currentTreeSubTab === "mother-side") {
+                nodesToShow = relationDatabase.filter(node => 
+                    node.category === "mother-side" || 
+                    node.id === "father" || 
+                    node.id === "mother"
+                );
+            } else if (currentTreeSubTab === "spouse-side") {
+                nodesToShow = relationDatabase.filter(node => 
+                    node.category === "spouse-side" || 
+                    node.id === "spouse"
+                );
+            }
+
+            const gen1Nodes = nodesToShow.filter(n => n.generation === 1);
+            const gen2Nodes = nodesToShow.filter(n => n.generation === 2);
+            const gen3Nodes = nodesToShow.filter(n => n.generation === 3);
+
+            gen1Nodes.forEach(node => {
+                if (currentMarriage !== "married" && (node.id === "sp_father" || node.id === "sp_mother")) return;
+                level1.appendChild(createTreeCard(node));
+            });
+
+            const speakerCard = document.createElement("div");
+            speakerCard.className = "tree-card speaker-node";
+            speakerCard.innerHTML = `
+                <div class="tree-relation">본인 (${currentGender === "M" ? "남성" : "여성"})</div>
+                <div class="tree-title">나</div>
+            `;
+            level2.appendChild(speakerCard);
+
+            gen2Nodes.forEach(node => {
+                if (currentMarriage !== "married" && (node.id === "spouse" || node.category === "spouse-side")) return;
+                level2.appendChild(createTreeCard(node));
+            });
+
+            gen3Nodes.forEach(node => {
+                level3.appendChild(createTreeCard(node));
+            });
+
+            if (gen1Nodes.length > 0) grid.appendChild(level1);
+            grid.appendChild(level2);
+            if (gen3Nodes.length > 0) grid.appendChild(level3);
+
+            if (selectedNodeId) {
+                const selectedCard = document.querySelector(`.tree-card[data-id="${selectedNodeId}"]`);
+                if (selectedCard) selectedCard.classList.add("active-node");
+            }
+        }
+
+        function createTreeCard(node) {
+            const card = document.createElement("div");
+            card.className = "tree-card";
+            card.dataset.id = node.id;
+            
+            const title = getTitle(node);
+            card.innerHTML = `
+                <div class="tree-chonsu">${node.chonsu}촌</div>
+                <div class="tree-relation">${node.label}</div>
+                <div class="tree-title">${title.split("/")[0].trim()}</div>
+                ${node.isCustom ? `<span class="custom-badge"><i class="fa-solid fa-star"></i> 우리집</span>` : ''}
+            `;
+
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.tree-card').forEach(c => c.classList.remove('active-node'));
+                card.classList.add('active-node');
+                selectedNodeId = node.id;
+                updateDetailPanel(node.id);
+            });
+
+            return card;
+        }
+
+        // --- 7. TAB 3: DICTIONARY ---
+        let currentFilter = "all";
+        
+        document.querySelectorAll('#dictFilters .tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                document.querySelectorAll('#dictFilters .tag').forEach(t => t.classList.remove('active'));
+                tag.classList.add('active');
+                currentFilter = tag.dataset.filter;
+                renderDictionary();
+            });
+        });
+
+        document.getElementById('dictSearchInput').addEventListener('input', renderDictionary);
+
+        function renderDictionary() {
+            const grid = document.getElementById("dictGrid");
+            const query = document.getElementById("dictSearchInput").value.trim().toLowerCase();
+            grid.innerHTML = "";
+
+            let filtered = relationDatabase;
+
+            if (currentFilter !== "all") {
+                filtered = filtered.filter(item => {
+                    if (currentFilter === "spouse-side") return item.category === "spouse-side";
+                    return item.category === currentFilter;
+                });
+            }
+
+            if (query) {
+                filtered = filtered.filter(item => {
+                    const resolvedTitle = getTitle(item).toLowerCase();
+                    const label = item.label.toLowerCase();
+                    const desc = item.desc.toLowerCase();
+                    return label.includes(query) || resolvedTitle.includes(query) || desc.includes(query);
+                });
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+                        <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 10px; display: block; opacity: 0.5;"></i>
+                        검색 결과가 존재하지 않습니다. 다른 검색어를 써보세요.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                if (currentMarriage !== "married" && (item.id === "spouse" || item.category === "spouse-side")) return;
+
+                const card = document.createElement("div");
+                card.className = "dict-card";
+                if (selectedNodeId === item.id) card.classList.add("selected");
+                card.dataset.id = item.id;
+
+                const activeTitle = getTitle(item);
+                const badgeClass = {
+                    "direct": "sibling-side",
+                    "father-side": "father-side",
+                    "mother-side": "mother-side",
+                    "spouse-side": "spouse-side"
+                }[item.category];
+
+                const categoryKorean = {
+                    "direct": "직계/형제",
+                    "father-side": "친가",
+                    "mother-side": "외가",
+                    "spouse-side": currentGender === "M" ? "처가" : "시댁"
+                }[item.category];
+
+                card.innerHTML = `
+                    <div class="dict-header">
+                        <span class="dict-relation-name">${activeTitle.split("/")[0].trim()}</span>
+                        <span class="dict-category-badge ${badgeClass}">${categoryKorean}</span>
+                    </div>
+                    <div class="dict-relation-desc">${item.label} (${item.desc})</div>
+                    ${item.isCustom ? `<span class="custom-badge" style="bottom: 8px; right: 8px; top: auto; left: auto; transform: none;"><i class="fa-solid fa-star"></i> 우리집</span>` : ''}
+                `;
+
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.dict-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedNodeId = item.id;
+                    updateDetailPanel(item.id, "dictDetailContainer");
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // --- 8. TAB 2: STEP-BY-STEP CALCULATOR (EXTENDED UP TO 8-CHONS) ---
+        var calcPath = []; // Array of relationship strings
+        
+        const calcTree = {
+            "root": {
+                options: [
+                    { id: "father", label: "아버지", pathText: "아버지" },
+                    { id: "mother", label: "어머니", pathText: "어머니" },
+                    { id: "brother", label: "형제자매", pathText: "형제자매" },
+                    { id: "spouse", label: "배우자", pathText: "배우자", requiresMarriage: true }
+                ]
+            },
+            "father": {
+                options: [
+                    { id: "brother", label: "형제(삼촌/고모)", pathText: "형제" },
+                    { id: "father", label: "부모(할아버지/할머니)", pathText: "부모" }
+                ]
+            },
+            "father_brother": {
+                options: [
+                    { id: "wife", label: "아내(큰어머니/숙모/고모부)", pathText: "아내" },
+                    { id: "child", label: "자녀(사촌 형제)", pathText: "자녀" }
+                ]
+            },
+            "father_brother_child": {
+                options: [
+                    { id: "child", label: "자녀(5촌 조카)", pathText: "자녀" }
+                ]
+            },
+            "father_brother_child_child": {
+                options: [
+                    { id: "child", label: "자녀(6촌 재종손)", pathText: "자녀" }
+                ]
+            },
+            "father_father": {
+                options: [
+                    { id: "brother", label: "형제(할아버지의 형제)", pathText: "형제" },
+                    { id: "father", label: "부모(증조할아버지)", pathText: "부모" }
+                ]
+            },
+            "father_father_brother": {
+                options: [
+                    { id: "child", label: "자녀(5촌 당숙/당고모)", pathText: "자녀" }
+                ]
+            },
+            "father_father_brother_child": {
+                options: [
+                    { id: "child", label: "자녀(6촌 재종형제)", pathText: "자녀" }
+                ]
+            },
+            "father_father_brother_child_child": {
+                options: [
+                    { id: "child", label: "자녀(7촌 재종질/조카)", pathText: "자녀" }
+                ]
+            },
+            "father_father_brother_child_child_child": {
+                options: [
+                    { id: "child", label: "자녀(8촌 재종손)", pathText: "자녀" }
+                ]
+            },
+            "father_father_father": {
+                options: [
+                    { id: "brother", label: "형제(증조부의 형제)", pathText: "형제" }
+                ]
+            },
+            "father_father_father_brother": {
+                options: [
+                    { id: "child", label: "자녀(아버지의 5촌)", pathText: "자녀" }
+                ]
+            },
+            "father_father_father_brother_child": {
+                options: [
+                    { id: "child", label: "자녀(재당숙: 7촌 아저씨)", pathText: "자녀" }
+                ]
+            },
+            "father_father_father_brother_child_child": {
+                options: [
+                    { id: "child", label: "자녀(8촌 삼종형제)", pathText: "자녀" }
+                ]
+            },
+            // Mother side paths
+            "mother": {
+                options: [
+                    { id: "brother", label: "형제(외삼촌/이모)", pathText: "형제" },
+                    { id: "father", label: "부모(외할아버지/외할머니)", pathText: "부모" }
+                ]
+            },
+            "mother_brother": {
+                options: [
+                    { id: "wife", label: "배우자(외숙모/이모부)", pathText: "배우자" },
+                    { id: "child", label: "자녀(외사촌/이종사촌)", pathText: "자녀" }
+                ]
+            },
+            "mother_brother_child": {
+                options: [
+                    { id: "child", label: "자녀(5촌 외조카)", pathText: "자녀" }
+                ]
+            },
+            "mother_father": {
+                options: [
+                    { id: "brother", label: "형제(외조부의 형제)", pathText: "형제" }
+                ]
+            },
+            "mother_father_brother": {
+                options: [
+                    { id: "child", label: "자녀(5촌 외당숙/외당고모)", pathText: "자녀" }
+                ]
+            },
+            "mother_father_brother_child": {
+                options: [
+                    { id: "child", label: "자녀(6촌 외재종형제)", pathText: "자녀" }
+                ]
+            },
+            "brother": {
+                options: [
+                    { id: "wife", label: "배우자(형수/올케/제부 등)", pathText: "배우자" },
+                    { id: "child", label: "자녀(조카)", pathText: "자녀" }
+                ]
+            },
+            "brother_child": {
+                options: [
+                    { id: "child", label: "자녀(종손)", pathText: "자녀" }
+                ]
+            },
+            "spouse": {
+                options: [
+                    { id: "father", label: "부모(장인장모/시아버님시어머님)", pathText: "부모" },
+                    { id: "brother", label: "형제자매(처남처제/시동생시누이)", pathText: "형제자매" }
+                ]
+            },
+            "spouse_brother": {
+                options: [
+                    { id: "wife", label: "배우자(처남댁/동서)", pathText: "배우자" },
+                    { id: "child", label: "자녀(처조카/시조카)", pathText: "자녀" }
+                ]
+            }
+        };
+
+        var calcResolver = {
+            "father": "father",
+            "mother": "mother",
+            
+            "father_father": "gfather",
+            "father_brother": "f_brother_younger",
+            "father_brother_wife": "f_brother_younger_wife",
+            "father_brother_child": "cousin_father",
+            
+            "father_brother_child_child": "jong_jil", // 5촌
+            "father_brother_child_child_child": "jaejong_son", // 6촌
+            
+            "father_father_brother": "jong_jobu", // 4촌 종조부
+            "father_father_brother_child": "dang_suk", // 5촌 당숙
+            "father_father_brother_child_child": "jaejong_brother", // 6촌
+            "father_father_brother_child_child_child": "jaejong_jil", // 7촌
+            "father_father_brother_child_child_child_child": "jaejong_son_2", // 8촌
+            
+            "father_father_father": "jeung_jobu", // 3촌 증조부
+            "father_father_father_brother": "jong_jeung_jobu", // 5촌 종증조부
+            "father_father_father_brother_child": "dang_suk_father", // 6촌
+            "father_father_father_brother_child_child": "jaedang_suk", // 7촌
+            "father_father_father_brother_child_child_child": "samjong_brother", // 8촌 삼종형제
+            
+            "mother_father": "m_gfather",
+            "mother_brother": "m_brother",
+            "mother_brother_wife": "m_brother_wife",
+            "mother_brother_child": "cousin_mother",
+            
+            "mother_brother_child_child": "oe_jong_jil", // 5촌
+            "mother_father_brother": "oe_jong_jobu", 
+            "mother_father_brother_child": "oe_dang_suk", // 5촌
+            "mother_father_brother_child_child": "oe_jaejong_brother", // 6촌
+            
+            "brother": "brother_older",
+            "brother_wife": "brother_older_wife",
+            "brother_child": "nephew_son",
+            "brother_child_child": "grand_nephew",
+            
+            "spouse_father": "sp_father",
+            "spouse_brother": "sp_brother_younger",
+            "spouse_brother_wife": "sp_brother_younger_wife",
+            "spouse_brother_child": "sp_nephew"
+        };
+
+        function resetCalculator() {
+            calcPath = [];
+            renderCalculator();
+        }
+
+        document.getElementById('calcReset').addEventListener('click', resetCalculator);
+
+        function renderCalculator() {
+            const flow = document.getElementById("calcFlow");
+            flow.innerHTML = "";
+
+            const meNode = document.createElement("div");
+            meNode.className = "calc-node calc-node-me";
+            meNode.innerHTML = `<i class="fa-solid fa-user"></i> 나`;
+            flow.appendChild(meNode);
+
+            calcPath.forEach((node, index) => {
+                const arrow = document.createElement("div");
+                arrow.className = "calc-arrow";
+                arrow.innerHTML = `<i class="fa-solid fa-chevron-right"></i>`;
+                flow.appendChild(arrow);
+
+                const item = document.createElement("div");
+                item.className = "calc-node";
+                item.innerHTML = node.pathText;
+                flow.appendChild(item);
+            });
+
+            const currentPathKey = calcPath.map(n => n.id).join("_");
+            const targetId = calcResolver[currentPathKey];
+
+            const buttonsGrid = document.getElementById("calcButtons");
+            buttonsGrid.innerHTML = "";
+
+            const stateKey = currentPathKey === "" ? "root" : currentPathKey;
+            const stateOptions = calcTree[stateKey];
+
+            if (stateOptions && stateOptions.options.length > 0) {
+                stateOptions.options.forEach(opt => {
+                    if (opt.requiresMarriage && currentMarriage !== "married") return;
+
+                    const btn = document.createElement("button");
+                    btn.className = "calc-action-btn";
+                    btn.innerText = opt.label;
+                    btn.addEventListener('click', () => {
+                        calcPath.push(opt);
+                        renderCalculator();
+                    });
+                    buttonsGrid.appendChild(btn);
+                });
+            } else {
+                const emptyMsg = document.createElement("div");
+                emptyMsg.style.gridColumn = "1/-1";
+                emptyMsg.style.textAlign = "center";
+                emptyMsg.style.color = "var(--text-muted)";
+                emptyMsg.style.fontSize = "0.85rem";
+                emptyMsg.innerText = "더 이상 관계를 추가할 수 없습니다.";
+                buttonsGrid.appendChild(emptyMsg);
+            }
+
+            const detailContainer = document.getElementById("calcDetailContainer");
+            if (targetId) {
+                const relation = relationDatabase.find(r => r.id === targetId);
+                if (relation) {
+                    const activeTitle = getTitle(relation);
+                    detailContainer.innerHTML = `
+                        <div class="detail-card" style="animation: popIn 0.3s ease;">
+                            <span class="relation-badge">${relation.chonsu}촌 관계</span>
+                            <div class="detail-title-group">
+                                <h3 style="font-size: 1.4rem;">최종 관계: ${relation.label}</h3>
+                            </div>
+                            
+                            <div class="detail-info-row">
+                                <span class="info-label">정확한 호칭</span>
+                                <span class="info-value highlight" style="font-size: 1.4rem;">${activeTitle}</span>
+                            </div>
+
+                            <div class="detail-info-row">
+                                <span class="info-label">관계 상세</span>
+                                <span class="info-value">${relation.desc}</span>
+                            </div>
+
+                            <div class="detail-info-row">
+                                <span class="info-label">대화 나누기 예시</span>
+                                <div class="detail-example-box">
+                                    <span class="example-bubble">"${relation.example}"</span>
+                                </div>
+                            </div>
+
+                            ${relation.tip ? `
+                                <div class="detail-tip-box" style="margin-top: 10px;">
+                                    <i class="fa-solid fa-circle-question"></i>
+                                    <div>${relation.tip}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+            } else {
+                detailContainer.innerHTML = `
+                    <div class="empty-detail">
+                        <i class="fa-solid fa-calculator"></i>
+                        <p>단계를 추가해서 최종 관계에 도달해보세요.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // --- 9. TAB 4: QUIZ SYSTEM ---
+        var quizQuestions = [];
+        var currentQuestionIdx = 0;
+        var score = 0;
+        var answered = false;
+
+        const quizPool = [
+            {
+                q: "아버지의 남동생이 결혼하기 전, 흔히 친근하게 부르는 호칭은 무엇일까요?",
+                options: ["작은아버지", "백부", "삼촌", "고모부"],
+                correctIdx: 2,
+                exp: "아버지의 남동생은 미혼인 경우 '삼촌', 결혼한 후에는 '작은아버지'라고 부르는 것이 정식 호칭법입니다."
+            },
+            {
+                q: "여성(아내)의 입장에서, 남편의 여동생을 부르는 가장 알맞은 경칭은 무엇일까요?",
+                options: ["아가씨", "형님", "처제", "동서"],
+                correctIdx: 0,
+                exp: "여성이 남편의 여동생을 부를 때는 '아가씨'라고 칭합니다. 남편의 누나는 '형님'입니다."
+            },
+            {
+                q: "남성(남편)의 입장에서, 아내의 언니(손위 누이)를 부르는 올바른 호칭은 무엇인가요?",
+                options: ["처남", "처형", "처제", "형수"],
+                correctIdx: 1,
+                exp: "남성의 입장에서 아내의 언니는 '처형'이라 부르며, 아내의 여동생은 '처제'라고 칭합니다."
+            },
+            {
+                q: "나를 기준으로, 어머니의 자매(이모)의 자녀를 일컫는 정식 친척 명칭은?",
+                options: ["친사촌", "고종사촌", "외사촌", "이종사촌"],
+                correctIdx: 3,
+                exp: "이모의 자녀는 '이종(이종)사촌', 외삼촌의 자녀는 '외사촌', 고모의 자녀는 '고종사촌'이라 부릅니다."
+            },
+            {
+                q: "여성(아내)의 입장에서, 결혼한 남편의 남동생을 부를 때 올바른 존칭은?",
+                options: ["도련님", "서방님", "아주버님", "시매부"],
+                correctIdx: 1,
+                exp: "남편의 남동생이 미혼일 때는 '도련님', 결혼하여 가정을 이룬 후에는 '서방님'이라고 부르는 것이 격식 예절입니다."
+            }
+        ];
+
+        function initQuiz() {
+            quizQuestions = [...quizPool];
+            currentQuestionIdx = 0;
+            score = 0;
+            answered = false;
+            renderQuizCard();
+        }
+
+        document.getElementById('startQuizBtn').addEventListener('click', initQuiz);
+
+        function renderQuizCard() {
+            const container = document.getElementById("quizContainer");
+            
+            if (currentQuestionIdx >= quizQuestions.length) {
+                container.innerHTML = `
+                    <div class="quiz-result-card">
+                        <div class="score-circle">
+                            <span class="score-num">${score * 20}</span>
+                            <span class="score-total">/ 100점</span>
+                        </div>
+                        <h3 class="result-title">${score === quizQuestions.length ? '🎉 만점! 호칭 마스터 등극' : '수고하셨습니다!'}</h3>
+                        <p class="result-desc">헷갈리기 쉬운 호칭 문제를 모두 풀어보았습니다. 앞으로 명절이나 가족 행사 때 올바른 표현을 사용해보세요!</p>
+                        <button class="quiz-start-btn" onclick="initQuiz()">다시 도전하기</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const qObj = quizQuestions[currentQuestionIdx];
+            answered = false;
+
+            const progressPercent = ((currentQuestionIdx) / quizQuestions.length) * 100;
+
+            container.innerHTML = `
+                <div class="quiz-header">
+                    <div style="font-weight:700; color:var(--primary);">Q ${currentQuestionIdx + 1} / ${quizQuestions.length}</div>
+                    <div class="quiz-progress-bar">
+                        <div class="quiz-progress-inner" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div style="font-size:0.85rem; color:var(--text-muted);">점수: ${score * 20}점</div>
+                </div>
+
+                <div class="quiz-question-box">
+                    <div class="quiz-question-desc">문제</div>
+                    <div class="quiz-question">${qObj.q}</div>
+                </div>
+
+                <div class="quiz-options">
+                    ${qObj.options.map((opt, idx) => `
+                        <button class="quiz-option-btn" data-idx="${idx}">
+                            <span>${opt}</span>
+                            <i class="fa-regular fa-circle"></i>
+                        </button>
+                    `).join('')}
+                </div>
+
+                <div class="quiz-feedback" id="quizFeedback">
+                    <div class="feedback-title" id="feedbackTitle"></div>
+                    <div class="feedback-explanation" id="feedbackExp"></div>
+                    <button class="quiz-next-btn" id="quizNextBtn">다음 문제</button>
+                </div>
+            `;
+
+            const optionBtns = container.querySelectorAll('.quiz-option-btn');
+            optionBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (answered) return;
+                    answered = true;
+
+                    const chosenIdx = parseInt(btn.dataset.idx);
+                    const correctIdx = qObj.correctIdx;
+
+                    optionBtns.forEach(b => b.classList.add('disabled'));
+
+                    if (chosenIdx === correctIdx) {
+                        btn.classList.add('correct');
+                        btn.querySelector('i').className = 'fa-solid fa-circle-check';
+                        score++;
+                        showFeedback(true, qObj.exp);
+                    } else {
+                        btn.classList.add('incorrect');
+                        btn.querySelector('i').className = 'fa-solid fa-circle-xmark';
+                        
+                        optionBtns[correctIdx].classList.add('correct');
+                        optionBtns[correctIdx].querySelector('i').className = 'fa-solid fa-circle-check';
+                        showFeedback(false, qObj.exp);
+                    }
+                });
+            });
+        }
+
+        function showFeedback(isCorrect, explanation) {
+            const feedbackEl = document.getElementById("quizFeedback");
+            const titleEl = document.getElementById("feedbackTitle");
+            const expEl = document.getElementById("feedbackExp");
+            const nextBtn = document.getElementById("quizNextBtn");
+
+            feedbackEl.style.display = "block";
+            if (isCorrect) {
+                feedbackEl.className = "quiz-feedback feedback-correct";
+                titleEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> 정답입니다!`;
+            } else {
+                feedbackEl.className = "quiz-feedback feedback-incorrect";
+                titleEl.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> 오답입니다...`;
+            }
+
+            expEl.innerHTML = explanation;
+
+            nextBtn.addEventListener('click', () => {
+                currentQuestionIdx++;
+                renderQuizCard();
+            });
+        }
+    </script>
+</body>
+</html>
