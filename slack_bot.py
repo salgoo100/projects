@@ -35,7 +35,7 @@ agent_config = LocalAgentConfig(
         run_command=True,  # 봇이 터미널 명령어를 실행할 수 있게 허용
         edit_file=True,    # 봇이 로컬 파일을 생성/수정할 수 있게 허용
     ),
-    model="gemini-1.5-flash"
+    model="gemini-2.5-flash"
 )
 
 
