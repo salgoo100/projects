@@ -51,11 +51,11 @@ async def handle_message_events(body, say):
     if event.get("bot_id") is not None or event.get("subtype") in ["message_changed", "message_deleted"]:
         return
 
-    # [보안 중요] 원격 제어가 가능하므로 특정 Slack User ID만 허용하는 화이트리스트 적용을 권장합니다.
-    # allowed_users = ["U12345678"]  # 실제 본인의 Slack User ID로 교체하세요.
-    # if user not in allowed_users:
-    #     await say("죄송합니다. 이 봇을 사용할 권한이 없습니다.")
-    #     return
+    # [보안 중요] 원격 제어가 가능하므로 특정 Slack User ID만 허용하는 화이트리스트 적용
+    allowed_users = ["U0BEZN7638Q"]  # 사용자 본인의 Slack User ID
+    if user not in allowed_users:
+        await say("죄송합니다. 이 봇을 사용할 권한이 없습니다.")
+        return
 
     print(f"\n[수신] {user} 으로부터 메시지: {text}")
     
