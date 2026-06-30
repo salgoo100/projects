@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚗 중고 전기차 구매 후 필수 체크리스트</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --surface: #12141c;
+      --surface-hover: #1b1e2a;
+      --border: #232736;
+      --border-focus: #3f4764;
+      --text: #f1f3f9;
+      --text-muted: #8e95a5;
+      --text-dimmed: #5d6370;
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.15);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.15);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 40px 20px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .back-nav {
+      max-width: 800px;
+      width: 100%;
+      margin: 20px auto 0;
+      padding: 0 20px;
+    }
+
+    .back-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .back-link:hover {
+      color: var(--primary);
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Progress Bar */
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .progress-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .progress-percentage {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .progress-bar-bg {
+      background: var(--border);
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--success) 100%);
+      width: 0%;
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 32px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      border-left: 4px solid var(--primary);
+      padding-left: 10px;
+    }
+
+    .checklist-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checklist-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .checklist-item:hover {
+      border-color: var(--border-focus);
+      background: var(--surface-hover);
+      transform: translateY(-2px);
+    }
+
+    .checklist-item.checked {
+      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.02);
+    }
+
+    .checklist-main {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .checkbox-wrapper {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .checkbox-custom {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--text-dimmed);
+      border-radius: 6px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .checklist-item:hover .checkbox-custom {
+      border-color: var(--text-muted);
+    }
+
+    .checklist-item.checked .checkbox-custom {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+
+    .checkbox-custom svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: white;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: var(--transition);
+    }
+
+    .checklist-item.checked .checkbox-custom svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .checklist-text {
+      flex: 1;
+    }
+
+    .item-title {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    .checklist-item.checked .item-title {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .item-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Expandable details */
+    .item-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.3s;
+      margin-top: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 0;
+    }
+
+    .checklist-item.expanded .item-details {
+      max-height: 500px;
+      margin-top: 16px;
+      padding-top: 16px;
+    }
+
+    .detail-section {
+      margin-bottom: 12px;
+    }
+
+    .detail-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-label {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .detail-content ul {
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-glow);
+      color: var(--primary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 10px;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      transition: var(--transition);
+    }
+
+    .btn-link:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .expand-toggle {
+      background: none;
+      border: none;
+      color: var(--text-dimmed);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 50%;
+      align-self: center;
+      transition: var(--transition);
+    }
+
+    .checklist-item:hover .expand-toggle {
+      color: var(--text-muted);
+    }
+
+    .expand-toggle svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s;
+    }
+
+    .checklist-item.expanded .expand-toggle svg {
+      transform: rotate(180deg);
+    }
+
+    /* Tip Alert */
+    .tip-box {
+      background: rgba(59, 130, 246, 0.05);
+      border: 1px dashed var(--primary);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .tip-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-dimmed);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="back-nav">
+    <a href="./index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      메인으로 돌아가기
+    </a>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <h1>🚗 중고 전기차 구매 후 필수 체크리스트</h1>
+      <p class="subtitle">초보 오너가 반드시 챙겨야 할 실무 단계별 조치사항</p>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Progress Bar -->
+    <div class="progress-card">
+      <div class="progress-info">
+        <span class="progress-title">체크리스트 진행률</span>
+        <span class="progress-percentage" id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- 1단계 -->
+    <h3 class="section-title">1단계. 행정 및 할인 등록 (가장 먼저!)</h3>
+    <div class="checklist-group">
+      
+      <div class="checklist-item" data-id="subsidy">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">전기차 보조금 의무운행기간 및 승계 확인</div>
+            <div class="item-desc">보조금을 지원받은 전기차의 2년 의무운행 규정 확인 및 승계</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">전기차는 최초 등록일 기준 2년간의 보조금 회수 의무기간이 있습니다. 이 기간이 남았다면 의무 준수 및 지자체 승계 여부를 확인해야 합니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📋 진행 방법</div>
+            <div class="detail-content">무공해차 통합누리집에서 차대번호 조회를 통해 남은 의무운행 기간을 확인하실 수 있습니다.</div>
+          </div>
+          <a href="https://www.ev.or.kr" target="_blank" class="btn-link">
+            무공해차 통합누리집 바로가기
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="checklist-item" data-id="hipass">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">하이패스 명의 변경 및 전기차 할인 등록</div>
+            <div class="item-desc">고속도로 통행료 할인을 받기 위한 차량 등록</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">전기차는 고속도로 통행 시 통행료를 감면받을 수 있습니다. 단말기에 전기차 정보가 등록되지 않으면 혜택을 받을 수 없으므로 필수 등록이 필요합니다. (2026년 기준 30% 감면)</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📋 진행 방법</div>
+            <div class="detail-content">
+              1. 고속도로 통행료 홈페이지에서 단말기 명의 변경 및 등록을 진행하거나 하이패스 영업소를 방문합니다.<br>
+              2. 단말기 전원 연결 후 PC와 연결하여 '친환경차 할인' 등록 처리를 진행합니다.
+            </div>
+          </div>
+          <a href="https://www.hipass.co.kr" target="_blank" class="btn-link">
+            고속도로 통행료 홈페이지 바로가기
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="checklist-item" data-id="insurance">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">전기차 전용 자동차 보험 가입 및 확인</div>
+            <div class="item-desc">고가 부품 보호 및 방전 대비 특약 가입</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">전기차는 차량 가격 대비 배터리 비용의 비중이 큽니다. 사고 시 감가상각으로 인한 배터리 교체 비용 자부담을 피하기 위해 전용 특약 가입이 매우 중요합니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📋 필수 가입 특약 추천</div>
+            <div class="detail-content">
+              <ul>
+                <li><strong>배터리 신품 가액 보상 특약</strong>: 사고 시 감가상각 금액 공제 없이 새 배터리 가격을 전액 보장</li>
+                <li><strong>긴급 출동 견인 거리 확대 특약</strong>: 방전 사고를 대비하여 무상 견인 한도를 50km 이상으로 확대</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2단계 -->
+    <h3 class="section-title">2단계. 충전 멤버십 및 결제 카드 준비</h3>
+    <div class="checklist-group">
+      
+      <div class="checklist-item" data-id="env_card">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">환경부 공공충전카드 발급 신청</div>
+            <div class="item-desc">공공 급속충전 요금을 회원 가격으로 결제하기 위한 기본 카드</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">전 차주가 명의로 등록한 기존 충전카드는 해지되어야 합니다. 본인 계정으로 환경부 카드를 신청하여 소지해야 전국의 대부분의 급속충전기에서 가장 간편하게 회원 요금으로 충전할 수 있습니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📋 신청 절차</div>
+            <div class="detail-content">
+              1. 이전 소유자가 카드 명의를 해지한 것인지 체크<br>
+              2. 무공해차 통합누리집 회원가입 후 [마이페이지] > [회원카드 신청] 진행
+            </div>
+          </div>
+          <a href="https://www.ev.or.kr" target="_blank" class="btn-link">
+            무공해차 통합누리집 바로가기
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="checklist-item" data-id="discount_card">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">충전 할인 특화 신용카드 신청</div>
+            <div class="item-desc">충전 요금 30%~50%를 상시 청구 할인해 주는 신용카드 준비</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">일반 카드와 달리 전기차 특화 카드는 전월 실적 조건 달성 시 충전 요금을 파격적으로 할인해 줍니다. 발급 후 1단계에서 신청한 환경부 카드나 민간 충전 앱에 주 결제 수단으로 연동하면 혜택이 적용됩니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">💳 추천 카드 예시</div>
+            <div class="detail-content">
+              신한카드 EV, 삼성 iD EV 카드, KB국민 그린카드 등 (전월 카드 이용 금액에 따라 최대 2~3만 원까지 할인 한도 제공)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist-item" data-id="cpo_apps">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">자주 사용하는 민간 충전소(CPO) 앱 가입</div>
+            <div class="item-desc">주거지나 직장 주변에 설치된 충전기 맞춤 앱 설치</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">비회원 가격은 회원 가격보다 최대 50% 가까이 비쌉니다. 거주 아파트나 마트 주차장에 있는 충전기 브랜드를 확인하여 선제적으로 가입하는 것이 유리합니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📱 추천 설치 앱</div>
+            <div class="detail-content">
+              모두의충전(충전소 탐색 및 통합결제), 채비(CHAEVI), 차지비(ChargEV), 에버온(Everon), 일렉배리 등
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3단계 -->
+    <h3 class="section-title">3단계. 차량 상태 및 제조사 보증 점검</h3>
+    <div class="checklist-group">
+      
+      <div class="checklist-item" data-id="battery_soh">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">제조사 공식 서비스센터 방문 및 배터리 SOH 측정</div>
+            <div class="item-desc">배터리의 현재 잔여 성능(SOH) 정밀 측정서 수령</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">전기차는 구동 배터리 상태가 감가상각과 향후 수명에 거의 절대적인 비중을 차지합니다. 공식 서비스센터에 방문하여 진단기로 배터리 열화 정도(State of Health)를 정밀 측정해 이력 기록을 남겨야 안전합니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">🛠️ 방문처</div>
+            <div class="detail-content">현대차는 블루핸즈, 기아는 오토큐, 테슬라는 테슬라 서비스센터 등 소유 차량 브랜드의 전용 서비스센터 예약 방문</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist-item" data-id="warranty">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">제조사 배터리 보증 기간 승계 확인</div>
+            <div class="item-desc">소유자 변경 사항을 제조사 고객센터에 등록하여 잔여 보증 확보</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">기본 배터리 보증 기간(예: 8년 16만km 등)이 구매한 중고 전기차에도 유효하게 승계되었는지 소유자 이전 신청을 진행해야 합니다. 제조사 데이터베이스 상 소유주가 업데이트되어야 비상시 보증 수리가 매끄럽습니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📋 신청 방법</div>
+            <div class="detail-content">명의 이전이 완료된 자동차 등록증을 첨부하여 제조사 고객센터 혹은 서비스 네트워크를 통해 소유 정보 이전 등록을 접수합니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist-item" data-id="cables">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">차량 기본 지급 품목 (충전 케이블, 젠더) 확인</div>
+            <div class="item-desc">차량 인도 시 제공받았어야 할 부속품들 확인</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">전기차는 완속 충전이나 비상 충전을 위한 액세서리들이 필수적입니다. 구성품이 미지급되어 새로 살 경우 적잖은 금액이 들어가므로 차량 인수 시 반드시 챙겼는지 점검해 보세요.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📦 점검 대상 품목</div>
+            <div class="detail-content">
+              <ul>
+                <li>220V 비상용 휴대용 충전기 (상황에 따라 과금형 콘센트 연동용)</li>
+                <li>J1772 완속 5핀 충전용 젠더 (특히 수입 차량/테슬라의 경우 필수)</li>
+                <li>테슬라 차량 한정: DC콤보(CCS1) 어댑터 보유 여부</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 4단계 -->
+    <h3 class="section-title">4단계. 차량 원격 제어 및 디지털 인프라 등록</h3>
+    <div class="checklist-group">
+      
+      <div class="checklist-item" data-id="connected_car">
+        <div class="checklist-main">
+          <div class="checkbox-wrapper">
+            <div class="checkbox-custom">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="checklist-text">
+            <div class="item-title">커넥티드 카 (원격 제어) 서비스 명의 변경</div>
+            <div class="item-desc">에어컨 원격 예약, 배터리 충전 상태 확인 모바일 앱 연결</div>
+          </div>
+          <button class="expand-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div class="item-details">
+          <div class="detail-section">
+            <div class="detail-label">💡 상세 설명</div>
+            <div class="detail-content">전기차는 겨울철 미리 히터를 틀어 배터리를 예열하는 등 원격 제어 활용성이 내연기관차보다 훨씬 높습니다. 전 차주의 커넥티드 정보를 단절하고 새로 가입하셔야 합니다.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">📋 연동 앱 예시</div>
+            <div class="detail-content">
+              현대 블루링크(BlueLink), 기아 커넥트(Kia Connect), 제네시스 커넥티드, 테슬라 앱 등 (자동차 등록증 및 신분증 사본 전송 필요)
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tip box -->
+    <div class="tip-box">
+      <div class="tip-title">💡 첫 충전 전 간단 팁</div>
+      <div>공용 충전소에 가기 전에 집 근처 충전기 커넥터 타입을 확인해 보세요. 국내 대부분의 전기차(현대, 기아, 수입차 등)는 급속 충전에 <strong>DC콤보(CCS1)</strong> 규격을 사용합니다. 단, 연식이 오래된 전기차는 DC차데모나 AC3상을 사용하므로 차량의 충전구를 직접 열어 형태를 파악하는 것이 좋습니다.</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2026 전기차 중고 입문 가이드 | <a href="./index.html">메인 웹앱 가기</a></p>
+  </footer>
+
+  <script>
+    const checklistItems = document.querySelectorAll('.checklist-item');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+
+    function loadChecklistState() {
+      let checkedItems = JSON.parse(localStorage.getItem('ev_checklist_checked')) || [];
+      
+      checklistItems.forEach(item => {
+        const itemId = item.getAttribute('data-id');
+        if (checkedItems.includes(itemId)) {
+          item.classList.add('checked');
+        }
+      });
+      updateProgressBar();
+    }
+
+    function saveChecklistState() {
+      const checkedIds = [];
+      checklistItems.forEach(item => {
+        if (item.classList.contains('checked')) {
+          checkedIds.push(item.getAttribute('data-id'));
+        }
+      });
+      localStorage.setItem('ev_checklist_checked', JSON.stringify(checkedIds));
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const totalItems = checklistItems.length;
+      const checkedItems = document.querySelectorAll('.checklist-item.checked').length;
+      const percentage = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+      
+      progressFill.style.width = `${percentage}%`;
+      progressText.textContent = `${percentage}% (${checkedItems}/${totalItems})`;
+    }
+
+    checklistItems.forEach(item => {
+      const mainSection = item.querySelector('.checklist-main');
+      
+      mainSection.addEventListener('click', (e) => {
+        const expandToggle = item.querySelector('.expand-toggle');
+        if (expandToggle.contains(e.target) || e.target === expandToggle) {
+          item.classList.toggle('expanded');
+          return;
+        }
+        item.classList.toggle('checked');
+        saveChecklistState();
+      });
+
+      const expandBtn = item.querySelector('.expand-toggle');
+      expandBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        item.classList.toggle('expanded');
+      });
+    });
+
+    loadChecklistState();
+  </script>
+</body>
+</html>

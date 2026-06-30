@@ -85,6 +85,33 @@
       margin: 0 auto;
     }
 
+    .page-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .page-link-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 30px;
+      background: var(--surface);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-link-item:hover {
+      border-color: var(--border-focus);
+      background: var(--surface-hover);
+      color: var(--primary);
+    }
+
     .badge {
       display: inline-block;
       padding: 6px 14px;
@@ -529,6 +556,16 @@
       <span class="badge">E-MOBILITY GUIDE</span>
       <h1>중고 전기차 오너 가이드</h1>
       <p class="subtitle">처음 전기차를 입문하신 분을 위한 필수 체크리스트 & 할인 혜택 정리</p>
+      <div class="page-links">
+        <a href="./checklist.html" class="page-link-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          체크리스트 전용 페이지
+        </a>
+        <a href="./discounts.html" class="page-link-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          할인 혜택 전용 페이지
+        </a>
+      </div>
     </div>
   </header>
 
