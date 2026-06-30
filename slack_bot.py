@@ -24,6 +24,7 @@ app = AsyncApp(token=os.environ.get("SLACK_BOT_TOKEN"))
 
 
 # Antigravity 에이전트 설정
+# 구글 AI Studio 무료 티어의 503 과부하 에러를 완화하기 위해 비교적 트래픽 여유가 있는 gemini-1.5-flash 모델을 기본 사용하도록 설정합니다.
 agent_config = LocalAgentConfig(
     system_instructions=(
         "You are Antigravity, a helpful assistant integrated into Slack. "
@@ -33,8 +34,10 @@ agent_config = LocalAgentConfig(
     capabilities=CapabilitiesConfig(
         run_command=True,  # 봇이 터미널 명령어를 실행할 수 있게 허용
         edit_file=True,    # 봇이 로컬 파일을 생성/수정할 수 있게 허용
-    )
+    ),
+    model="gemini-1.5-flash"
 )
+
 
 # 1대1 다이렉트 메시지(DM) 또는 채널 메시지가 수신되었을 때 실행되는 이벤트 핸들러
 @app.event("message")
