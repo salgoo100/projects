@@ -3,4 +3,10 @@ package-lock.json
 package.json
 encrypt.js
 .env
+*.pdf
+decrypted_*.html
+test_*.js
+write_decrypted.js
+simulate.js
+verify_web.js
 
