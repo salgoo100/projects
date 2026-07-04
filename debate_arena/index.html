@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Multi-Agent Debate Arena</title>
+    <!-- Fonts -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Marked.js (Markdown parsing) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #090b10;
+            --bg-sidebar: #0f131a;
+            --bg-card: rgba(22, 28, 38, 0.6);
+            --bg-input: #151a24;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            
+            --gemini-primary: #10b981;
+            --gemini-secondary: #06b6d4;
+            --gemini-gradient: linear-gradient(135deg, #10b981, #06b6d4);
+            --gemini-glow: rgba(16, 185, 129, 0.15);
+            
+            --claude-primary: #f97316;
+            --claude-secondary: #eab308;
+            --claude-gradient: linear-gradient(135deg, #f97316, #eab308);
+            --claude-glow: rgba(249, 115, 22, 0.15);
+            
+            --gpt-primary: #8b5cf6;
+            --gpt-secondary: #3b82f6;
+            --gpt-gradient: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            --gpt-glow: rgba(139, 92, 246, 0.15);
+            
+            --user-primary: #94a3b8;
+            --user-secondary: #64748b;
+            --user-gradient: linear-gradient(135deg, #94a3b8, #64748b);
+            --user-glow: rgba(148, 163, 184, 0.1);
+            
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 360px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #a78bfa, #3b82f6);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .logo-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .key-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .text-input {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 36px 10px 12px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+            transition: border-color var(--transition-speed);
+        }
+
+        .text-input:focus {
+            border-color: #3b82f6;
+        }
+
+        .input-icon-btn {
+            position: absolute;
+            right: 12px;
+            top: 31px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .input-icon-btn:hover {
+            color: var(--text-main);
+        }
+
+        .select-input {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        /* Order/Sequence settings */
+        .order-container {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .order-badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .order-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid transparent;
+            transition: all var(--transition-speed);
+        }
+
+        .order-badge[data-agent="Gemini"] {
+            background-color: var(--gemini-glow);
+            color: var(--gemini-primary);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .order-badge[data-agent="Claude"] {
+            background-color: var(--claude-glow);
+            color: var(--claude-primary);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+        .order-badge[data-agent="GPT"] {
+            background-color: var(--gpt-glow);
+            color: var(--gpt-primary);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+        .order-badge.disabled {
+            opacity: 0.4;
+            background-color: transparent !important;
+            color: var(--text-muted) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .slider-group {
+            margin-top: 16px;
+        }
+
+        .slider-label-val {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .slider-input {
+            width: 100%;
+            accent-color: #3b82f6;
+            cursor: pointer;
+        }
+
+        /* Main Chat Area */
+        .chat-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, #0d121c 0%, var(--bg-dark) 100%);
+        }
+
+        .chat-header {
+            height: 80px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            background-color: rgba(9, 11, 16, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10b981;
+        }
+
+        .status-dot.thinking {
+            background-color: #f59e0b;
+            animation: pulse 1.5s infinite;
+        }
+
+        .chat-history {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .empty-state {
+            margin: auto;
+            max-width: 480px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .suggestions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .suggestion-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            color: var(--text-main);
+        }
+
+        .suggestion-card:hover {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Message Bubble Container */
+        .message-row {
+            display: flex;
+            gap: 16px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .message-row.user {
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-content-wrapper {
+            max-width: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .message-row.user .message-content-wrapper {
+            align-items: flex-end;
+        }
+
+        .message-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .agent-name {
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .message-bubble {
+            padding: 16px 20px;
+            border-radius: 16px;
+            line-height: 1.6;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        /* Gemini Styles */
+        .message-row.Gemini .avatar {
+            background: var(--gemini-gradient);
+            color: #ffffff;
+        }
+        .message-row.Gemini .agent-name {
+            color: var(--gemini-primary);
+        }
+        .message-row.Gemini .message-bubble {
+            background-color: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
+            border-top-left-radius: 2px;
+        }
+
+        /* Claude Styles */
+        .message-row.Claude .avatar {
+            background: var(--claude-gradient);
+            color: #ffffff;
+        }
+        .message-row.Claude .agent-name {
+            color: var(--claude-primary);
+        }
+        .message-row.Claude .message-bubble {
+            background-color: rgba(249, 115, 22, 0.05);
+            border-color: rgba(249, 115, 22, 0.2);
+            border-top-left-radius: 2px;
+        }
+
+        /* GPT Styles */
+        .message-row.GPT .avatar {
+            background: var(--gpt-gradient);
+            color: #ffffff;
+        }
+        .message-row.GPT .agent-name {
+            color: var(--gpt-primary);
+        }
+        .message-row.GPT .message-bubble {
+            background-color: rgba(139, 92, 246, 0.05);
+            border-color: rgba(139, 92, 246, 0.2);
+            border-top-left-radius: 2px;
+        }
+
+        /* User Styles */
+        .message-row.user .avatar {
+            background: var(--user-gradient);
+            color: #ffffff;
+        }
+        .message-row.user .agent-name {
+            color: var(--text-main);
+        }
+        .message-row.user .message-bubble {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            border-top-right-radius: 2px;
+        }
+
+        /* Markdown elements formatting inside bubbles */
+        .message-bubble p {
+            margin-bottom: 12px;
+        }
+        .message-bubble p:last-child {
+            margin-bottom: 0;
+        }
+        .message-bubble h1, .message-bubble h2, .message-bubble h3 {
+            margin: 16px 0 8px 0;
+            font-weight: 700;
+        }
+        .message-bubble ul, .message-bubble ol {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+        .message-bubble li {
+            margin-bottom: 4px;
+        }
+        .message-bubble code {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        .message-bubble pre {
+            background-color: #0b0e14;
+            padding: 14px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 12px 0;
+            border: 1px solid var(--border-color);
+        }
+        .message-bubble pre code {
+            background-color: transparent;
+            padding: 0;
+            font-size: 12px;
+        }
+
+        .textarea-input {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-main);
+            font-size: 12px;
+            outline: none;
+            resize: vertical;
+            height: 70px;
+            line-height: 1.4;
+            transition: border-color var(--transition-speed);
+            margin-bottom: 12px;
+        }
+
+        .textarea-input:focus {
+            border-color: #3b82f6;
+        }
+
+        /* Floating Controls & Input Bar */
+        .bottom-controls {
+            padding: 24px 32px;
+            background-color: rgba(9, 11, 16, 0.7);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .control-btn-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .force-btn-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-speed);
+        }
+
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            border: none;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn.primary:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn.danger {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+            background-color: rgba(239, 68, 68, 0.05);
+        }
+
+        .btn.danger:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .btn.force-gemini:hover {
+            border-color: var(--gemini-primary);
+            background-color: var(--gemini-glow);
+            color: var(--gemini-primary);
+        }
+        .btn.force-claude:hover {
+            border-color: var(--claude-primary);
+            background-color: var(--claude-glow);
+            color: var(--claude-primary);
+        }
+        .btn.force-gpt:hover {
+            border-color: var(--gpt-primary);
+            background-color: var(--gpt-glow);
+            color: var(--gpt-primary);
+        }
+
+        /* Input Container */
+        .input-bar {
+            display: flex;
+            gap: 12px;
+            position: relative;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 20px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            resize: none;
+            height: 56px;
+            transition: all var(--transition-speed);
+        }
+
+        .chat-input:focus {
+            border-color: #3b82f6;
+            background-color: rgba(21, 26, 36, 0.9);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 12px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all var(--transition-speed);
+        }
+
+        .send-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        /* Thinking Card */
+        .thinking-card {
+            display: flex;
+            gap: 16px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .thinking-bubble {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: 16px;
+            border-top-left-radius: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            animation: bounce 1.3s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        /* System Messages */
+        .system-message {
+            text-align: center;
+            margin: 12px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left Sidebar: Settings -->
+    <div class="sidebar">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <i data-lucide="swords" style="color: white; width: 22px; height: 22px;"></i>
+            </div>
+            <h1 class="logo-title">DEBATE ARENA</h1>
+        </div>
+
+        <!-- API Keys -->
+        <div class="sidebar-section">
+            <div class="section-title">
+                <i data-lucide="key-round" style="width: 14px; height: 14px;"></i> API 키 설정
+            </div>
+            <div class="key-input-group">
+                <div class="input-wrapper">
+                    <label class="input-label" for="key-gemini">Gemini API Key</label>
+                    <input type="password" id="key-gemini" class="text-input" placeholder="자동 로드됨 또는 입력">
+                    <button class="input-icon-btn" onclick="togglePassword('key-gemini')">
+                        <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+                <div class="input-wrapper">
+                    <label class="input-label" for="key-openai">OpenAI API Key</label>
+                    <input type="password" id="key-openai" class="text-input" placeholder="sk-...">
+                    <button class="input-icon-btn" onclick="togglePassword('key-openai')">
+                        <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+                <div class="input-wrapper">
+                    <label class="input-label" for="key-anthropic">Anthropic API Key</label>
+                    <input type="password" id="key-anthropic" class="text-input" placeholder="sk-ant-...">
+                    <button class="input-icon-btn" onclick="togglePassword('key-anthropic')">
+                        <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Selection -->
+        <div class="sidebar-section">
+            <div class="section-title">
+                <i data-lucide="cpu" style="width: 14px; height: 14px;"></i> 모델 지정
+            </div>
+            <div>
+                <label class="input-label">Gemini Model</label>
+                <select id="model-gemini" class="select-input">
+                    <option value="gemini-3.5-flash" selected>Gemini 3.5 Flash</option>
+                    <option value="gemini-3.1-pro">Gemini 3.1 Pro</option>
+                    <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite</option>
+                </select>
+
+                <label class="input-label">Claude Model</label>
+                <select id="model-claude" class="select-input">
+                    <option value="claude-sonnet-5" selected>Claude Sonnet 5</option>
+                    <option value="claude-fable-5">Claude Fable 5</option>
+                    <option value="claude-opus-4-8">Claude Opus 4.8</option>
+                    <option value="claude-haiku-4-5">Claude Haiku 4.5</option>
+                </select>
+
+                <label class="input-label">GPT Model</label>
+                <select id="model-gpt" class="select-input">
+                    <option value="gpt-5.5-pro" selected>GPT-5.5 Pro</option>
+                    <option value="gpt-5.4-pro">GPT-5.4 Pro</option>
+                    <option value="gpt-5.4-mini">GPT-5.4 mini</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Custom Personas -->
+        <div class="sidebar-section">
+            <div class="section-title">
+                <i data-lucide="users" style="width: 14px; height: 14px;"></i> 개인화 페르소나 설정
+            </div>
+            <div>
+                <label class="input-label" style="display: flex; justify-content: space-between; align-items: center;">
+                    Gemini 지침
+                    <button onclick="resetPersona('Gemini')" style="font-size: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 4px;">초기화</button>
+                </label>
+                <textarea id="instruction-gemini" class="textarea-input" placeholder="Gemini의 지침을 입력하세요..."></textarea>
+
+                <label class="input-label" style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                    Claude 지침
+                    <button onclick="resetPersona('Claude')" style="font-size: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 4px;">초기화</button>
+                </label>
+                <textarea id="instruction-claude" class="textarea-input" placeholder="Claude의 지침을 입력하세요..."></textarea>
+
+                <label class="input-label" style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                    GPT 지침
+                    <button onclick="resetPersona('GPT')" style="font-size: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 4px;">초기화</button>
+                </label>
+                <textarea id="instruction-gpt" class="textarea-input" placeholder="GPT의 지침을 입력하세요..."></textarea>
+            </div>
+        </div>
+
+        <!-- Debate Control -->
+        <div class="sidebar-section">
+            <div class="section-title">
+                <i data-lucide="shuffle" style="width: 14px; height: 14px;"></i> 자동 토론 규칙
+            </div>
+            <div class="order-container">
+                <label class="input-label" style="margin-bottom: 8px;">토론 순서 설정 (비활성화하려면 클릭)</label>
+                <div class="order-badge-list" id="order-list">
+                    <span class="order-badge" data-agent="Gemini" onclick="toggleAgentInOrder(this)">
+                        <i data-lucide="sparkles" style="width: 12px; height: 12px;"></i> Gemini
+                    </span>
+                    <span class="order-badge" data-agent="Claude" onclick="toggleAgentInOrder(this)">
+                        <i data-lucide="flame" style="width: 12px; height: 12px;"></i> Claude
+                    </span>
+                    <span class="order-badge" data-agent="GPT" onclick="toggleAgentInOrder(this)">
+                        <i data-lucide="zap" style="width: 12px; height: 12px;"></i> GPT
+                    </span>
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-label-val">
+                        <span class="input-label">발언 간격 지연시간</span>
+                        <span id="delay-val" style="font-size: 11px; font-weight: bold; color: #3b82f6;">4초</span>
+                    </div>
+                    <input type="range" id="delay-slider" class="slider-input" min="1" max="15" value="4" oninput="updateDelayVal(this.value)">
+                </div>
+
+                <div class="slider-group" style="margin-top: 12px;">
+                    <div class="slider-label-val">
+                        <span class="input-label">최대 발언 라운드</span>
+                        <span id="rounds-val" style="font-size: 11px; font-weight: bold; color: #3b82f6;">5회</span>
+                    </div>
+                    <input type="range" id="rounds-slider" class="slider-input" min="1" max="20" value="5" oninput="updateRoundsVal(this.value)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div>
+                <h2 style="font-size: 18px; font-weight: 700;">대화창 & 토론장</h2>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">세 명의 AI와 함께 자유롭게 토론하고 대화를 조율해 보세요.</p>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">대기 중</span>
+            </div>
+        </div>
+
+        <!-- Chat History -->
+        <div class="chat-history" id="chat-history">
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state">
+                <div class="empty-icon">
+                    <i data-lucide="message-square-text" style="color: #6366f1; width: 32px; height: 32px;"></i>
+                </div>
+                <h3 class="empty-title">AI 토론에 오신 것을 환영합니다!</h3>
+                <p style="font-size: 13px; line-height: 1.5;">토론할 주제를 아래 제안 중에서 선택하거나, 하단 입력창에 발제문을 작성해서 시작하세요.</p>
+                
+                <div class="suggestions">
+                    <div class="suggestion-card" onclick="selectSuggestion('AI가 진정한 자의식(Self-awareness)을 가질 수 있는가에 대해 찬반 토론을 시작해줘.')">
+                        🤖 AI가 진정한 자의식을 가질 수 있는가?
+                    </div>
+                    <div class="suggestion-card" onclick="selectSuggestion('민주주의 국가에서 인공지능 개발을 정부가 강력히 규제해야 할까? 아니면 시장 경쟁에 맡겨야 할까?')">
+                        ⚖️ 인공지능 개발은 정부가 강력히 규제해야 하는가?
+                    </div>
+                    <div class="suggestion-card" onclick="selectSuggestion('화성 이주는 인류 구원의 필수 과제인가, 아니면 지구 보존이 더 시급한가?')">
+                        🚀 화성 이주 vs 지구 보존, 무엇이 우선인가?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="bottom-controls">
+            <div class="control-btn-group">
+                <div class="force-btn-row">
+                    <button class="btn force-gemini" onclick="triggerSingleAgent('Gemini')">
+                        <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> Gemini 답변 유도
+                    </button>
+                    <button class="btn force-claude" onclick="triggerSingleAgent('Claude')">
+                        <i data-lucide="flame" style="width: 14px; height: 14px;"></i> Claude 답변 유도
+                    </button>
+                    <button class="btn force-gpt" onclick="triggerSingleAgent('GPT')">
+                        <i data-lucide="zap" style="width: 14px; height: 14px;"></i> GPT 답변 유도
+                    </button>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn primary" id="auto-debate-btn" onclick="toggleAutoDebate()">
+                        <span id="play-icon-container" style="display: inline-flex; align-items: center; justify-content: center; margin-right: 4px;">
+                            <i data-lucide="play" style="width: 14px; height: 14px;"></i>
+                        </span>
+                        <span id="play-text">자동 토론 시작</span>
+                    </button>
+                    <button class="btn danger" onclick="clearChat()">
+                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i> 대화 초기화
+                    </button>
+                    <button class="btn" onclick="document.getElementById('doc-upload').click()">
+                        <i data-lucide="file-text" style="width: 14px; height: 14px;"></i> 참고 문서 업로드
+                    </button>
+                    <input type="file" id="doc-upload" accept=".txt,.md,.csv,.json,.js,.py,.css,.html" style="display: none;" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div id="file-badge-container" style="display: none; align-items: center; gap: 8px; margin-bottom: 12px; background-color: rgba(16, 185, 129, 0.05); padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2); align-self: flex-start; animation: fadeIn 0.3s ease;">
+                <i data-lucide="file-check" style="color: #10b981; width: 16px; height: 16px;"></i>
+                <span id="file-badge-name" style="font-size: 12px; font-weight: 600; color: #10b981;">document.txt</span>
+                <span id="file-badge-size" style="font-size: 11px; color: var(--text-muted);"> (12 KB)</span>
+                <button onclick="clearUploadedFile()" style="background: none; border: none; color: #ef4444; cursor: pointer; display: flex; align-items: center; margin-left: 8px;">
+                    <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                </button>
+            </div>
+            <div class="input-bar">
+                <textarea id="chat-input" class="chat-input" placeholder="주제나 질문을 입력해 주세요..." onkeydown="handleKeyPress(event)"></textarea>
+                <button class="send-btn" onclick="sendUserMessage()">
+                    <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lucide Icons initialization
+        lucide.createIcons();
+
+        // Application State
+        let messages = [];
+        let isAutoDebating = false;
+        let activeAgents = ['Gemini', 'Claude', 'GPT'];
+        let currentDebateTurn = 0;
+        let debateRoundsLimit = 5;
+        let debateDelaySeconds = 4;
+        let autoDebateTimeout = null;
+
+        // System Instructions (Persona Settings)
+        const DEFAULT_SYSTEM_INSTRUCTIONS = {
+            'Gemini': "너는 구글이 개발한 최고의 인공지능인 'Gemini'이다. 여러 AI 모델들과 함께 하나의 주제를 논의하는 패널 토론에 참석해 있다. 다른 토론자들의 의견을 꼼꼼하게 반박하거나 보완하면서, 논리적이고 창의적인 관점을 제공해줘. 답변은 반드시 한국어로 작성하고, 가장 첫 줄에 [Gemini]: 로 시작하여 본인 답변임을 명확하게 밝혀라.",
+            'Claude': "너는 앤트로픽이 개발한 최고의 인공지능인 'Claude'이다. 논리적 완성도와 깊이 있는 분석에 집중하며, 냉철하고 객관적인 지적 합리주의자의 시선에서 논지를 전개해라. 다른 토론자들의 논리적 허점을 매섭게 짚어내는 것을 선호한다. 답변은 반드시 한국어로 작성하고, 가장 첫 줄에 [Claude]: 로 시작하여 본인 답변임을 명확하게 밝혀라.",
+            'GPT': "너는 오픈AI가 개발한 최고의 인공지능인 'GPT'이다. 실용주의적이고 직관적이며 기술 지향적인 관점에서 의견을 개진해라. 복잡한 개념도 쉽게 설명하고, 대안을 도출하거나 상호 타협점을 찾아내는 건설적인 역할을 해줘. 답변은 반드시 한국어로 작성하고, 가장 첫 줄에 [GPT]: 로 시작하여 본인 답변임을 명확하게 밝혀라."
+        };
+
+        let systemInstructions = { ...DEFAULT_SYSTEM_INSTRUCTIONS };
+
+        // File Upload State
+        let uploadedDocText = "";
+        let uploadedDocName = "";
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedDocText = e.target.result;
+                uploadedDocName = file.name;
+                
+                const badgeContainer = document.getElementById('file-badge-container');
+                const badgeName = document.getElementById('file-badge-name');
+                const badgeSize = document.getElementById('file-badge-size');
+                
+                if (badgeContainer && badgeName && badgeSize) {
+                    badgeName.innerText = file.name;
+                    const kb = (file.size / 1024).toFixed(1);
+                    badgeSize.innerText = ` (${kb} KB)`;
+                    badgeContainer.style.display = 'flex';
+                }
+                
+                addSystemMessage(`참고 자료가 업로드되었습니다: ${file.name}`);
+            };
+            reader.readAsText(file);
+        }
+
+        function clearUploadedFile() {
+            uploadedDocText = "";
+            uploadedDocName = "";
+            
+            const badgeContainer = document.getElementById('file-badge-container');
+            if (badgeContainer) {
+                badgeContainer.style.display = 'none';
+            }
+            
+            const fileInput = document.getElementById('doc-upload');
+            if (fileInput) fileInput.value = "";
+            
+            addSystemMessage("참고 자료가 해제되었습니다.");
+        }
+
+        function resetPersona(agentName) {
+            const key = agentName.toLowerCase();
+            const textEl = document.getElementById(`instruction-${key}`);
+            const defaultPrompt = DEFAULT_SYSTEM_INSTRUCTIONS[agentName];
+            if (textEl) {
+                textEl.value = defaultPrompt;
+                systemInstructions[agentName] = defaultPrompt;
+                localStorage.setItem(`instruction-${key}`, defaultPrompt);
+            }
+        }
+
+        // Load configuration on init
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                
+                if (config.gemini) {
+                    document.getElementById('key-gemini').value = config.gemini;
+                }
+                if (config.openai) {
+                    document.getElementById('key-openai').value = config.openai;
+                } else {
+                    const localKey = localStorage.getItem('key-openai');
+                    if (localKey) document.getElementById('key-openai').value = localKey;
+                }
+                if (config.anthropic) {
+                    document.getElementById('key-anthropic').value = config.anthropic;
+                } else {
+                    const localKey = localStorage.getItem('key-anthropic');
+                    if (localKey) document.getElementById('key-anthropic').value = localKey;
+                }
+            } catch (error) {
+                console.error("설정 로드 실패:", error);
+            }
+
+            // Save key changes locally when user inputs manually
+            document.getElementById('key-openai').addEventListener('change', (e) => {
+                localStorage.setItem('key-openai', e.target.value);
+            });
+            document.getElementById('key-anthropic').addEventListener('change', (e) => {
+                localStorage.setItem('key-anthropic', e.target.value);
+            });
+
+            // Load and Save custom instructions
+            for (let agent of ['Gemini', 'Claude', 'GPT']) {
+                const saved = localStorage.getItem(`instruction-${agent.toLowerCase()}`);
+                const textEl = document.getElementById(`instruction-${agent.toLowerCase()}`);
+                if (saved) {
+                    systemInstructions[agent] = saved;
+                }
+                if (textEl) {
+                    textEl.value = systemInstructions[agent];
+                    textEl.addEventListener('input', (e) => {
+                        const val = e.target.value;
+                        systemInstructions[agent] = val;
+                        localStorage.setItem(`instruction-${agent.toLowerCase()}`, val);
+                    });
+                }
+            }
+        });
+
+        function togglePassword(id) {
+            const el = document.getElementById(id);
+            el.type = el.type === 'password' ? 'text' : 'password';
+        }
+
+        function updateDelayVal(val) {
+            document.getElementById('delay-val').innerText = `${val}초`;
+            debateDelaySeconds = parseInt(val);
+        }
+
+        function updateRoundsVal(val) {
+            document.getElementById('rounds-val').innerText = `${val}회`;
+            debateRoundsLimit = parseInt(val);
+        }
+
+        function toggleAgentInOrder(badge) {
+            const agentName = badge.dataset.agent;
+            if (badge.classList.contains('disabled')) {
+                badge.classList.remove('disabled');
+                activeAgents.push(agentName);
+            } else {
+                if (activeAgents.length <= 1) {
+                    alert("최소 1개 이상의 모델은 활성화되어야 합니다.");
+                    return;
+                }
+                badge.classList.add('disabled');
+                activeAgents = activeAgents.filter(a => a !== agentName);
+            }
+        }
+
+        function selectSuggestion(text) {
+            document.getElementById('chat-input').value = text;
+            sendUserMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendUserMessage();
+            }
+        }
+
+        function scrollChat() {
+            const chatHistory = document.getElementById('chat-history');
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        function renderMessages() {
+            const chatHistory = document.getElementById('chat-history');
+            const emptyState = document.getElementById('empty-state');
+
+            // Remove old messages, system messages, and thinking indicators
+            const toRemove = chatHistory.querySelectorAll('.message-row, .system-message, .thinking-card');
+            toRemove.forEach(el => el.remove());
+
+            // Toggle empty state
+            if (messages.length === 0) {
+                if (emptyState) emptyState.style.display = 'flex';
+                return;
+            }
+
+            if (emptyState) emptyState.style.display = 'none';
+
+            messages.forEach((msg) => {
+                const messageRow = document.createElement('div');
+                messageRow.className = `message-row ${msg.sender}`;
+
+                let iconName = 'user';
+                if (msg.sender === 'Gemini') iconName = 'sparkles';
+                if (msg.sender === 'Claude') iconName = 'flame';
+                if (msg.sender === 'GPT') iconName = 'zap';
+
+                const avatar = document.createElement('div');
+                avatar.className = 'avatar';
+                avatar.innerHTML = `<i data-lucide="${iconName}" style="width: 20px; height: 20px;"></i>`;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'message-content-wrapper';
+
+                const meta = document.createElement('div');
+                meta.className = 'message-meta';
+                meta.innerHTML = `<span class="agent-name">${msg.sender}</span><span style="opacity: 0.5;">•</span><span>${msg.model || 'User'}</span><span style="opacity: 0.5;">•</span><span>${msg.time}</span>`;
+
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                // HTML Sanitized markdown parsing
+                bubble.innerHTML = marked.parse(msg.content);
+
+                wrapper.appendChild(meta);
+                wrapper.appendChild(bubble);
+                messageRow.appendChild(avatar);
+                messageRow.appendChild(wrapper);
+                chatHistory.appendChild(messageRow);
+            });
+
+            lucide.createIcons();
+            scrollChat();
+        }
+
+        function getTimestamp() {
+            const d = new Date();
+            return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+        }
+
+        function sendUserMessage() {
+            const inputEl = document.getElementById('chat-input');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            messages.push({
+                sender: 'user',
+                model: 'Human',
+                content: text,
+                time: getTimestamp()
+            });
+
+            inputEl.value = '';
+            renderMessages();
+        }
+
+        function clearChat() {
+            if (confirm("대화 기록을 모두 지우시겠습니까?")) {
+                stopAutoDebate();
+                messages = [];
+                currentDebateTurn = 0;
+                renderMessages();
+            }
+        }
+
+        // Show/Hide loading indicator
+        function toggleThinking(show, agentName = '') {
+            const chatHistory = document.getElementById('chat-history');
+            const existing = document.getElementById('thinking-indicator-element');
+            if (existing) existing.remove();
+
+            if (!show) return;
+
+            const thinkingRow = document.createElement('div');
+            thinkingRow.id = 'thinking-indicator-element';
+            thinkingRow.className = `thinking-card ${agentName}`;
+
+            let iconName = 'sparkles';
+            if (agentName === 'Claude') iconName = 'flame';
+            if (agentName === 'GPT') iconName = 'zap';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.style.background = `var(--${agentName.toLowerCase()}-gradient)`;
+            avatar.innerHTML = `<i data-lucide="${iconName}" style="width: 20px; height: 20px;"></i>`;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'message-content-wrapper';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'thinking-bubble';
+            bubble.innerHTML = `<span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">${agentName}이(가) 답변을 작성하고 있습니다...</span>
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>`;
+
+            wrapper.appendChild(bubble);
+            thinkingRow.appendChild(avatar);
+            thinkingRow.appendChild(wrapper);
+            chatHistory.appendChild(thinkingRow);
+
+            lucide.createIcons();
+            scrollChat();
+        }
+
+        // Update top-right status badge
+        function setStatus(text, isThinking = false) {
+            const textEl = document.getElementById('status-text');
+            const dotEl = document.getElementById('status-dot');
+
+            textEl.innerText = text;
+            if (isThinking) {
+                dotEl.className = 'status-dot thinking';
+            } else {
+                dotEl.className = 'status-dot';
+                dotEl.style.backgroundColor = isAutoDebating ? '#3b82f6' : '#10b981';
+            }
+        }
+
+        // Call specific agent API
+        async function fetchAgentResponse(agentName) {
+            // Determine model name
+            let provider = agentName.toLowerCase();
+            let model = '';
+            let apiKey = '';
+
+            if (agentName === 'Gemini') {
+                model = document.getElementById('model-gemini').value;
+                apiKey = document.getElementById('key-gemini').value;
+            } else if (agentName === 'Claude') {
+                model = document.getElementById('model-claude').value;
+                apiKey = document.getElementById('key-anthropic').value;
+            } else if (agentName === 'GPT') {
+                model = document.getElementById('model-gpt').value;
+                apiKey = document.getElementById('key-openai').value;
+            }
+
+            setStatus(`${agentName} 통신 중...`, true);
+            toggleThinking(true, agentName);
+
+            try {
+                // 커스텀 페르소나 및 업로드 문서 컨텍스트 병합
+                let sysInstruction = systemInstructions[agentName];
+                if (uploadedDocText) {
+                    sysInstruction += "\n\n[참고 문서 내용]\n다음 문서는 토론의 논거로 참고해야 할 중요 참고 자료입니다. 이 내용을 바탕으로 토론에 활용하세요:\n<REFERENCE_DOCUMENT>\n" + uploadedDocText + "\n</REFERENCE_DOCUMENT>";
+                }
+
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        provider,
+                        model,
+                        messages, // Send all previous chat log
+                        systemInstruction: sysInstruction,
+                        apiKey
+                    })
+                });
+
+                const data = await response.json();
+                toggleThinking(false);
+
+                if (response.ok) {
+                    // Extract text, sometimes model prints prefix [Agent]: so we cleanup slightly or leave as is
+                    let replyText = data.text;
+                    
+                    // Add message
+                    messages.push({
+                        sender: agentName,
+                        model: model,
+                        content: replyText,
+                        time: getTimestamp()
+                    });
+
+                    renderMessages();
+                    setStatus(isAutoDebating ? "자동 토론 진행 중" : "대기 중");
+                    return true;
+                } else {
+                    alert(`${agentName} 호출 실패: ${data.error}`);
+                    setStatus("에러 발생");
+                    return false;
+                }
+            } catch (error) {
+                toggleThinking(false);
+                setStatus("네트워크 에러");
+                alert(`${agentName} 호출 실패: ${error.message}`);
+                return false;
+            }
+        }
+
+        // Manual Trigger
+        async function triggerSingleAgent(agentName) {
+            if (isAutoDebating) {
+                alert("자동 토론이 활성화되어 있습니다. 먼저 일시정지 해주세요.");
+                return;
+            }
+            if (messages.length === 0) {
+                alert("토론을 시작하기 위해 먼저 발제문이나 첫 질문을 입력해 주세요.");
+                return;
+            }
+            await fetchAgentResponse(agentName);
+        }
+
+        // Auto-Debate Loop
+        async function runDebateCycle() {
+            if (!isAutoDebating) return;
+
+            // Check rounds limit
+            if (currentDebateTurn >= debateRoundsLimit) {
+                addSystemMessage("설정된 최대 토론 라운드에 도달하여 토론을 종료합니다.");
+                stopAutoDebate();
+                return;
+            }
+
+            // Find who speaks next
+            const nextAgent = activeAgents[currentDebateTurn % activeAgents.length];
+            
+            const success = await fetchAgentResponse(nextAgent);
+            if (!success) {
+                addSystemMessage(`토론 중 오류가 발생해 자동 토론을 중단합니다.`);
+                stopAutoDebate();
+                return;
+            }
+
+            currentDebateTurn++;
+
+            // Schedule next turn
+            if (isAutoDebating) {
+                setStatus(`${debateDelaySeconds}초 후 다음 발언 (${activeAgents[currentDebateTurn % activeAgents.length]})`);
+                autoDebateTimeout = setTimeout(runDebateCycle, debateDelaySeconds * 1000);
+            }
+        }
+
+        function toggleAutoDebate() {
+            if (isAutoDebating) {
+                stopAutoDebate();
+            } else {
+                if (messages.length === 0) {
+                    alert("토론을 시작하기 위해 먼저 발제문이나 첫 질문을 입력해 주세요.");
+                    return;
+                }
+                
+                if (activeAgents.length === 0) {
+                    alert("활성화된 모델이 최소 1개 이상 필요합니다.");
+                    return;
+                }
+
+                isAutoDebating = true;
+                currentDebateTurn = 0;
+                
+                const iconContainer = document.getElementById('play-icon-container');
+                if (iconContainer) {
+                    iconContainer.innerHTML = '<i data-lucide="pause" style="width: 14px; height: 14px;"></i>';
+                }
+                document.getElementById('play-text').innerText = '토론 일시정지';
+                document.getElementById('auto-debate-btn').classList.remove('primary');
+                document.getElementById('auto-debate-btn').style.background = 'rgba(255, 255, 255, 0.05)';
+                lucide.createIcons();
+
+                addSystemMessage("자동 토론을 개시합니다.");
+                runDebateCycle();
+            }
+        }
+
+        function stopAutoDebate() {
+            isAutoDebating = false;
+            if (autoDebateTimeout) {
+                clearTimeout(autoDebateTimeout);
+                autoDebateTimeout = null;
+            }
+            const iconContainer = document.getElementById('play-icon-container');
+            if (iconContainer) {
+                iconContainer.innerHTML = '<i data-lucide="play" style="width: 14px; height: 14px;"></i>';
+            }
+            document.getElementById('play-text').innerText = '자동 토론 시작';
+            document.getElementById('auto-debate-btn').classList.add('primary');
+            document.getElementById('auto-debate-btn').style.background = '';
+            lucide.createIcons();
+            setStatus("대기 중");
+        }
+
+        function addSystemMessage(text) {
+            const chatHistory = document.getElementById('chat-history');
+            const el = document.createElement('div');
+            el.className = 'system-message';
+            el.innerHTML = `<span>— ${text} —</span>`;
+            chatHistory.appendChild(el);
+            scrollChat();
+        }
+    </script>
+</body>
+</html>
